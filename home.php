@@ -31,12 +31,6 @@ thead tr {
   margin-left: 5px;
 }
 
-/*
-.active:after {
-  content: "\2212";
-}
-*/
-
 .panel {
   padding: 0 18px;
   background-color: white;
@@ -44,8 +38,6 @@ thead tr {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
 }
-
-
 
 .pagination {
   text-align: center;
@@ -67,8 +59,6 @@ thead tr {
 .next-btn:hover {
   background-color: #ddd;
 }
-
-
 
 .search-container {
   display: flex;
@@ -97,17 +87,16 @@ thead tr {
   background-color: #ddd;
 }
 
-
 </style>
 
 <?php
 
-include "DB/connection.php";
+include "connection.php";
 include "Model/SystemHelper.php";
 
 $inventory=new Inventory();
 
-//session_start(); 
+session_start(); 
 
 $userid=$_SESSION["userid"];
 $subuserid=$_SESSION["subuserid"];
@@ -117,20 +106,6 @@ $companyid=$_SESSION["companyid"];
 $branchid=$_SESSION["branchid"];
 $moduleid=$_SESSION["moduleid"];
 $module_short_name=$_SESSION["module_short_name"];
-
-if(isset($_GET['DType'])){
-    $_SESSION["DType"]=$_GET['DType'];
-}
-else
-{
-    $_SESSION["DType"]="Branch";
-}
-
-$loadcontent='';
-if(isset($_GET['content']))
-{
-  $loadcontent=$_GET['content'];
-}
 
 echo "<input type='hidden' id='userid' value=$userid >";
 echo "<input type='hidden' id='subuserids' value=$subuserid >";
@@ -143,13 +118,10 @@ echo "<input type='hidden' id='module_short_name' value='$module_short_name' >";
 
 date_default_timezone_set('Asia/Dhaka');
 $current_date=date('Y-m-d');
-$first_date_of_month=date('Y-m-01');
-$first_date_of_year=date('Y-01-01');
-$initial_date='2000-01-01';
+
 ?>
 <input type="hidden" id="current_date"  value="<?php echo date('Y-m-d'); ?>">
 <?php
-
 
 // Get User Data ..................................................
 
@@ -167,26 +139,6 @@ if ($result->num_rows > 0) {
   
 }
 
-// Get Company Data ..................................................
-
-$companyname="Shop Name";
-
-$sqls = "SELECT * FROM basic_info where userid=$userid and companyid=$companyid limit 1";
-$result = $conn->query($sqls);
-
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    $companyname=$row["shop_name"];
-    $logo=$row["logo"];
-  }
-} else {
-  
-}
-
-echo "<input type='hidden' id='companyname' value='$companyname' >";
-
-// Get Module Data .....................
 
 $company="";
 
@@ -197,9 +149,11 @@ if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {
     $company=$row["name"];
+    $companyname=$row["name"];
   }
 }
 
+echo "<input type='hidden' id='companyname' value='$companyname' >";
 
 $branch="";
 $branch_Manager="";
@@ -232,539 +186,6 @@ if ($result->num_rows > 0) {
   }
 }
 
-
-// Get Purchase .........................
-
-$sql = "SELECT * FROM purchase_master where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-$total_purchase=$result->num_rows;
-
-$sql = "SELECT * FROM sales_master where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-$total_sales=$result->num_rows;
-
-$sql = "SELECT * FROM customer where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-$total_customer=$result->num_rows;
-
-
-$sql = "SELECT * FROM product where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-$total_product=$result->num_rows;
-
-
-date_default_timezone_set("Asia/dhaka");
-$today=date("Y-m-d");
-
-$sql = "SELECT sum(total_price) as today_sales FROM sales_master where userid=$userid and companyid=$companyid and sales_date='$today'";
-//echo $sql;
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $today_sales=$row["today_sales"];
-  }
-} else {
-  $today_sales=0;
-}
-
-
-$sql = "SELECT sum(total_price) as total_sales FROM sales_master where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_salestk=$row["total_sales"];
-  }
-} else {
-  $total_salestk=0;
-}
-
-
-
-$sql = "SELECT sum(due) as total_due FROM sales_master where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_duetk=$row["total_due"];
-  }
-} else {
-  $total_duetk=0;
-}
-
-
-$sql = "SELECT sum(pay_amount) as total_pay FROM sales_payment where salesid in(select id from sales_master where userid=$userid and companyid=$companyid)";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_paytk=$row["total_pay"];
-  }
-} else {
-  $total_paytk=0;
-}
-
-//echo $sql;
-
-$total_duetk=$total_duetk-$total_paytk;
-
-
-$sql = "SELECT sum(total_price) as total_purchasetk FROM purchase_master where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_purchasetk=$row["total_purchasetk"];
-  }
-} else {
-  $total_purchasetk=0;
-}
-
-
-$sql = "SELECT sum(purchase_price) as total_purchasetk FROM price_manager where userid=$userid";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_purchasetk=$row["total_purchasetk"];
-  }
-} else {
-  $total_purchasetk=0;
-}
-
-$product_price=0;
-
-$sql = "SELECT sum(purchase_price) as total_product_price FROM price_manager where userid=$userid and productid not in (select productid from sales_detail) ";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $product_price=$row["total_product_price"];
-  }
-} else {
-  $product_price=0;
-}
-
-
-// Cash Calculation ................
-
-$current_balance_cash=0;
-
-$sql = "SELECT current_balance FROM cash_transaction where userid=$userid and companyid=$companyid  order by id desc limit 1";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $current_balance_cash=$row["current_balance"];
-  }
-} else {
-  $current_balance_cash=0;
-}
-
-
-
-$sqls = "SELECT sum(in_account) as total_pay_app FROM app_customer_account where userid=$userid and companyid=$companyid";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_pay_app=$rows["total_pay_app"];
-  }
-} else {
-  $total_pay_app=0;
-}
-
-
-$sqls = "SELECT sum(in_account) as total_pay_app_supplier FROM app_supplier_account where userid=$userid and companyid=$companyid";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_pay_app_supplier=$rows["total_pay_app_supplier"];
-  }
-} else {
-  $total_pay_app_supplier=0;
-}
-
-
-$sqls = "SELECT sum(pay_amount) as sales_pay FROM sales_payment where salesid in(select id from sales_master where userid=$userid and companyid=$companyid)";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_sales_pay=$rows["sales_pay"];
-  }
-} else {
-  $total_sales_pay=0;
-}
-
-
-$sql = "SELECT sum(paid) as total_sales FROM sales_master where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_salesPaidtk=$row["total_sales"];
-  }
-} else {
-  $total_salesPaidtk=0;
-}
-
-
-// Cash Deductions ................................
-
-
-$sql = "SELECT sum(amount) as expense_amount FROM expense where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $expense_amount=$row["expense_amount"];
-  }
-} else {
-  $expense_amount=0;
-}
-
-
-
-$sqls = "SELECT sum(out_account) as total_due_app FROM app_customer_account where userid=$userid and companyid=$companyid";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_due_app=$rows["total_due_app"];
-  }
-} else {
-  $total_due_app=0;
-}
-
-
-$sqls = "SELECT sum(out_account) as total_due_app_supplier FROM app_supplier_account where userid=$userid and companyid=$companyid";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_due_app_supplier=$rows["total_due_app_supplier"];
-  }
-} else {
-  $total_due_app_supplier=0;
-}
-
-
-$current_balance_cash=$current_balance_cash+$total_salesPaidtk+$total_pay_app+$total_sales_pay+$total_pay_app_supplier-$expense_amount-$total_due_app-$total_due_app_supplier;
-
-
-
-
-
-
-// Bank Calculation ................
-
-$current_balance_bank=0;
-
-$sql = "SELECT current_balance FROM bank_transaction where userid=$userid and companyid=$companyid order by id desc limit 1";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $current_balance_bank=$row["current_balance"];
-  }
-} else {
-  $current_balance_bank=0;
-}
-
-
-
-$current_balance_bank_widhdraw=0;
-
-$sql = "SELECT sum(amount) as current_balance_bank_widhdraw  FROM bank_transaction where userid=$userid and companyid=$companyid and transaction_type='Withdraw'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $current_balance_bank_widhdraw=$row["current_balance_bank_widhdraw"];
-  }
-} else {
-  $current_balance_bank_widhdraw=0;
-}
-
-
-$current_balance_bank_deposit=0;
-
-$sql = "SELECT sum(amount) as current_balance_bank_deposit  FROM bank_transaction where userid=$userid and companyid=$companyid and transaction_type='Deposit'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $current_balance_bank_deposit=$row["current_balance_bank_deposit"];
-  }
-} else {
-  $current_balance_bank_deposit=0;
-}
-
-
-$current_balance_cash=($current_balance_cash+$current_balance_bank_widhdraw)-$current_balance_bank_deposit;
-
-
-
-
-// Current Cash Today...........................................................
-
-$total_cash_today=0;
-
-$sql = "SELECT sum(amount) as cash_deposit FROM cash_transaction where userid=$userid and companyid=$companyid and date='$today' and transaction_type='Deposit'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $current_balance_cash_deposit_today=$row["cash_deposit"];
-  }
-} else {
-  $current_balance_cash_deposit_today=0;
-}
-
-
-$sqls = "SELECT sum(in_account) as total_pay_app FROM app_customer_account where userid=$userid and companyid=$companyid and transaction_date='$today'";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_pay_app=$rows["total_pay_app"];
-  }
-} else {
-  $total_pay_app=0;
-}
-
-
-$sqls = "SELECT sum(in_account) as total_pay_app_supplier FROM app_supplier_account where userid=$userid and companyid=$companyid and transaction_date='$today'";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_pay_app_supplier=$rows["total_pay_app_supplier"];
-  }
-} else {
-  $total_pay_app_supplier=0;
-}
-
-
-$sqls = "SELECT sum(pay_amount) as sales_pay FROM sales_payment where salesid in(select id from sales_master where userid=$userid and companyid=$companyid) and payment_date='$today'";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_sales_pay=$rows["sales_pay"];
-  }
-} else {
-  $total_sales_pay=0;
-}
-
-
-$sql = "SELECT sum(paid) as total_sales FROM sales_master where userid=$userid and companyid=$companyid and sales_date='$today'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_salesPaidtk=$row["total_sales"];
-  }
-} else {
-  $total_salesPaidtk=0;
-}
-
-
-// Cash Deductions Today................................
-
-$sql = "SELECT sum(amount) as cash_widthdraw FROM cash_transaction where userid=$userid and companyid=$companyid and date='$today' and transaction_type='Widthdraw'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $current_balance_cash_widthdraw_today=$row["cash_widthdraw"];
-  }
-} else {
-  $current_balance_cash_widthdraw_today=0;
-}
-
-
-$sql = "SELECT sum(amount) as expense_amount FROM expense where userid=$userid and companyid=$companyid and expense_date='$today'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $expense_amount=$row["expense_amount"];
-  }
-} else {
-  $expense_amount=0;
-}
-
-
-
-$sqls = "SELECT sum(out_account) as total_due_app FROM app_customer_account where userid=$userid and companyid=$companyid and transaction_date='$today'";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_due_app=$rows["total_due_app"];
-  }
-} else {
-  $total_due_app=0;
-}
-
-
-$sqls = "SELECT sum(out_account) as total_due_app_supplier FROM app_supplier_account where userid=$userid and companyid=$companyid and transaction_date='$today'";
-$results = $conn->query($sqls);
-
-if (mysqli_num_rows($results) > 0) {
-  // output data of each row
-  while($rows = mysqli_fetch_assoc($results)) {
-   $total_due_app_supplier=$rows["total_due_app_supplier"];
-  }
-} else {
-  $total_due_app_supplier=0;
-}
-
-
-$total_cash_today=$current_balance_cash_deposit_today+$total_salesPaidtk+$total_pay_app+$total_sales_pay+$total_pay_app_supplier-$expense_amount-$total_due_app-$total_due_app_supplier-$current_balance_cash_widthdraw_today;
-
-
-
-// Current Expense Today..................................
-
-$sql = "SELECT sum(amount) as total_expense_today FROM expense where userid=$userid and companyid=$companyid and expense_date='$today'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_expense_today=$row["total_expense_today"];
-  }
-} else {
-  $total_expense_today=0;
-}
-
-
-
-// calculate monthly cash due ....................
-
-$sql = "SELECT sum(paid) as total_sales FROM sales_master where userid=$userid and companyid=$companyid  and str_to_date(sales_date,'%Y-%m-%d')>='$first_date_of_month'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_paidtkmonth=$row["total_sales"];
-  }
-} else {
-  $total_paidtkmonth=0;
-}
-
-
-
-$sql = "SELECT sum(due) as total_due FROM sales_master where userid=$userid and companyid=$companyid  and str_to_date(sales_date,'%Y-%m-%d')>='$first_date_of_month'";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_duetkmonth=$row["total_due"];
-  }
-} else {
-  $total_duetkmonth=0;
-}
-
-$sql = "SELECT sum(due) as total_due FROM sales_master where userid=$userid and companyid=$companyid";
-$result = $conn->query($sql);
-
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_duetkmarket=$row["total_due"];
-  }
-} else {
-  $total_duetkmarket=0;
-}
-
-
-$sql = "SELECT sum(pay_amount) as total_pay FROM sales_payment where salesid in(select id from sales_master where userid=$userid and companyid=$companyid)   and str_to_date(payment_date,'%Y-%m-%d')>='$first_date_of_month'";
-$result = $conn->query($sql);
-//echo $sql;
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_paytkmonth=$row["total_pay"];
-  }
-} else {
-  $total_paytkmonth=0;
-}
-
-
-$sql = "SELECT sum(pay_amount) as total_pay FROM sales_payment where salesid in(select id from sales_master where userid=$userid and companyid=$companyid) ";
-$result = $conn->query($sql);
-//echo $sql;
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_paytkmarket=$row["total_pay"];
-  }
-} else {
-  $total_paytkmarket=0;
-}
-
-
-// Collections . . . 
-
-$sql = "SELECT sum(a.pay_amount) as total_pay FROM sales_payment a where salesid in
-(select id from sales_master where userid=$userid and companyid=$companyid  
- and str_to_date(sales_date,'%Y-%m-%d')<'$first_date_of_month' ) and str_to_date(a.payment_date,'%Y-%m-%d')>='$first_date_of_month' ";
-$result = $conn->query($sql);
-//echo $sql;
-if (mysqli_num_rows($result) > 0) {
-  // output data of each row
-  while($row = mysqli_fetch_assoc($result)) {
-   $total_collectiontkmarket=$row["total_pay"];
-  }
-} else {
-  $total_collectiontkmarket=0;
-}
-
-//echo $sql;
-
-$total_duetkmonth=$total_duetkmonth-($total_paytkmonth-$total_collectiontkmarket);
-
-if($total_duetkmonth<0)
-{
-    $total_duetkmonth=0;
-}
-
-$total_duetkmarket=$total_duetkmarket-$total_paytkmarket;
-
 ?>
 
 <!DOCTYPE html>
@@ -795,11 +216,6 @@ $total_duetkmarket=$total_duetkmarket-$total_paytkmarket;
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 
-
-<!--
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-  <link href="dist/css/select2-bootstrap.css" rel="stylesheet" />
--->
 <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
@@ -807,7 +223,6 @@ $total_duetkmarket=$total_duetkmarket-$total_paytkmarket;
 <!-- For Common Modal -->
 
 <style>
-/*body {font-family: Arial, Helvetica, sans-serif;} */
 
 /* The Modal (background) */
 .modal {
@@ -876,22 +291,13 @@ background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(2,2,25,1) 69%, rgba(
 
 .Gradient4
 {
-  /*  
-background-image:url('dist/img/Design/gradient_04.jpg');
-background-size:contain;
-background-repeat:no-repeat;
-*/
-/*
-background: rgb(2,0,36);
-background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(25,139,48,0.87718837535014) 0%, rgba(0,212,255,1) 100%);
-*/
+  
 background: linear-gradient(to right, #33cccc 0%, #66ffcc 100%);
 color:white;
 
 }
 
 .Gradient5{
-   /* background: linear-gradient(to right, #003366 0%, #0066ff 100%);*/
     background: linear-gradient(to left, #0033cc 0%, #0066ff 100%);
 }
 
@@ -907,16 +313,13 @@ color:white;
   color:black;
 }
 
-
-
 </style>
 
 <!-- End Style For Common Modal -->
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
-    
-    
+  
 <!-- Modal -->
 
 <!-- The Modal -->
@@ -929,9 +332,7 @@ color:white;
   </div>
 
 </div>
-
-
-    
+ 
 <div class="wrapper" >
 
   <!-- Navbar -->
@@ -1104,884 +505,49 @@ if ($resultse->num_rows > 0) {
             </ul>
           </li>
          
-          <?php
-/*
-$sql = "SELECT * FROM features where module_id=$moduleid and menu_type=1 and is_active=1 order by sequence";
-$result = $master_conn->query($sql);
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    
-    $parent_id=$row["id"];
-?>
-    <li class="nav-item has-treeview">
-    <a href="#" class="nav-link">
-      <i class="nav-icon fas fa-edit"></i>
-      <p>
-         <?php echo $row["name"] ?>
-        <i class="fas fa-angle-left right"></i>
-      </p>
-    </a>
-    <ul class="nav nav-treeview">
-     
-<?php  // Childs ...............................................................
-
-$sqlc = "SELECT * FROM features where module_id=$moduleid and menu_type=2 and parent_id=$parent_id and is_active=1 order by sequence";
-$resultc = $master_conn->query($sqlc);
-if ($resultc->num_rows > 0) {
-  // output data of each row
-  while($rowc = $resultc->fetch_assoc()) {
-    $menu_name=$rowc["name"];
-    $file_name=$rowc["file_name"];
-
-?>
-  <li class="nav-item">
-    <?php echo "<a  onclick=getcontent('".$file_name."') class='nav-link'>" ?>
-      <i class="far fa-circle nav-icon"></i>
-      <p><?php echo $menu_name  ?></p>
-    </a>
-   </li>
+        <!-- Dynamic menu -->
 <?php
+$sqlsem = "SELECT * FROM features_category where module_id=$moduleid ";
+$resultse = $master_conn->query($sqlsem);
+if ($resultse->num_rows > 0) {
+    while($rowse = $resultse->fetch_assoc()) {
 
-  }
-}
+      $category_id=$rowse["id"];
 
-// Childs Ends ...............................................................
-?>
-  </ul>
-  </li>
-<?php
-
-
-
-
-  }
-}
-
-*/
-          ?>
-
-          
-          <li class="nav-item has-treeview">
+     echo '<li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
               <p>
-                Configuration
+                '.$rowse["name"].'
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview">
+            <ul class="nav nav-treeview">';
 
+            $sqlsems = "SELECT * FROM features where category_id=$category_id ";
+            $resultses = $master_conn->query($sqlsems);
+            if ($resultses->num_rows > 0) {
+                while($rowses = $resultses->fetch_assoc()) {
+                  
+                  $name=$rowses["name"];
+                  $file_name=$rowses["file_name"];
 
-            <li class="nav-item">
-                <a href="#" onclick="getcontent('basic_info')" class="nav-link">
+                echo '<li class="nav-item">
+                <a href="#" onclick="getcontent("'.$file_name.'")" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Shop Info</p>
+                  <p>'.$name.'</p>
                 </a>
-              </li>
-              
-             <?php  if($module_short_name=="INV"){ ?>  <!-- Inventory Menu Block -->
+              </li>';
 
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('category')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Category</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" onclick="getcontent('subcategory')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sub Category</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="#"onclick="getcontent('product')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Products</p>
-                </a>
-              </li>
-
-            <!--  <li class="nav-item">
-                <a href="#" onclick="getcontent('customer','limit=50')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Customers</p>
-                </a>
-              </li> -->
-              
-             <li class="nav-item">
-                <a href="#" onclick="getcontent('customer_new','limit=10')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Customers</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('customer_address','limit=10')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Customers Address</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('supplier')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Suppliers</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('warehouse')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Warehouse</p>
-                </a>
-              </li>
-             
-              <?php } ?>
-              
-              
-               <?php  if($module_short_name=="HRM"){ ?>  
-               
-               <li class="nav-item">
-                <a href="#" onclick="getcontent('department')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Department</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" onclick="getcontent('designation')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Designation</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('employee')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Employee</p>
-                </a>
-              </li>
-               
-               <?php } ?>
-
-            </ul>
-          </li>
-
-
-         
-         <?php if($module_short_name=="INV") {  ?>
-
-          <li class="nav-item has-treeview" style="display:block;">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Inventory
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-
-            <li class="nav-item" style='display:none;'>
-                <a href="#" onclick="getcontent('stock_manager')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Manager</p>
-                </a>
-              </li>
-
-            <li class="nav-item" style='display:none;'>
-                <a href="#" onclick="getcontent('price_manager')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Price Manager</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('purchase')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Purchase</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#"  onclick="getcontent('supplier_transaction')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Supplier Transaction</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('stock_transfer')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Transfer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('import_warehouse_product')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Transfer List</p>
-                </a>
-              </li>
-              
-             <li class="nav-item">
-                <a href="#"  onclick="getcontent('branch_payment_new')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Branch Payment</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('sales')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sales</p>
-                </a>
-              </li>
-              
-              
-              <li class="nav-item" style='display:none;'>
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sales Return</p>
-                </a>
-              </li>
-
-             
-                         
-             
-            </ul>
-          </li>
-          
-             <li class="nav-item has-treeview" >
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Expenses
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-      
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('expense_head')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Expense Head</p>
-                </a>
-              </li>
-      
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('expense')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Expense</p>
-                </a>
-              </li>
-              
-              <li class="nav-item" style='display:none;'>
-                <a href="#" onclick="getcontent('purchase_cost')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Purchase Cost</p>
-                </a>
-              </li>
-              
-              <li class="nav-item" style='display:none;'>
-                <a href="#" onclick="getcontent('purchase_payment')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Purchase Payment</p>
-                </a>
-              </li>
-
-           </ul>
-           
-           
-             <li class="nav-item has-treeview" >
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Marketing
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-      
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('visiting_info')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Visiting Info</p>
-                </a>
-              </li>
-              
-             <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('visit_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Market Visit Report</p>
-                </a>
-              </li>
-
-           </ul>
-           
-
-          <?php } ?>
-
-           <li class="nav-item has-treeview" style='display:none;'>
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Warehouse
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-
-            <li class="nav-item">
-                <a href="#" onclick="getcontent('warehouse')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Warehouse</p>
-                </a>
-              </li>
-
-            <li class="nav-item">
-                <a href="#" onclick="getcontent('warehouse_product')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>All Products</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('import_warehouse_product')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Import Product</p>
-                </a>
-              </li>
-              
-            </ul>
-          </li>
-
-
-       
-
-          <li class="nav-item has-treeview" style='display:none;'>
-            <a href="#"  class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                POS
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#"  onclick="getcontent('quick_sell')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Quick sell</p>
-                </a>
-              </li>
-             
-            </ul>
-          </li>
-
-
-
-
-          <li class="nav-item has-treeview" style='display:none;'>
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                eCommers
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Display Products</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Order List</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Delivery Status</p>
-                </a>
-              </li>
-
-              </ul>
-          </li>
-             
-
-          <li class="nav-item has-treeview" style='display:none;'>
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-sms"></i>
-              <p>
-                SMS
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="http://mkrow.com/SMS/" target='_blank' class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Send SMS</p>
-                </a>
-              </li>
-
-           </ul>
-
-<?php if($module_short_name=="ACC") {  ?>
-
-        <li class="nav-item has-treeview" >
-            <a href="#"  class="nav-link">
-              <i class="nav-icon fas fa-table"></i>
-              <p>
-                Accounts
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-    
-              <li class="nav-item">
-                <a href="#"  onclick="getcontent('bank_account')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Bank Info</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#"  onclick="getcontent('bank_transaction')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Bank Transaction</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#"  onclick="getcontent('cash_transaction')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cash Transaction</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#"  onclick="getcontent('customer_transaction')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Customer Transaction</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#"  onclick="getcontent('supplier_transaction')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Supplier Transaction</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#"  onclick="getcontent('branch_transaction')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Branch Transaction</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#"  onclick="getcontent('branch_payment_new')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Branch Payment</p>
-                </a>
-              </li>
-              
-              
-            </ul>
-
-
-          <li class="nav-item has-treeview" >
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Expenses
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-      
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('expense_head')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Expense Head</p>
-                </a>
-              </li>
-      
-              <li class="nav-item">
-                <a href="#" onclick="getcontent('expense')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Add Expense</p>
-                </a>
-              </li>
-              
-              <li class="nav-item" style='display:none;'>
-                <a href="#" onclick="getcontent('purchase_cost')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Purchase Cost</p>
-                </a>
-              </li>
-              
-              <li class="nav-item" style='display:none;'>
-                <a href="#" onclick="getcontent('purchase_payment')" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Purchase Payment</p>
-                </a>
-              </li>
-
-           </ul>
-
-<?php } ?>
-
-         <li class="nav-item has-treeview" style="display:block;">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p>
-                Reports
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
+                }
+              }
             
-            <?php if($module_short_name=="INV") {  ?>
-
-             <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('product_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Product Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('product_stock_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Product Details</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('product_stock_price_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Product Stock Price</p>
-                </a>
-              </li>
-              
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('sales_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sales Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('sales_Report_cash')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sales Report (Cash)</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('sales_Report_installment')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sales Report (Install.)</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('Sales_Detail_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Sales Detail Report</p>
-                </a>
-              </li>
-                
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('purchase_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Purchase Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('purchase_detail_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Purchase Detail Report</p>
-                </a>
-              </li>
-
-             <li class="nav-item" style='display:none;'>
-                <a href="#" class="nav-link" onclick="getcontent('Stock_Details_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Details Report</p>
-                </a>
-              </li>
-
-              <li class="nav-item" style='display:none;'>
-                <a href="#" class="nav-link" onclick="getcontent('stock_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('warehouse_stock_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Report (WH)</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('branch_stock_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Report (Branch)</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('stock_transfer_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Transfer Report</p>
-                </a>
-              </li>
-              
-               
-              <!--
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('category_stock_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Report (Category)</p>
-                </a>
-              </li>
-              
-                <li class="nav-item" style='display:none;'>
-                <a href="#" class="nav-link" onclick="getcontent('category_new_stock_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Report (New)</p>
-                </a>
-              </li>
-              
-                <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('model_new_stock_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Report (Model)</p>
-                </a>
-              </li>
-              
-                <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('stock_report_party')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Report (Party)</p>
-                </a>
-              </li>
-              -->
-               <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('payment_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Payment Report</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('due_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Due Report</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('overdue_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Overdue Report</p>
-                </a>
-              </li>
-              
              
+             echo '</ul>';
 
-               <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('installment_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Installment Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link" onclick="getcontent('installment_report_defaulter')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Installment (Defaulter)</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('collection_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Collection Report</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('collection_report_defaulter')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Collection(Defaulter)</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('customer_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Customer Report</p>
-                </a>
-              </li>
-              
-                <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('supplier_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Supplier Report</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('branch_payment_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Branch Payment Report</p>
-                </a>
-              </li>
-              
-             <!--  <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('branch_stock_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Branch Stock Report</p>
-                </a>
-              </li> -->
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('stock_ledger_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Branch Stock Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('summary_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Summary Report</p>
-                </a>
-              </li>
-              
-             
-
-              
-              <?php } ?>
-
-              <?php if($module_short_name=="ACC") {  ?>
-
-              <li class="nav-item" style="display:none;">
-                <a href="#" class="nav-link" onclick="getcontent('Profit_Detail_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Profit Detail Report</p>
-                </a>
-              </li>
-
-              <li class="nav-item"  style="display:none;">
-                <a href="#" class="nav-link" onclick="getcontent('profit_Report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Profit Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('customer_ledger_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Customer Ledger</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('supplier_ledger_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Supplier Ledger</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('cash_ledger_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cash Ledger</p>
-                </a>
-              </li>
-              
-              <?php if($subuserid==0) { ?>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('cash_book_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Cash Book</p>
-                </a>
-              </li>
-              
-              <?php } ?>
-
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('expense_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Expense Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('expense_summarry_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Expense Summarry</p>
-                </a>
-              </li>
-              
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('Advance_Installment_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Advance Installment</p>
-                </a>
-              </li>
-               
-              
-               <?php if($subuserid==0) { ?>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('profit_book_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Profit Report</p>
-                </a>
-              </li>
-              
-              <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('branch_payment_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Branch Payment Report</p>
-                </a>
-              </li>
-              
-               <li class="nav-item">
-                <a href="#" class="nav-link"  onclick="getcontent('stock_ledger_report')">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Stock Ledger Report</p>
-                </a>
-              </li>
-              
-              <?php } ?>
-
-              <li class="nav-item" style="display:none;">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Todays Report</p>
-                </a>
-              </li>
-
-              <?php } ?>
-
-        </ul>
-
-
+    }
+  }
+?>
         <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cogs"></i>
@@ -2034,16 +600,15 @@ if ($resultc->num_rows > 0) {
   </aside>
 
 
-
-  <div id="content">  <!-- Content Div -->
+<div id="content">  <!-- Content Div -->
 
 
 <?php 
 
-$display="display:none;";
+$display="display:block;";
 if($subuserid!=0)
 {
-    $display="display:none;";
+    $display="display:block;";
 }
 
 ?>
@@ -2063,11 +628,10 @@ if($subuserid!=0)
               }
               ?>
               
-              <?php if($module_short_name=="INV") { ?>
-               <h1 class="m-0 text-dark"> <a href="home.php?DType=<?php echo $DType; ?> " style='color:black !important;'> <?php echo $_SESSION["DType"]; ?> Dashboard </a> </h1>
-             <?php } else{ ?>
+              
+             
                <h1 class="m-0 text-dark"> Dashboard </a> </h1>
-             <?php } ?>
+            
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -2083,7 +647,7 @@ if($subuserid!=0)
 
      <!-- Main content -->
 
-     <?php if($module_short_name=="INV") { ?>
+     
      
      
      <!-- Main content -->
@@ -2095,7 +659,7 @@ if($subuserid!=0)
              <!-- small box -->
              <div class="small-box bg-info Gradient ">
                <div class="inner headings">
-                 <h3><?php echo  $inventory->getDashboardInfo($userid,$companyid,$branchid,$conn,'category','22-07-2022') ?>   </h3>
+                 <h3> 5  </h3>
  
                  <h4>Category</h4>
                </div>
@@ -2109,7 +673,7 @@ if($subuserid!=0)
              <!-- small box -->
              <div class="small-box bg-success Gradient">
                <div class="inner headings">
-                 <h3><?php echo $inventory->getDashboardInfo($userid,$companyid,$branchid,$conn,'product','22-07-2022') ?>  <sup style="font-size: 20px"><sup style="font-size: 20px"></sup></h3>
+                 <h3> 9</h3>
  
                  <h4>Product</h4>
                </div>
@@ -2123,7 +687,7 @@ if($subuserid!=0)
              <!-- small box -->
              <div class="small-box bg-warning Gradient">
                <div class="inner headings">
-                 <h3><?php echo $inventory->getDashboardInfo($userid,$companyid,$branchid,$conn,'customer','22-07-2022') ?> </h3>
+                 <h3>6 </h3>
                  <h4>Customer</h4>
                </div>
                <div class="icon">
@@ -2136,7 +700,7 @@ if($subuserid!=0)
              <!-- small box -->
              <div class="small-box bg-danger Gradient">
                <div class="inner headings">
-                 <h3><?php  echo $inventory->getDashboardInfo($userid,$companyid,$branchid,$conn,'supplier','22-07-2022') ?>  </h3>
+                 <h3>7 </h3>
  
                  <h4>Supplier</h4>
                </div>
@@ -2150,40 +714,6 @@ if($subuserid!=0)
  
  </section>
  
-         <!-- /.row -->
- 
- 
- <section class="content">
-       <div class="container-fluid">  
-<?php 
-    
-$sql = "SELECT * FROM branches where user_id=$userid and company_id=$companyid";
-$result = $master_conn->query($sql);
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    $branchNm=$row["name"];
-    $branchid=$row["id"];
-    $isActive="";
-    $maxHeight="";
-    if($_SESSION["branchid"]==$branchid){
-        $isActive="active";
-        $maxHeight="max-height: 577px;";
-    }
-echo '<button class="accordion Gradient4 '.$isActive.'" style="border:2px solid white; color:white ">'.$branchNm.'</button>
-<div class="panel" style="'.$maxHeight.'">
-  <p>';
-  include 'Model/getDashboardBranchInventory.php';
-  echo '</p>
-</div>';
-    
-  }
-}
-
-
-?>
-       </div>
-</section>
 
       
  
@@ -2192,249 +722,13 @@ echo '<button class="accordion Gradient4 '.$isActive.'" style="border:2px solid 
  
  
     
-         <?php } ?>
-
-
-
-
-<?php if($module_short_name=="ACC") { $currentpay=$total_paytkmonth-$total_collectiontkmarket; $totslpay=$currentpay+$total_collectiontkmarket; ?>
-     
-    <!-- <h4 style="margin-left:10px;">Current Market Due : <?php // echo round($total_duetkmarket,2) ?>, <?php //echo "Payment : ".round($currentpay,2); ?>, <?php //echo "Collection : ".round($total_collectiontkmarket,2); ?></h4><br> -->
-     
-      <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6 ">
-            <!-- small box -->
-            <div class="small-box bg-info Gradient ">
-              <div class="inner headings">
-                <h3><?php echo round($total_duetkmarket,2) ?> &#2547;  </h3>
-
-                <h4>Current Market Due</h4>
-              </div>
-              <div class="icon">
-                <i class="ion-stats-bars"></i>
-              </div>
-              </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success Gradient">
-              <div class="inner headings">
-                <h3><?php echo round($currentpay,2) ?> &#2547; <sup style="font-size: 20px"><sup style="font-size: 20px"></sup></h3>
-
-              
-
-                <h4>Monthly Payment</h4>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning Gradient">
-              <div class="inner headings">
-                <h3><?php echo round($total_collectiontkmarket,2) ?>&#2547; </h3>
-                <h4>Monthly Collection</h4>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger Gradient">
-              <div class="inner headings">
-                <h3><?php echo  round($totslpay,2) ?> &#2547; </h3>
-
-                <h4>Total</h4>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-            </div>
-          </div>
-          <!-- ./col -->
-        </div>
-
-</section>
-     
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6 ">
-            <!-- small box -->
-            <div class="small-box bg-info Gradient ">
-              <div class="inner headings">
-                <h3><?php echo round($total_paidtkmonth+$total_paytkmonth,2) ?> &#2547;  </h3>
-
-                <h4>Monthly Cash</h4>
-              </div>
-              <div class="icon">
-                <i class="ion-stats-bars"></i>
-              </div>
-              </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-success Gradient">
-              <div class="inner headings">
-                <h3><?php echo round($total_duetkmonth,2) ?> &#2547; <sup style="font-size: 20px"><sup style="font-size: 20px"></sup></h3>
-
-              
-
-                <h4>Monthly Due</h4>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-warning Gradient">
-              <div class="inner headings">
-                <h3><?php echo round($total_cash_today,2) ?>&#2547; </h3>
-                <h4>Today Received</h4>
-              </div>
-              <div class="icon">
-                <i class="ion ion-stats-bars"></i>
-              </div>
-            </div>
-          </div>
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger Gradient">
-              <div class="inner headings">
-                <h3><?php echo  round($total_expense_today,2) ?> &#2547; </h3>
-
-                <h4>Today Expense</h4>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-            </div>
-          </div>
-          <!-- ./col -->
-        </div>
-
-</section>
-
-        <!-- /.row -->
-
-<?php
-
-$s_value=0;
-// Get purchase .......
-$sqlc = "Select sum(a.unitprice*b.current_stock) as svalue from purchase_master pm ,purchase_detail a,stock_branch b where pm.id=a.purchaseid and a.purchaseid=b.purchaseid and b.current_stock>0 and pm.userid=$userid and pm.companyid=$companyid and pm.branchid<>0;
-";
-//echo $sqlc;
-$resultc = $conn->query($sqlc);
-
-if ($resultc->num_rows > 0) {
-  // output data of each row
-  while($rowc = $resultc->fetch_assoc()) {
-   
-    $s_value=$s_value+$rowc["svalue"];
-    
-  }
-}
-
-$sqlc = "Select sum(a.unitprice*b.current_stock) as svalue from purchase_master pm ,purchase_detail a,stock_warehouse b where pm.id=a.purchaseid and a.purchaseid=b.purchaseid and b.current_stock>0 and pm.userid=$userid and pm.companyid=$companyid and pm.branchid=0
-";
-$resultc = $conn->query($sqlc);
-
-if ($resultc->num_rows > 0) {
-  // output data of each row
-  while($rowc = $resultc->fetch_assoc()) {
-   
-    $s_value=$s_value+$rowc["svalue"];
-    
-  }
-}
-
-?>
-
-
-</section>
-     
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          <div class="col-lg-3 col-6 ">
-            <!-- small box -->
-            <div class="small-box bg-info Gradient ">
-              <div class="inner headings">
-                <h3><?php echo round($s_value,2) ?> &#2547;  </h3>
-
-                <h4>Current Stock Value</h4>
-              </div>
-              <div class="icon">
-                <i class="ion-stats-bars"></i>
-              </div>
-              </div>
-          </div>
-         
-        </div>
-
-</section>
-
-        <!-- /.row -->
-
-             
- <section class="content">
-       <div class="container-fluid">  
-<?php 
-    
-$sql = "SELECT * FROM branches where user_id=$userid and company_id=$companyid";
-$result = $master_conn->query($sql);
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    $branchNm=$row["name"];
-    $branchid=$row["id"];
-    $isActive="";
-    $maxHeight="";
-    if($_SESSION["branchid"]==$branchid){
-        $isActive="active";
-        $maxHeight="max-height: 777px;";
-    }
-echo '<button class="accordion Gradient4 '.$isActive.'" style="border:2px solid white; color:white ">'.$branchNm.'</button>
-<div class="panel" style="'.$maxHeight.'">
-  <p>';
-  include 'Model/getDashboardBranchAccounts.php';
-  echo '</p>
-</div>';
-    
-  }
-}
-
-
-?>
-       </div>
-</section>
-
-      
- 
-
-   
-        <?php } ?>
         
+
+
+
+
+     
+     
         
         
    
@@ -2447,85 +741,9 @@ echo '<button class="accordion Gradient4 '.$isActive.'" style="border:2px solid 
   
   <!-- Btanch Dashboard Data --------------------- -->    
         
-     <?php if($subuserid!=0){ ?>
+
      
-     
 
-    <style>
-        /* Style for the card container */
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            max-width: 800px; /* Adjust as needed */
-            margin: 0 auto;
-        }
-
-        /* Style for the cards */
-        .card {
-            width: calc(50% - 10px); /* Adjust the width as needed with spacing */
-            background-color: #ffffff; /* White background */
-            border-radius: 10px;
-            margin-bottom: 20px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        /* Style for the bottom text */
-        .card p {
-            margin: 0;
-            padding: 0;
-            font-size: 18px; /* Font size */
-            color: #333333; /* Text color */
-        }
-
-        /* Style for the icon (you can replace the URL with your own icon) */
-        .card i {
-            font-size: 48px; /* Icon size */
-            color: #3498db; /* Icon color */
-        }
-        
-        .card:hover{
-            background-color: ffff88;
-        }
-        
-        
-    </style>
-
-    <br><br><br>
-
-    <div class="card-container main-card">
-        <div class="card" onclick="getcontent('purchase')">
-            <i class="fa fa-building"></i> <!-- Replace with your own icon -->
-            <br>
-            <p>Purchase</p>
-        </div>
-        <div class="card" onclick="getcontent('sales')">
-            <i class="fa fa-phone"></i> <!-- Replace with your own icon -->
-            <br>
-            <p>Sales</p>
-        </div>
-        <div class="card" onclick="getcontent('Sales_Detail_Report')">
-            <i class="fa fa-shopping-cart"></i> <!-- Replace with your own icon -->
-            <br>
-            <p>Sales Detail Report</p>
-        </div>
-        <div class="card" onclick="getcontent('warehouse_stock_Report')">
-            <i class="fa fa-file"></i> <!-- Replace with your own icon -->
-            <br>
-            <p>Stock Report (WH)</p>
-        </div>
-        <div class="card" onclick="getcontent('stock_report')">
-            <i class="fa fa-bullhorn"></i> <!-- Replace with your own icon -->
-            <br>
-            <p>Stock Report (Branch)</p>
-        </div>
-    </div>
-
-<br><br><br>
-     
-     <?php } ?>
   
   
   </div>  <!-- Content Div -->

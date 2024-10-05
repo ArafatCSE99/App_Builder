@@ -1,5 +1,6 @@
 <?php
 include "connection.php";
+session_start(); 
 $userid=$_SESSION["userid"];
 ?>
 <!DOCTYPE html>
@@ -135,7 +136,7 @@ var dataString = 'table='+table+'&field='+field+'&fieldValue=' + fieldValue+'&na
 // AJAX code to submit form.
 $.ajax({
 type: "POST",
-url: "DB/Common/getDropDownListByTableField.php",
+url: "Model/getDropDownListByTableField.php",
 data: dataString,
 cache: false,
 async:false,

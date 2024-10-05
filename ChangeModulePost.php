@@ -5,7 +5,7 @@
 <body>
 <?php
 include "connection.php";
-//session_start(); 
+session_start(); 
 $_SESSION["companyid"]=$_POST["companyid"];
 $_SESSION["branchid"]=$_POST["branchid"];
 $_SESSION["moduleid"]=$_POST["moduleid"];

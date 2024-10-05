@@ -4,10 +4,10 @@
 </head>
 <body>
 <?php
-include "DB/connection.php";
+include "connection.php";
 $email=$_POST["email"];
 $pass=$_POST["pass"];
-//session_start(); 
+session_start(); 
 $_SESSION["subuser_branchid"]=0;
 // Check .......................................................
 $sql = "SELECT id,name,is_active FROM users where email='$email' and password='$pass' ";

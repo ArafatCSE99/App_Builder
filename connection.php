@@ -18,20 +18,8 @@ if ($master_conn->connect_error) {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "user_db_1";
+$dbname = "user_db_0";
 
-session_start(); 
-if(isset($_SESSION["userid"])){
-    $dbname = "user_db_".$_SESSION["userid"];
-    if($_SESSION["userid"]>1)
-    {
-        $dbname = "mkrojcjv_user_db_2";
-    }
-    if($_SESSION["userid"]==29)
-    {
-        $dbname = "mkrojcjv_user_db_3";
-    }
-}
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
