@@ -1,8 +1,10 @@
 <?php
 
-include "../connection.php"; 
+include "../connection.php";
 
-session_start(); 
+
+//session_start(); 
+
 $userid=$_SESSION["userid"];
 
 // Content  ......................................................
@@ -55,8 +57,8 @@ $userid=$_SESSION["userid"];
 
 $slno=0;
 
-$sql = "SELECT id,name FROM roles where user_id=$userid";
-$result = $master_conn->query($sql);
+$sql = "SELECT id,name FROM roles where userid=$userid";
+$result = $conn->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {

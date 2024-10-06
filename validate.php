@@ -25,7 +25,6 @@ if ($result->num_rows > 0) {
 
 $sqls = "SELECT * FROM subuser where user_name='$email' and password='$pass' ";
 $results = $master_conn->query($sqls);
-
 if ($results->num_rows > 0) {
   // output data of each row
   while($rows = $results->fetch_assoc()) {
@@ -39,12 +38,15 @@ if ($results->num_rows > 0) {
 
   
 }
+
 // Redirect .......................................................
 if($validatuser==1)
 {
+  
 echo "<script>
 window.location.href='ChangeModule.php';
 </script>";
+
 }
 else if($validatuser==0)
 {
@@ -59,17 +61,21 @@ window.location.href='login.html';
 
 }
 else{
-
   
+  
+/*
 echo "<script>
   swal('Login Failed !','Wrong Email or Password ! Try Again ')
     .then((willDelete) => {
 if (willDelete) {
-
 window.location.href='login.html';
-  
 }
 });
+</script>";
+*/
+
+echo "<script> alert('Wrong Email or Password ! Try Again '); 
+window.location.href='login.html';
 </script>";
 
 }
