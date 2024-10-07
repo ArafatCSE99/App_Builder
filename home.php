@@ -996,24 +996,25 @@ success: function(html) {
 
 function APITest(){
 
-var dataString="table=modules&page=2&limit=2";
+    var deleteData = {
+                    "table": "roles",  // Example table
+                    "id": 4
+                };
 
-$.ajax({
-type: "POST",
-url: "API/GetData.php",
-data: dataString,
-cache: false,
-success: function(html) {
-     console.log(html);
-     list=JSON.parse(html);
-     list.data.forEach(function(data) {
-        alert(data.name);
-        alert(list.total_pages);
-     });
-     
-}
-
-});
+                // Make AJAX request
+                $.ajax({
+                    url: "API/DeleteData.php", 
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(deleteData),
+                    success: function(response) {
+                        $("#response").html("<p>" + response.message + "</p>");
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.status + ': ' + xhr.statusText;
+                        $("#response").html("<p>Error - " + errorMessage + "</p>");
+                    }
+                });
 
 }
 

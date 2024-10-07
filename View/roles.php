@@ -1,6 +1,7 @@
 <?php
 
 include "../connection.php"; 
+include "../Classes/ComponentClass.php";
 
 session_start(); 
 $userid=$_SESSION["userid"];
@@ -41,49 +42,21 @@ $userid=$_SESSION["userid"];
               </div>
               <!-- /.card-header -->
               <div class="card-body" style="overflow:auto;">
-                <table id="example1" class="table table-bordered" style="width:100%">
-                  <thead class="thead-light">
-                  <tr>
-                    <th style='text-align:center;'>#</th>
-                    <th>Role Name</th>
-                    <th style='text-align:center;'>Action</th>
-                  </tr>
-                  </thead>
-                  <tbody>
+                
 
                   <?php
 
-$slno=0;
+$tableComponent = new TableComponent();
+$columns = [
+    'id' => 'ID',
+    'name' => 'Full Name',
+    'short_name' => 'Short Name'
+];
+echo $tableComponent->GetTable($master_conn,'modules', $columns);
 
-$sql = "SELECT id,name FROM roles where user_id=$userid";
-$result = $master_conn->query($sql);
-if ($result->num_rows > 0) {
-  // output data of each row
-  while($row = $result->fetch_assoc()) {
-    $slno++;
-    $id=$row["id"];
-    $name=$row["name"];
-
-     echo "<tr>";
-     echo "<td style='text-align:center;'>".$slno."</td>";
-     echo "<td class='rolename'>".$name."</td>"; 
-     
-     echo "<td class='text-center py-0 align-middle' style='text-align:center;'>
-                      <div class='btn-group btn-group-sm'>
-                        <a onclick='updatedata($id,this)' class='btn btn-info'><i class='fas fa-edit'></i></a>
-                        <a onclick=deletedata($id,this,'roles') class='btn btn-danger'><i class='fas fa-trash'></i></a>
-                      </div>
-                    </td>";
-     echo "</tr>";
-      
-
-  }
-} else {
-  
-}
                 ?>
                   
-                </table>
+                
               </div>
               <!-- /.card-body -->
             </div>
