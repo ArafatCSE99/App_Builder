@@ -572,7 +572,7 @@ if ($resultse->num_rows > 0) {
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="#" onclick="getcontent('roles')" class="nav-link">
+                                    <a href="#" onclick="getcontent('employees_vw')" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Role</p>
                                     </a>
@@ -820,60 +820,12 @@ function changeBranchModule(type, NewId) {
 
 }
 
-function getcontent(viewname,viewdata="")
+var viewcontent="";
+function getcontent(viewname,viewdata="page=1&limit=10&search=")
 {
 
-var subuserid=$('#subuserids').val();
-if(subuserid>0){
-var dataString="file_name="+viewname;
- 
-$.ajax({
-type: "POST",
-url: "Model/getUserPermission.php",
-data: dataString,
-cache: false,
-success: function(html) {
-  
-  var res = $.parseJSON(html);
-
-  view_permission=res[0]["view_permission"];
-  add_permission=res[0]["add_permission"];
-  edit_permission=res[0]["edit_permission"];
-  delete_permission=res[0]["delete_permission"];
-
-  if(view_permission==1){
-    getPermittedcontent(viewname,viewdata);
-  }
-  else{
-    alert("Sorry, Access Denied !");
-  }
-
-}
-});
-
-}
-else{
-  getPermittedcontent(viewname,viewdata);
-}
-
-}
-
-
-function getPermittedcontent(viewname,viewdata)
-{
-
-id=0;
-
-viewcontent=viewname;
+viewcontent = viewname;
 document.getElementById("content").innerHTML="<center><img style='opacity:0.9;'   src='dist/img/loader.gif' /><center>";
-
-
-if($(window).width()<=768)
-{
-  $("#menubar").trigger("click");
-}
-
-var module_short_name=$('#module_short_name').val();
 
 $.ajax({
 type: "POST",
@@ -882,28 +834,20 @@ data: viewdata,
 cache: false,
 success: function(html) {
 
- //$('#content').hide();
  document.getElementById("content").innerHTML = html;
  $('#content').show(300);
 
  var scripturl="Script/"+viewname+".js";
-
  $.getScript( scripturl, function( data, textStatus, jqxhr ) {
         // do some stuff after script is loaded
     } );
-
-
- AddDataTable();
- AddSelect2();
-
- 
 }
+
 });
 
-
 }
 
-
+/* Test 
 function save(sql)
 {
 
@@ -1019,4 +963,8 @@ function APITest(){
 }
 
 APITest();
+
+*/
+
+
 </script>

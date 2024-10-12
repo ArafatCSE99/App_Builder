@@ -2,9 +2,14 @@
 
 include "../connection.php"; 
 include "../Classes/ComponentClass.php";
+include "../Classes/DynamicComponent.php";
 
 session_start(); 
 $userid=$_SESSION["userid"];
+
+$page=$_POST["page"];
+$limit=$_POST["limit"];
+$search=$_POST["search"];
 
 // Content  ......................................................
 
@@ -16,12 +21,12 @@ $userid=$_SESSION["userid"];
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Role</h1>
+            <h1>Employees</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Role</li>
+              <li class="breadcrumb-item active">Employees</li>
             </ol>
           </div>
         </div>
@@ -37,7 +42,7 @@ $userid=$_SESSION["userid"];
 
     <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title" >List of Role</h3>
+                <h3 class="card-title" >List of Employees</h3>
                 <a href="#add"><span style="float:right; cursor:pointer;">Add New</span></a>
               </div>
               <!-- /.card-header -->
@@ -50,9 +55,11 @@ $tableComponent = new TableComponent();
 $columns = [
     'id' => 'ID',
     'name' => 'Full Name',
-    'short_name' => 'Short Name'
+    'department_name' => 'Department Name',
+    'is_active' => 'Is Active',
+    'note' => 'Note',
 ];
-echo $tableComponent->GetTable($master_conn,'modules', $columns);
+echo $tableComponent->GetTable($master_conn,'employees_vw', $columns,$page,$limit,$search);
 
                 ?>
                   
@@ -89,10 +96,22 @@ echo $tableComponent->GetTable($master_conn,'modules', $columns);
             </div>
             <div class="card-body">
 
+            <!--
               <div class="form-group">
                 <label for="role">Role Name</label>
                 <input type="text" id="role" style="width:25%" class="form-control" placeholder="Role Name">
               </div>
+            -->
+
+            <?php
+
+$dynamicComponent = new DynamicComponent($master_conn);
+echo $dynamicComponent->createComponent('Employee Name', '', 'textbox', 'form-group');
+echo $dynamicComponent->createComponent('Department', '1', 'dropdown', 'form-group', 'department', 'id', 'name');
+echo $dynamicComponent->createComponent('Note', 'Write Notes', 'textarea', 'form-group');
+
+
+            ?>
 
               <input type="button" onclick="savedata()"  value="Save" class="btn btn-success float-left">
               
