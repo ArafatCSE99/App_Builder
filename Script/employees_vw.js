@@ -1,4 +1,4 @@
-
+/*
 function savedata()
 { 
        var userid=$('#userid').val();
@@ -34,3 +34,4 @@ function updatedata(updateid,e)
   ScrollToBottom();
 
 }
+*/

@@ -847,6 +847,82 @@ success: function(html) {
 
 }
 
+function searchContent()
+{
+    var searchValue=$('.search-input').val();
+    getcontent(viewcontent,"page=1&limit=10&search="+searchValue);
+}
+
+
+function deletedata(id,tablename,e)
+{
+    
+   if(confirm('Are You Sure?'))
+   {
+    debugger;
+    tablename = tablename.split('_')[0];
+    var deleteData = {
+                    "table": tablename,  // Example table
+                    "id": id
+                };
+
+                // Make AJAX request
+                $.ajax({
+                    url: "API/DeleteData.php", 
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(deleteData),
+                    success: function(response) {
+                        $(e).closest('tr').remove();
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.status + ': ' + xhr.statusText;
+                        alert("<p>Error - " + errorMessage + "</p>");
+                    }
+                });
+   }
+
+}
+
+function saveData(tableName) {
+    // Object to store the request data
+    var requestData = {
+        "table": tableName,
+        "columns": {}
+    };
+
+    // Get all input, select, and textarea elements within the .card-body class
+    $('.card-body').find('input, select, textarea').each(function() {
+        var inputType = $(this).attr('type');
+        var inputName = $(this).attr('id');
+        var inputValue = $(this).val();
+
+        // Check if the input name exists and is not empty
+        if (inputName) {
+            requestData.columns[inputName] = inputValue;
+        }
+    });
+
+    // Log the requestData for debugging
+    console.log(requestData);
+
+    // Make AJAX request
+    $.ajax({
+        url: "API/AddData.php",  // Replace with your API endpoint
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(requestData),
+        success: function(response) {
+            getcontent(viewcontent);
+        },
+        error: function(xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText;
+            alert("<p>Error - " + errorMessage + "</p>");
+        }
+    });
+}
+
+
 /* Test 
 function save(sql)
 {
@@ -902,41 +978,6 @@ success: function(html) {
 
 
 
-function deletedata(id,e,tablename,refresh=0)
-{
-    var subuserid=$('#subuserids').val();
-   
-    
-   if(confirm('Are You Sure?'))
-   {
-
-    var dataString="deletedid="+id+"&tablename="+tablename;
-
-$.ajax({
-type: "POST",
-url: "Model/master_DB_delete.php",
-data: dataString,
-cache: false,
-success: function(html) {
-
- alert(html);
- $(e).closest('tr').remove();
-
- if(refresh==1)
- {
-    getcontent(viewcontent);
- }
- //getcategory();
- //document.getElementById("content").innerHTML = html;
- 
-}
-});
-
-   }
-   
-   
-
-}
 
 function APITest(){
 

@@ -11,21 +11,21 @@ class DynamicComponent
     }
 
     // Method to create form elements based on the input type
-    public function createComponent($label, $value, $input_type, $class, $tablename = '', $value_column = '', $option_column = '')
+    public function createComponent($label, $value, $input_type, $class,$column_name, $tablename = '', $value_column = '', $option_column = '')
     {
         $html = '';
         
         switch ($input_type) {
             case 'textbox':
-                $html .= $this->createTextbox($label, $value, $class);
+                $html .= $this->createTextbox($label, $value, $class,$column_name);
                 break;
 
             case 'textarea':
-                $html .= $this->createTextarea($label, $value, $class);
+                $html .= $this->createTextarea($label, $value, $class,$column_name);
                 break;
 
             case 'dropdown':
-                $html .= $this->createDropdown($label, $value, $class, $tablename, $value_column, $option_column);
+                $html .= $this->createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name);
                 break;
 
             default:
@@ -37,34 +37,34 @@ class DynamicComponent
     }
 
     // Method to create a textbox
-    private function createTextbox($label, $value, $class)
+    private function createTextbox($label, $value, $class,$column_name)
     {
         return "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <input type='text' name='{$label}' value='{$value}' placeholder='$label' style='width:25%' class='form-control'>
+                <input type='text' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label' style='width:25%' class='form-control'>
             </div>
         ";
     }
 
     // Method to create a textarea
-    private function createTextarea($label, $value, $class)
+    private function createTextarea($label, $value, $class,$column_name)
     {
         return "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <textarea name='{$label}' class='form-control' style='width:25%'>{$value}</textarea>
+                <textarea name='{$label}' id='{$column_name}' class='form-control' style='width:25%'>{$value}</textarea>
             </div>
         ";
     }
 
     // Method to create a dropdown
-    private function createDropdown($label, $value, $class, $tablename, $value_column, $option_column)
+    private function createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name)
     {
         $dropdown = "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <select name='{$label}' class='form-control' style='width:25%'>
+                <select name='{$label}' id='{$column_name}' class='form-control' style='width:25%'>
         ";
 
         // Fetch dropdown options from database

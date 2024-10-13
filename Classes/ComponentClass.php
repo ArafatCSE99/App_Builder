@@ -37,8 +37,14 @@ class TableComponent {
         // Calculate total pages
         $totalPages = ceil($totalRecords / $limit);
 
+$tableHtml = '<div class="search-container">
+  <input type="text" class="search-input" placeholder="Search...">
+  <button onclick="searchContent()" class="search-btn ">Search</button>
+</div>
+<br>';
+
         // Build the HTML table
-        $tableHtml = '<table id="example1" class="table table-bordered" style="width:100%">';
+        $tableHtml .= '<table id="example1" class="table table-bordered" style="width:100%">';
         $tableHtml .= '<thead class="thead-light"><tr>';
 
         // Add table headers
@@ -58,7 +64,7 @@ class TableComponent {
             $tableHtml .= "<td class='text-center py-0 align-middle' style='text-align:center;'>
                 <div class='btn-group btn-group-sm'>
                   <a onclick='updatedata($row[id],this)' class='btn btn-info'><i class='fas fa-edit'></i></a>
-                  <a onclick=deletedata($row[id],this,'$tableName') class='btn btn-danger'><i class='fas fa-trash'></i></a>
+                  <a onclick=deletedata($row[id],'$tableName',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>
                 </div>
               </td>";
             $tableHtml .= '</tr>';
