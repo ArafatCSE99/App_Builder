@@ -108,12 +108,12 @@ echo $tableComponent->GetTable($master_conn,'employees_vw', $columns,$page,$limi
 $dynamicComponent = new DynamicComponent($master_conn);
 echo $dynamicComponent->createComponent('Employee Name', '', 'textbox', 'form-group','name');
 echo $dynamicComponent->createComponent('Department', '1', 'dropdown', 'form-group','department_id', 'department', 'id', 'name');
-echo $dynamicComponent->createComponent('Note', 'Write Notes', 'textarea', 'form-group','note');
+echo $dynamicComponent->createComponent('Note', '', 'textarea', 'form-group','note');
 
 
             ?>
 
-              <input type="button" onclick="saveData('employees')"  value="Save" class="btn btn-success float-left">
+              <input type="button" id="saveButton" onclick="saveData('employees')"  value="Save" class="btn btn-success float-left">
               
             </div>
             <!-- /.card-body -->

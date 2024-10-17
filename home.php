@@ -820,6 +820,7 @@ function changeBranchModule(type, NewId) {
 
 }
 
+var id=0;
 var viewcontent="";
 function getcontent(viewname,viewdata="page=1&limit=10&search=")
 {
@@ -841,6 +842,7 @@ success: function(html) {
  $.getScript( scripturl, function( data, textStatus, jqxhr ) {
         // do some stuff after script is loaded
     } );
+    id=0;
 }
 
 });
@@ -888,7 +890,8 @@ function saveData(tableName) {
     // Object to store the request data
     var requestData = {
         "table": tableName,
-        "columns": {}
+        "columns": {},
+        "condition": { id: id}
     };
 
     // Get all input, select, and textarea elements within the .card-body class
@@ -908,7 +911,7 @@ function saveData(tableName) {
 
     // Make AJAX request
     $.ajax({
-        url: "API/AddData.php",  // Replace with your API endpoint
+        url: id==0?"API/AddData.php":"API/UpdateData.php",  // Replace with your API endpoint
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(requestData),
@@ -921,6 +924,74 @@ function saveData(tableName) {
         }
     });
 }
+
+
+function updatedata(update_id, row) {
+    var $cells = $(row).closest('tr').find('td');
+
+    $cells.each(function() {
+        var $cell = $(this);
+        var className = $cell.attr('class').trim(); 
+
+        if (className) {
+            var formFieldId = className.replace('_name', '_id');
+            var $formField = $('#' + formFieldId); 
+
+            if ($formField.length) {
+                if ($formField.is('input[type="text"]')) {
+                    $formField.val($cell.text().trim());
+                } else if ($formField.is('textarea')) {
+                    $formField.val($cell.text().trim());
+                } else if ($formField.is('select')) {
+                    $formField.find('option').each(function() {
+                        if ($(this).text().trim() === $cell.text().trim()) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+    $('#saveButton').val('Update');  // Change button value to 'Update'
+    id=update_id;
+    ScrollToBottom();
+}
+
+function updateValue(checkbox, column, tableName,updateId) {
+    var isChecked = $(checkbox).is(':checked') ? 1 : 0;
+
+    var requestData = {
+        "table": tableName,
+        "columns": {},
+        "condition": { id: updateId}
+    };
+
+    requestData.columns[column] = isChecked;
+
+    $.ajax({
+        url: "API/UpdateData.php",  // Replace with your API endpoint
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(requestData),
+        success: function(response) {
+        },
+        error: function(xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText;
+            alert("<p>Error - " + errorMessage + "</p>");
+        }
+    });
+}
+
+function ScrollToBottom()
+{
+  window.scrollTo(0, document.body.scrollHeight);
+}  
+
+function ScrollToTop()
+{
+  document.documentElement.scrollTop = 0;
+}  
 
 
 /* Test 

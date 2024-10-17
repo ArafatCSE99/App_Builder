@@ -53,7 +53,7 @@ class DynamicComponent
         return "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <textarea name='{$label}' id='{$column_name}' class='form-control' style='width:25%'>{$value}</textarea>
+                <textarea name='{$label}' id='{$column_name}'  placeholder='$label' class='form-control' style='width:25%'>{$value}</textarea>
             </div>
         ";
     }

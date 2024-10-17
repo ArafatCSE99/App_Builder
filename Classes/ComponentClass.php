@@ -53,11 +53,32 @@ $tableHtml = '<div class="search-container">
         }
         $tableHtml .= '<th>Action</th></tr></thead><tbody>';
 
+$columnTypes = [];
+$columnTypeQuery = "SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS 
+                    WHERE TABLE_NAME = '$tableName' AND TABLE_SCHEMA = DATABASE()";
+$typeResult = $master_conn->query($columnTypeQuery);
+
+if ($typeResult) {
+    while ($typeRow = $typeResult->fetch_assoc()) {
+        $columnTypes[$typeRow['COLUMN_NAME']] = $typeRow['DATA_TYPE'];
+    }
+}
+
+
         // Add table rows
         while ($row = $result->fetch_assoc()) {
             $tableHtml .= '<tr>';
             foreach ($columnNames as $column) {
-                $tableHtml .= '<td>' . htmlspecialchars($row[$column]) . '</td>';
+                $columnType = $columnTypes[$column];
+                if ($columnType == 'tinyint' && ($row[$column] == 1 || $row[$column] == 0)) {
+                   
+                    $checked = $row[$column] == 1 ? 'checked' : '';
+                    $tableHtml .= '<td class="'.$column.'">
+                                    <input type="checkbox" '.$checked.' onchange="updateValue(this,\''.$column.'\',\''.$tableName.'\',\''.$row["id"].'\')">
+                                   </td>';
+                } else {
+                    $tableHtml .= '<td class="'.$column.'">' . htmlspecialchars($row[$column]) . '</td>';
+                }
             }
 
             // Add action buttons
