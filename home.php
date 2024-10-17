@@ -983,6 +983,32 @@ function updateValue(checkbox, column, tableName,updateId) {
     });
 }
 
+function getDepndentData(e,onchange_table)
+{
+    var thisId = $(e).attr('id');
+    var thisValue =  $(e).val();  // Get the id of the element using jQuery
+    //alert("value: " + thisValue);   // Display the id
+    //alert("Table: " + onchange_table); 
+
+    $.ajax({
+        url: 'API/GetDependentData.php',  // Replace with the correct path to your PHP file
+        type: 'POST',
+        data: {
+            thisId: thisId,
+            thisValue: thisValue,
+            onchange_table: onchange_table
+        },
+        success: function(response) {
+            // Update your dropdown (or any other element) with the response options
+            $('#'+onchange_table+'_id').html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error: " + error);
+        }
+    });
+
+}
+
 function ScrollToBottom()
 {
   window.scrollTo(0, document.body.scrollHeight);

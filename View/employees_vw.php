@@ -56,6 +56,7 @@ $columns = [
     'id' => 'ID',
     'name' => 'Full Name',
     'department_name' => 'Department Name',
+    'designation_name' => 'Designation Name',
     'is_active' => 'Is Active',
     'note' => 'Note',
 ];
@@ -107,7 +108,8 @@ echo $tableComponent->GetTable($master_conn,'employees_vw', $columns,$page,$limi
 
 $dynamicComponent = new DynamicComponent($master_conn);
 echo $dynamicComponent->createComponent('Employee Name', '', 'textbox', 'form-group','name');
-echo $dynamicComponent->createComponent('Department', '1', 'dropdown', 'form-group','department_id', 'department', 'id', 'name');
+echo $dynamicComponent->createComponent('Department', '1', 'dropdown', 'form-group','department_id', 'department', 'id', 'name','designation');
+echo $dynamicComponent->createComponent('Designation', '1', 'dropdown', 'form-group','designation_id', 'designation', 'id', 'name','');
 echo $dynamicComponent->createComponent('Note', '', 'textarea', 'form-group','note');
 
 

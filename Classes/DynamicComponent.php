@@ -11,7 +11,7 @@ class DynamicComponent
     }
 
     // Method to create form elements based on the input type
-    public function createComponent($label, $value, $input_type, $class,$column_name, $tablename = '', $value_column = '', $option_column = '')
+    public function createComponent($label, $value, $input_type, $class,$column_name, $tablename = '', $value_column = '', $option_column = '',$onchnge_table='')
     {
         $html = '';
         
@@ -25,7 +25,7 @@ class DynamicComponent
                 break;
 
             case 'dropdown':
-                $html .= $this->createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name);
+                $html .= $this->createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name,$onchnge_table);
                 break;
 
             default:
@@ -59,13 +59,22 @@ class DynamicComponent
     }
 
     // Method to create a dropdown
-    private function createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name)
+    private function createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name,$onchnge_table)
     {
+        if($onchnge_table==""){
         $dropdown = "
             <div class='{$class}'>
                 <label>{$label}</label>
                 <select name='{$label}' id='{$column_name}' class='form-control' style='width:25%'>
         ";
+        }
+        else{
+            $dropdown = "
+            <div class='{$class}'>
+                <label>{$label}</label>
+                <select name='{$label}' id='{$column_name}' onchange='getDepndentData(this,\"$onchnge_table\")' class='form-control' style='width:25%'>
+        "; 
+        }
 
         // Fetch dropdown options from database
         $query = "SELECT {$value_column}, {$option_column} FROM {$tablename}";
