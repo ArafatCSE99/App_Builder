@@ -53,8 +53,8 @@ $search=$_POST["search"];
 
 $tableComponent = new TableComponent();
 $columns = [
-    'id' => 'ID',
     'name' => 'Full Name',
+    'image_name' => 'Image',
     'department_name' => 'Department Name',
     'designation_name' => 'Designation Name',
     'is_active' => 'Is Active',
@@ -107,15 +107,17 @@ echo $tableComponent->GetTable($master_conn,'employees_vw', $columns,$page,$limi
             <?php
 
 $dynamicComponent = new DynamicComponent($master_conn);
-echo $dynamicComponent->createComponent('Employee Name', '', 'textbox', 'form-group','name');
-echo $dynamicComponent->createComponent('Department', '1', 'dropdown', 'form-group','department_id', 'department', 'id', 'name','designation');
-echo $dynamicComponent->createComponent('Designation', '1', 'dropdown', 'form-group','designation_id', 'designation', 'id', 'name','');
-echo $dynamicComponent->createComponent('Note', '', 'textarea', 'form-group','note');
+echo $dynamicComponent->createComponent('Employee Name', '', 'textbox', 'form-group','name','required');
+echo $dynamicComponent->createComponent('Department', '0', 'dropdown', 'form-group','department_id','required', 'department', 'id', 'name','designation','id','name');
+echo $dynamicComponent->createComponent('Designation', '0', 'dropdown', 'form-group','designation_id','required', 'designation', 'id', 'name');
+echo $dynamicComponent->createComponent('Note', '', 'textarea', 'form-group','note','');
+echo $dynamicComponent->createComponent('Image', '', 'image');
+
 
 
             ?>
 
-              <input type="button" id="saveButton" onclick="saveData('employees')"  value="Save" class="btn btn-success float-left">
+              <input type="button"  onclick="saveData('employees')"  value="Save" class="btn btn-success float-left saveButton">
               
             </div>
             <!-- /.card-body -->

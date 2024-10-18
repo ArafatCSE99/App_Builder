@@ -891,39 +891,73 @@ function saveData(tableName) {
     var requestData = {
         "table": tableName,
         "columns": {},
-        "condition": { id: id}
+        "condition": { id: id }
     };
 
+    var isValid = true;  // Flag to track if the form is valid
+    var missingFields = [];  // Array to store labels of missing required fields
+
     // Get all input, select, and textarea elements within the .card-body class
-    $('.card-body').find('input, select, textarea').each(function() {
+    $('.card-body').find('input, select, textarea').each(function () {
         var inputType = $(this).attr('type');
         var inputName = $(this).attr('id');
         var inputValue = $(this).val();
 
-        // Check if the input name exists and is not empty
-        if (inputName) {
+        // Get the label text associated with this input (by finding the nearest preceding label)
+        var labelText = $(this).closest('.form-group').find('label').text().trim();
+
+        // Check if the input is required
+        if ($(this).prop('required')) {
+            // If a dropdown (select) has value 0, or input/textarea is empty
+            if ($(this).is('select') && inputValue == 0) {
+                isValid = false;
+                missingFields.push(labelText);  // Add the label text to the missing fields list
+            } else if (inputValue.trim() === "") {
+                isValid = false;
+                missingFields.push(labelText);  // Add the label text to the missing fields list
+            }
+        }
+
+        if(inputName){
+        // Handle specific field logic for image_name
+        if (inputName == "image_name") {
+            $("#image-form").submit();
+            if (image_name != "") {
+                requestData.columns[inputName] = image_name;
+            }
+        } else {
             requestData.columns[inputName] = inputValue;
         }
+    }
     });
+
+    // If the form is invalid, show an error message and stop the function
+    if (!isValid) {
+        var errorMessage = "The following fields are required: " + missingFields.join(', ');
+        alert(errorMessage);
+        return;  // Stop the function if validation fails
+    }
 
     // Log the requestData for debugging
     console.log(requestData);
 
-    // Make AJAX request
+    // Make AJAX request if validation is successful
     $.ajax({
-        url: id==0?"API/AddData.php":"API/UpdateData.php",  // Replace with your API endpoint
+        url: id == 0 ? "API/AddData.php" : "API/UpdateData.php",  // Replace with your API endpoint
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(requestData),
-        success: function(response) {
+        success: function (response) {
             getcontent(viewcontent);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             var errorMessage = xhr.status + ': ' + xhr.statusText;
             alert("<p>Error - " + errorMessage + "</p>");
         }
     });
 }
+
+
 
 
 function updatedata(update_id, row) {
@@ -953,7 +987,7 @@ function updatedata(update_id, row) {
         }
     });
 
-    $('#saveButton').val('Update');  // Change button value to 'Update'
+    $('.saveButton').val('Update');  // Change button value to 'Update'
     id=update_id;
     ScrollToBottom();
 }
@@ -983,7 +1017,7 @@ function updateValue(checkbox, column, tableName,updateId) {
     });
 }
 
-function getDepndentData(e,onchange_table)
+function getDepndentData(e,onchange_table,onchange_value_column,onchange_option_column)
 {
     var thisId = $(e).attr('id');
     var thisValue =  $(e).val();  // Get the id of the element using jQuery
@@ -996,7 +1030,9 @@ function getDepndentData(e,onchange_table)
         data: {
             thisId: thisId,
             thisValue: thisValue,
-            onchange_table: onchange_table
+            onchange_table: onchange_table,
+            onchange_value_column:onchange_value_column,
+            onchange_option_column:onchange_option_column
         },
         success: function(response) {
             // Update your dropdown (or any other element) with the response options
@@ -1008,6 +1044,7 @@ function getDepndentData(e,onchange_table)
     });
 
 }
+
 
 function ScrollToBottom()
 {

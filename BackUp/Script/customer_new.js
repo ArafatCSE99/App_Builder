@@ -24,7 +24,7 @@ $('input[type="file"]').change(function(e) {
   reader.readAsDataURL(this.files[0]);
 });
 
-var imag_name="";
+var image_name="";
 
 $("#image-form").on("submit", function() {
   debugger;
@@ -38,7 +38,7 @@ $("#image-form").on("submit", function() {
     async:false,
     success: function(data) {
 
-      imag_name=data;
+      image_name=data;
    
     },
     error: function(data) {

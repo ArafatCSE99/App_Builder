@@ -21,7 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql = "INSERT INTO `$table` ($keys) VALUES ($values)";
 
     if ($master_conn->query($sql) === TRUE) {
-        echo json_encode(["message" => "Data inserted successfully."]);
+        //echo json_encode(["message" => "Data inserted successfully."]);
+        echo json_encode(["message" => $sql]);
     } else {
         echo json_encode(["error" => "Error: " . $master_conn->error]);
     }

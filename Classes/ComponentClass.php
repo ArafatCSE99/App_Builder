@@ -21,7 +21,7 @@ class TableComponent {
         $offset = ($page - 1) * $limit;
 
         // SQL query to get the paginated data with search
-        $sql = "SELECT id, " . implode(", ", $columnNames) . " FROM $tableName $searchCondition LIMIT $limit OFFSET $offset";
+        $sql = "SELECT id, " . implode(", ", $columnNames) . " FROM $tableName $searchCondition ORDER BY id desc LIMIT $limit OFFSET $offset";
         //echo $sql;
         $result = $master_conn->query($sql);
 
@@ -48,6 +48,7 @@ $tableHtml = '<div class="search-container">
         $tableHtml .= '<thead class="thead-light"><tr>';
 
         // Add table headers
+        $tableHtml .= "<th>Sl</th>";
         foreach ($displayNames as $displayName) {
             $tableHtml .= "<th>$displayName</th>";
         }
@@ -66,8 +67,11 @@ if ($typeResult) {
 
 
         // Add table rows
+        $slno=$offset;
         while ($row = $result->fetch_assoc()) {
+            $slno++;
             $tableHtml .= '<tr>';
+            $tableHtml .= '<td class="slno">' . $slno . '</td>';
             foreach ($columnNames as $column) {
                 $columnType = $columnTypes[$column];
                 if ($columnType == 'tinyint' && ($row[$column] == 1 || $row[$column] == 0)) {
@@ -76,7 +80,13 @@ if ($typeResult) {
                     $tableHtml .= '<td class="'.$column.'">
                                     <input type="checkbox" '.$checked.' onchange="updateValue(this,\''.$column.'\',\''.$tableName.'\',\''.$row["id"].'\')">
                                    </td>';
-                } else {
+                }
+                else if ($column=="image_name")
+                {
+                     $imageurl = "imageUpload/uploads/".$row[$column];
+                     $tableHtml .= "<td class='image'><img src=$imageurl height='50px' width='50px'></td>"; 
+                } 
+                else {
                     $tableHtml .= '<td class="'.$column.'">' . htmlspecialchars($row[$column]) . '</td>';
                 }
             }
