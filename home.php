@@ -547,7 +547,7 @@ if ($resultse->num_rows > 0) {
                   $file_name=$rowses["file_name"];
 
                 echo '<li class="nav-item">
-                <a href="#" onclick="getcontent("'.$file_name.'")" class="nav-link">
+                <a href="#" onclick="getcontent(\''.$file_name.'\')" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>'.$name.'</p>
                 </a>
@@ -824,7 +824,7 @@ var id=0;
 var viewcontent="";
 function getcontent(viewname,viewdata="page=1&limit=10&search=")
 {
-
+debugger;
 viewcontent = viewname;
 document.getElementById("content").innerHTML="<center><img style='opacity:0.9;'   src='dist/img/loader.gif' /><center>";
 
@@ -838,7 +838,7 @@ success: function(html) {
  document.getElementById("content").innerHTML = html;
  $('#content').show(300);
 
- var scripturl="Script/"+viewname+".js";
+ var scripturl="Script/common.js";
  $.getScript( scripturl, function( data, textStatus, jqxhr ) {
         // do some stuff after script is loaded
     } );
@@ -966,9 +966,9 @@ function updatedata(update_id, row) {
     $cells.each(function() {
         var $cell = $(this);
         var className = $cell.attr('class').trim(); 
-
+        console.log(className);
         if (className) {
-            var formFieldId = className.replace('_name', '_id');
+            var formFieldId = className.replace('_name', '_name');
             var $formField = $('#' + formFieldId); 
 
             if ($formField.length) {
