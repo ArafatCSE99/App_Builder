@@ -3,6 +3,7 @@
 include "../connection.php"; 
 include "../Classes/ComponentClass.php";
 include "../Classes/DynamicComponent.php";
+include "../Classes/DynamicDetailClass.php";
 
 session_start(); 
 $userid=$_SESSION["userid"];
@@ -113,6 +114,33 @@ echo $dynamicComponent->createComponent('Designation', '0', 'dropdown', 'form-gr
 echo $dynamicComponent->createComponent('Note', '', 'textarea', 'form-group','note','');
 echo $dynamicComponent->createComponent('Image', '', 'image');
 
+
+
+
+$columns = [
+  ['header' => 'Quantity', 'type' => 'number', 'name' => 'qty', 'onchange' => true],
+  ['header' => 'Price', 'type' => 'number', 'name' => 'price', 'onchange' => true],
+  ['header' => 'Amount', 'type' => 'textbox', 'name' => 'amount', 'displayColumn' => true],
+];
+
+// Fetch previous data if available
+$previousData = []; // Get this data as per your logic
+
+// Define number of rows to be initially displayed
+$rowCount = 3;
+
+// Define columns that need sum functionality
+$sumColumns = ['amount'];
+
+// Footer fields like Total, Paid, and Due
+$footerFields = [
+  ['label' => 'Total Amount', 'type' => 'text', 'name' => 'total'],
+  ['label' => 'Paid', 'type' => 'text', 'name' => 'paid'],
+  ['label' => 'Due', 'type' => 'text', 'name' => 'due'],
+];
+
+$dynamicDetail = new DynamicDetailClass($master_conn);
+echo $dynamicDetail->createDetailTable($columns, $previousData, $rowCount, $sumColumns, true, $footerFields);
 
 
             ?>

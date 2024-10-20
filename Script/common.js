@@ -33,3 +33,29 @@ $("#image-form").on("submit", function() {
   });
 
   });
+
+
+$(document).ready(function() {
+    // Add new row functionality
+    $('.dynamic-table').on('click', '.add-row', function() {
+        var row = $(this).closest('tr').clone();
+        row.find('input').val(''); // Clear input values
+        $(this).closest('tbody').append(row);
+    });
+
+    // Delete row functionality
+    $('.dynamic-table').on('click', '.delete-row', function() {
+        if ($(this).closest('tbody').find('tr').length > 1) {
+            $(this).closest('tr').remove();
+        }
+    });
+
+    // Calculate sum for columns
+    $('.dynamic-table').on('input', 'input[name="salary"]', function() {
+        var sum = 0;
+        $('input[name="salary"]').each(function() {
+            sum += parseFloat($(this).val()) || 0;
+        });
+        $('.sum').val(sum);
+    });
+});
