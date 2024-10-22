@@ -118,25 +118,23 @@ echo $dynamicComponent->createComponent('Image', '', 'image');
 
 
 $columns = [
-  ['header' => 'Quantity', 'type' => 'number', 'name' => 'qty', 'onchange' => true],
-  ['header' => 'Price', 'type' => 'number', 'name' => 'price', 'onchange' => true],
-  ['header' => 'Amount', 'type' => 'textbox', 'name' => 'amount', 'displayColumn' => true],
+  ['header' => 'Project', 'type' => 'dropdown', 'name' => 'project_id', 'table' => 'project','valueField'=>'id','optionField'=>'name'],
+  ['header' => 'Hours', 'type' => 'number', 'name' => 'hours'],
+  ['header' => 'Client', 'type' => 'textbox', 'name' => 'client_name'],
 ];
 
 // Fetch previous data if available
 $previousData = []; // Get this data as per your logic
 
 // Define number of rows to be initially displayed
-$rowCount = 3;
+$rowCount = 1;
 
 // Define columns that need sum functionality
-$sumColumns = ['amount'];
+$sumColumns = ['hours'];
 
 // Footer fields like Total, Paid, and Due
 $footerFields = [
-  ['label' => 'Total Amount', 'type' => 'text', 'name' => 'total'],
-  ['label' => 'Paid', 'type' => 'text', 'name' => 'paid'],
-  ['label' => 'Due', 'type' => 'text', 'name' => 'due'],
+  ['label' => 'Total Hours', 'type' => 'text', 'name' => 'total_hours']
 ];
 
 $dynamicDetail = new DynamicDetailClass($master_conn);
@@ -147,6 +145,9 @@ echo $dynamicDetail->createDetailTable($columns, $previousData, $rowCount, $sumC
 
               <input type="button"  onclick="saveData('employees')"  value="Save" class="btn btn-success float-left saveButton">
               
+              <input type="button"  onclick="checkData()"  value="Check Data" class="btn btn-success float-left">
+
+
             </div>
             <!-- /.card-body -->
           </div>

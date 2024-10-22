@@ -50,12 +50,49 @@ $(document).ready(function() {
         }
     });
 
-    // Calculate sum for columns
-    $('.dynamic-table').on('input', 'input[name="salary"]', function() {
-        var sum = 0;
-        $('input[name="salary"]').each(function() {
-            sum += parseFloat($(this).val()) || 0;
-        });
-        $('.sum').val(sum);
-    });
 });
+
+
+function getTableData() {
+  let tableData = {};
+
+  // Loop through each row of the table
+  $('.dynamic-table tbody tr').each(function (rowIndex) {
+     let rowData = {};
+
+     // Loop through each column's input/select in the row
+     $(this).find('td').each(function () {
+        let input = $(this).find('input, select');
+
+        if (input.length) {
+           let name = input.attr('name');
+           let value = input.val();
+
+           // Store the input's name (key) and value
+           rowData[name] = value;
+        }
+     });
+
+     // Add row data to the main tableData object
+     tableData[rowIndex] = rowData;
+  });
+
+  return tableData;
+}
+
+/*
+// Example usage:
+$(document).ready(function () {
+  // Bind to the button that adds rows or form submission as needed
+  $('.add-row, .delete-row').click(function () {
+     let data = getTableData();
+     console.log(data); // Output the collected table data for debugging
+  });
+});
+*/
+
+function checkData()
+{
+     let data = getTableData();
+     console.log(data); // Output the collected table data for debugging
+}
