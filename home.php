@@ -1046,6 +1046,125 @@ function getDepndentData(e,onchange_table,onchange_value_column,onchange_option_
 }
 
 
+
+
+function saveMasterDetailData(tableName, detailTableName, foreignKey) {
+    // Prepare master data
+    var masterData = {
+        "table": tableName,
+        "columns": {},
+        "condition": { id: id }
+    };
+
+    var isValid = true;  // Flag to track if the form is valid
+    var missingFields = [];  // Array to store labels of missing required fields
+
+    // Get all input, select, and textarea elements within the .card-body class for master data
+    $('.card-body').find('input, select, textarea').each(function () {
+        var inputType = $(this).attr('type');
+        var inputName = $(this).attr('id');
+        var inputValue = $(this).val();
+
+        // Get the label text associated with this input (by finding the nearest preceding label)
+        var labelText = $(this).closest('.form-group').find('label').text().trim();
+
+        // Check if the input is required
+        if ($(this).prop('required')) {
+            // If a dropdown (select) has value 0, or input/textarea is empty
+            if ($(this).is('select') && inputValue == 0) {
+                isValid = false;
+                missingFields.push(labelText);  // Add the label text to the missing fields list
+            } else if (inputValue.trim() === "") {
+                isValid = false;
+                missingFields.push(labelText);  // Add the label text to the missing fields list
+            }
+        }
+
+        if(inputName){
+            // Handle specific field logic for image_name
+            if (inputName == "image_name") {
+                $("#image-form").submit();
+                if (image_name != "") {
+                    masterData.columns[inputName] = image_name;
+                }
+            } else {
+                masterData.columns[inputName] = inputValue;
+            }
+        }
+    });
+
+    // If the form is invalid, show an error message and stop the function
+    if (!isValid) {
+        var errorMessage = "The following fields are required: " + missingFields.join(', ');
+        alert(errorMessage);
+        return;  // Stop the function if validation fails
+    }
+
+    // Get detail data from table
+    var detailData = getTableData();  // Uses getTableData function to retrieve table data
+
+    // Create a combined request payload
+    var requestData = {
+        "master": masterData.columns,  // Master data
+        "detail": detailData,  // Detail data from table
+        "master_table": tableName,  // Master table name
+        "detail_table": detailTableName,  // Detail table name
+        "foreign_key": foreignKey  // Foreign key linking detail to master
+    };
+
+    // Log the requestData for debugging
+    console.log("Request Data:", requestData);
+
+    // Make AJAX request if validation is successful
+    $.ajax({
+        url: id == 0 ? "API/AddMasterDetailData.php" : "API/UpdateMasterDetailData.php",  // Replace with your API endpoint
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(requestData),
+        success: function (response) {
+            getcontent(viewcontent);
+            alert("Data saved successfully!");
+        },
+        error: function (xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText;
+            alert("Error - " + errorMessage);
+        }
+    });
+}
+
+
+
+function deleteMasterDetailData(id, masterTable, detailTable, foreignKey, element) {
+    masterTable = masterTable.split('_')[0];
+    if (confirm('Are You Sure?')) {
+        var deleteData = {
+            "master_table": masterTable,
+            "detail_table": detailTable,
+            "foreign_key": foreignKey,
+            "id": id
+        };
+
+        // Make AJAX request to delete API
+        $.ajax({
+            url: "API/DeleteMasterDetailData.php",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(deleteData),
+            success: function(response) {
+                // Remove the row from the table if deletion is successful
+                $(element).closest('tr').remove();
+                alert("Record deleted successfully.");
+            },
+            error: function(xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText;
+                alert("Error - " + errorMessage);
+            }
+        });
+    }
+}
+
+
+
 function ScrollToBottom()
 {
   window.scrollTo(0, document.body.scrollHeight);

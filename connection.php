@@ -3,7 +3,7 @@
 $master_servername = "localhost";
 $master_username = "root";
 $master_password = "";
-$master_dbname = "master_db";
+$master_dbname = "master_db_new";
 
 // Create connection
 $master_conn = new mysqli($master_servername, $master_username, $master_password, $master_dbname);

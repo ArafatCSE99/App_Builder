@@ -2,7 +2,7 @@
 
 class TableComponent {
 
-    public function GetTable($master_conn, $tableName, $columns, $page = 1, $limit = 10, $search = '') {
+    public function GetTable($master_conn, $tableName, $columns, $page = 1, $limit = 10, $search = '',$IsMasterDetail=false,$detailTable='',$foreignKey='') {
 
         $columnNames = array_keys($columns);
         $displayNames = array_values($columns);
@@ -94,9 +94,16 @@ if ($typeResult) {
             // Add action buttons
             $tableHtml .= "<td class='text-center py-0 align-middle' style='text-align:center;'>
                 <div class='btn-group btn-group-sm'>
-                  <a onclick='updatedata($row[id],this)' class='btn btn-info'><i class='fas fa-edit'></i></a>
-                  <a onclick=deletedata($row[id],'$tableName',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>
-                </div>
+                  <a onclick='updatedata($row[id],this)' class='btn btn-info'><i class='fas fa-edit'></i></a>";
+
+                  if($IsMasterDetail){
+                    $tableHtml .= "<a onclick=deleteMasterDetailData($row[id],'$tableName','$detailTable','$foreignKey',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
+                  }
+                  else{
+                  $tableHtml .= "<a onclick=deletedata($row[id],'$tableName',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
+                  }
+
+                  $tableHtml .=   "</div>
               </td>";
             $tableHtml .= '</tr>';
         }

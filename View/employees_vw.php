@@ -61,7 +61,7 @@ $columns = [
     'is_active' => 'Is Active',
     'note' => 'Note',
 ];
-echo $tableComponent->GetTable($master_conn,'employees_vw', $columns,$page,$limit,$search);
+echo $tableComponent->GetTable($master_conn,'employees_vw', $columns,$page,$limit,$search,true,'employees_project_detail','employee_id');
 
                 ?>
                   
@@ -143,7 +143,7 @@ echo $dynamicDetail->createDetailTable($columns, $previousData, $rowCount, $sumC
 
             ?>
 
-              <input type="button"  onclick="saveData('employees')"  value="Save" class="btn btn-success float-left saveButton">
+              <input type="button"  onclick="saveMasterDetailData('employees','employees_project_detail','employee_id')"  value="Save" class="btn btn-success float-left saveButton">
               
               <input type="button"  onclick="checkData()"  value="Check Data" class="btn btn-success float-left">
 
