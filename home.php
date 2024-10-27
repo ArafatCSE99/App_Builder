@@ -968,7 +968,7 @@ function updatedata(update_id, row) {
         var className = $cell.attr('class').trim(); 
         console.log(className);
         if (className) {
-            var formFieldId = className.replace('_name', '_name');
+            var formFieldId = className.replace('_name', '_id');
             var $formField = $('#' + formFieldId); 
 
             if ($formField.length) {
@@ -1163,6 +1163,56 @@ function deleteMasterDetailData(id, masterTable, detailTable, foreignKey, elemen
     }
 }
 
+
+function updateMasterdetailData(update_id, row) {
+    var $cells = $(row).closest('tr').find('td');
+
+    $cells.each(function() {
+        var $cell = $(this);
+        var className = $cell.attr('class').trim(); 
+        console.log(className);
+        if (className) {
+            var formFieldId = className.replace('_name', '_id');
+            var $formField = $('#' + formFieldId); 
+
+            if ($formField.length) {
+                if ($formField.is('input[type="text"]')) {
+                    $formField.val($cell.text().trim());
+                } else if ($formField.is('textarea')) {
+                    $formField.val($cell.text().trim());
+                } else if ($formField.is('select')) {
+                    $formField.find('option').each(function() {
+                        if ($(this).text().trim() === $cell.text().trim()) {
+                            $(this).prop('selected', true);
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+    // Call detail and replace the table
+
+    $.ajax({
+        url: 'API/FetchDetailTable.php',  // Assuming this is the endpoint to fetch detail data
+        type: 'POST',
+        data: { id: update_id },
+        dataType: 'html',
+        success: function(response) {
+            // Replace the current detail table with the fetched data
+            $('.dynamic-table').html(response);
+
+            // Update the save button text
+            $('.saveButton').val('Update');  // Change button value to 'Update'
+
+            // Scroll to the bottom if needed
+            ScrollToBottom();
+        },
+        error: function() {
+            alert("Error fetching detail data.");
+        }
+    });
+}
 
 
 function ScrollToBottom()

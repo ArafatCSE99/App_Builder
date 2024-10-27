@@ -93,14 +93,16 @@ if ($typeResult) {
 
             // Add action buttons
             $tableHtml .= "<td class='text-center py-0 align-middle' style='text-align:center;'>
-                <div class='btn-group btn-group-sm'>
-                  <a onclick='updatedata($row[id],this)' class='btn btn-info'><i class='fas fa-edit'></i></a>";
+                <div class='btn-group btn-group-sm'>";
+                  
 
                   if($IsMasterDetail){
-                    $tableHtml .= "<a onclick=deleteMasterDetailData($row[id],'$tableName','$detailTable','$foreignKey',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
+                    $tableHtml .= "<a onclick='updateMasterdetailData($row[id],this)' class='btn btn-info'><i class='fas fa-edit'></i></a>
+                    <a onclick=deleteMasterDetailData($row[id],'$tableName','$detailTable','$foreignKey',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
                   }
                   else{
-                  $tableHtml .= "<a onclick=deletedata($row[id],'$tableName',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
+                  $tableHtml .= "<a onclick='updatedata($row[id],this)' class='btn btn-info'><i class='fas fa-edit'></i></a>
+                  <a onclick=deletedata($row[id],'$tableName',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
                   }
 
                   $tableHtml .=   "</div>
