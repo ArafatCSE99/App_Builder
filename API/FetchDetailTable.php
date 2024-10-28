@@ -16,11 +16,10 @@ $columns = [
   $rowCount = 1;
   
   // Define columns that need sum functionality
-  $sumColumns = ['hours'];
+  $sumColumns = [];
   
   // Footer fields like Total, Paid, and Due
   $footerFields = [
-    ['label' => 'Total Hours', 'type' => 'text', 'name' => 'total_hours']
   ];
   
 $dynamicDetail = new DynamicDetailClass($master_conn);

@@ -52,6 +52,31 @@ $(document).ready(function() {
 
 });
 
+function reinitializeTableEvents() {
+  if (!jQuery._data(document, 'events') || 
+      !jQuery._data(document, 'events').click ||
+      !jQuery._data(document, 'events').click.some(e => e.selector === '.dynamic-table .add-row')) {
+
+      // Add new row functionality
+      $(document).on('click', '.dynamic-table .add-row', function() {
+          var row = $(this).closest('tr').clone();
+          row.find('input').val(''); // Clear input values
+          $(this).closest('tbody').append(row);
+      });
+  }
+
+  if (!jQuery._data(document, 'events') || 
+      !jQuery._data(document, 'events').click ||
+      !jQuery._data(document, 'events').click.some(e => e.selector === '.dynamic-table .delete-row')) {
+
+      // Delete row functionality
+      $(document).on('click', '.dynamic-table .delete-row', function() {
+          if ($(this).closest('tbody').find('tr').length > 1) {
+              $(this).closest('tr').remove();
+          }
+      });
+  }
+}
 
 function getTableData() {
   let tableData = {};

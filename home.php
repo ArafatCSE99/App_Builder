@@ -1109,7 +1109,8 @@ function saveMasterDetailData(tableName, detailTableName, foreignKey) {
         "detail": detailData,  // Detail data from table
         "master_table": tableName,  // Master table name
         "detail_table": detailTableName,  // Detail table name
-        "foreign_key": foreignKey  // Foreign key linking detail to master
+        "foreign_key": foreignKey,  // Foreign key linking detail to master
+        "id":id
     };
 
     // Log the requestData for debugging
@@ -1200,13 +1201,15 @@ function updateMasterdetailData(update_id, row) {
         dataType: 'html',
         success: function(response) {
             // Replace the current detail table with the fetched data
-            $('.dynamic-table').html(response);
+            $('#detailSection').html(response);
 
             // Update the save button text
             $('.saveButton').val('Update');  // Change button value to 'Update'
-
+            id=update_id;
             // Scroll to the bottom if needed
             ScrollToBottom();
+            reinitializeTableEvents();
+
         },
         error: function() {
             alert("Error fetching detail data.");

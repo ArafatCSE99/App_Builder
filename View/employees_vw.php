@@ -130,12 +130,16 @@ $previousData = []; // Get this data as per your logic
 $rowCount = 1;
 
 // Define columns that need sum functionality
-$sumColumns = ['hours'];
+//$sumColumns = ['hours'];
+$sumColumns = [];
 
 // Footer fields like Total, Paid, and Due
+/*
 $footerFields = [
   ['label' => 'Total Hours', 'type' => 'text', 'name' => 'total_hours']
 ];
+*/
+$footerFields = [];
 
 $dynamicDetail = new DynamicDetailClass($master_conn);
 echo $dynamicDetail->createDetailTable($columns, $previousData, $rowCount, $sumColumns, true, $footerFields);
@@ -145,7 +149,7 @@ echo $dynamicDetail->createDetailTable($columns, $previousData, $rowCount, $sumC
 
               <input type="button"  onclick="saveMasterDetailData('employees','employees_project_detail','employee_id')"  value="Save" class="btn btn-success float-left saveButton">
               
-              <input type="button"  onclick="checkData()"  value="Check Data" class="btn btn-success float-left">
+             <!-- <input type="button"  onclick="checkData()"  value="Check Data" class="btn btn-success float-left"> -->
 
 
             </div>

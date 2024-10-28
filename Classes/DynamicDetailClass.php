@@ -27,7 +27,7 @@ class DynamicDetailClass {
     }
 
     public function createDetailTable($columns, $data = [], $rowCount = 1, $sumColumns = [], $footer = false, $footerFields = []) {
-        $tableHtml = '<table class="table table-bordered dynamic-table">';
+        $tableHtml = '<div id="detailSection"><table class="table table-bordered dynamic-table">';
 
         // Table Header
         $tableHtml .= '<thead><tr>';
@@ -91,7 +91,8 @@ class DynamicDetailClass {
             }
             $tableHtml .= '</div>';
         }
-
+        $tableHtml .= '</div>';
+        
         return $tableHtml;
     }
 
