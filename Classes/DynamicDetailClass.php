@@ -51,7 +51,7 @@ class DynamicDetailClass {
                     $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value) . '</td>';
                 
                 } elseif (in_array($column['type'], ['textbox', 'number'])) {
-                    $tableHtml .= '<td><input type="' . htmlspecialchars($column['type']) . '" name="' . htmlspecialchars($column['name']) . '" class="form-control" value="' . htmlspecialchars($value) . '"></td>';
+                    $tableHtml .= '<td><input type="' . htmlspecialchars($column['type']) . '" name="' . htmlspecialchars($column['name']) . '" class="form-control" value="' . htmlspecialchars($value) . '" onchange="CalculateTotal(this)"></td>';
                 
                 } elseif (isset($column['displayColumn'])) {
                     $tableHtml .= '<td><input type="text" name="' . htmlspecialchars($column['name']) . '" class="form-control display-field" value="' . htmlspecialchars($value) . '" readonly></td>';
@@ -70,7 +70,7 @@ class DynamicDetailClass {
             $tableHtml .= '<tfoot><tr>';
             foreach ($columns as $column) {
                 if (in_array($column['name'], $sumColumns)) {
-                    $tableHtml .= '<td><input type="text" class="form-control sum" readonly></td>';
+                    $tableHtml .= '<td><input type="text" class="form-control sum" id="'.$column['name'].'Sum" readonly></td>';
                 } else {
                     $tableHtml .= '<td></td>';
                 }

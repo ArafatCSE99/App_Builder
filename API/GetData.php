@@ -1,6 +1,7 @@
 <?php
 include '../connection.php';
 
+
 $table_name = isset($_POST['table']) ? $conn->real_escape_string($_POST['table']) : '';
 
 $page = isset($_POST['page']) && is_numeric($_POST['page']) ? intval($_POST['page']) : 1;

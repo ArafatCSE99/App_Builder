@@ -119,6 +119,7 @@ echo $dynamicComponent->createComponent('Image', '', 'image');
 
 $columns = [
   ['header' => 'Project', 'type' => 'dropdown', 'name' => 'project_id', 'table' => 'project','valueField'=>'id','optionField'=>'name'],
+  ['header' => 'Project Hours', 'type' => 'text', 'name' => 'project_hours', 'displayColumn' => 'true' ],
   ['header' => 'Hours', 'type' => 'number', 'name' => 'hours'],
   ['header' => 'Client', 'type' => 'textbox', 'name' => 'client_name'],
 ];
@@ -130,8 +131,8 @@ $previousData = []; // Get this data as per your logic
 $rowCount = 1;
 
 // Define columns that need sum functionality
-//$sumColumns = ['hours'];
-$sumColumns = [];
+$sumColumns = ['hours'];
+//$sumColumns = [];
 
 // Footer fields like Total, Paid, and Due
 /*

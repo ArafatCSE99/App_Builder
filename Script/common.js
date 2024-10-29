@@ -121,3 +121,44 @@ function checkData()
      let data = getTableData();
      console.log(data); // Output the collected table data for debugging
 }
+
+/*
+function CalculateTotal(e)
+{
+    var CurrentValue = $(e).val();
+    alert(CurrentValue);
+}
+*/
+
+function CalculateTotal(e) {
+  // Get the name attribute of the triggered input field
+  let fieldName =  e.name;//e.getSource().get("v.name"); //e.target.getAttribute('name'); //$(e.target).attr('name');
+  console.log(fieldName);
+  // Check if #nameSum element exists
+  if ($("#"+fieldName+"Sum").length === 0) {
+      console.warn("#nameSum element not found");
+      return;
+  }
+
+  let total = 0;
+  let isNumber = true;
+
+  // Iterate over all input fields with the given name
+  $(`input[name='${fieldName}']`).each(function() {
+      let value = $(this).val();
+
+      // Check if the input value is a number
+      if ($.isNumeric(value)) {
+          total += parseFloat(value);
+      } else {
+          isNumber = false;
+      }
+  });
+
+  // Only update the total if all fields contain numbers
+  if (isNumber) {
+      $("#"+fieldName+"Sum").val(s);
+  } else {
+      console.warn("One or more fields contain non-numeric values");
+  }
+}
