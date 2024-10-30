@@ -87,8 +87,9 @@ function getTableData() {
 
      // Loop through each column's input/select in the row
      $(this).find('td').each(function () {
-        let input = $(this).find('input, select');
+        let input = $(this).find('input, select').not('[readonly]');
 
+        // Check if input or select exists and does not have the "display" attribute
         if (input.length) {
            let name = input.attr('name');
            let value = input.val();
@@ -104,6 +105,8 @@ function getTableData() {
 
   return tableData;
 }
+
+
 
 /*
 // Example usage:
@@ -157,8 +160,37 @@ function CalculateTotal(e) {
 
   // Only update the total if all fields contain numbers
   if (isNumber) {
-      $("#"+fieldName+"Sum").val(s);
+      $("#"+fieldName+"Sum").val(total);
   } else {
       console.warn("One or more fields contain non-numeric values");
   }
+}
+
+
+function GetValueById(e, onchangeTable, onchangeField, onchangeSetField) {
+  let id = $(e).val();
+  if (!id) {
+      alert("No ID provided");
+      return;
+  }
+
+  $.ajax({
+      url: 'API/GetValueByCondition.php',  // Update to the actual path of your API
+      method: 'POST',
+      data: {
+        table: onchangeTable,
+        field: onchangeField,
+        conditionField: 'id',  // Assuming 'id' as the condition field
+        conditionValue: id
+      },
+      dataType: 'json',
+      success: function(response) {
+              console.log(response.value);
+              $(e).closest('tr').find(`input[name='${onchangeSetField}']`).val(response.value);
+         
+      },
+      error: function(xhr, status, error) {
+          console.error("Error fetching field value:", error);
+      }
+  });
 }

@@ -48,7 +48,13 @@ class DynamicDetailClass {
                 $value = isset($data[$i][$column['name']]) ? $data[$i][$column['name']] : '';
 
                 if ($column['type'] === 'dropdown') {
-                    $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value) . '</td>';
+                    if(isset($column['onchangeTable']))
+                    {
+                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value,$column['onchangeTable'],$column['onchangeField'],$column['onchangeSetField']) . '</td>';
+                    }
+                    else{
+                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value) . '</td>';
+                    }
                 
                 } elseif (in_array($column['type'], ['textbox', 'number'])) {
                     $tableHtml .= '<td><input type="' . htmlspecialchars($column['type']) . '" name="' . htmlspecialchars($column['name']) . '" class="form-control" value="' . htmlspecialchars($value) . '" onchange="CalculateTotal(this)"></td>';
@@ -96,11 +102,16 @@ class DynamicDetailClass {
         return $tableHtml;
     }
 
-    private function createDropdown($table, $valueField, $optionField, $name, $selectedValue = null) {
+    private function createDropdown($table, $valueField, $optionField, $name, $selectedValue = null,$onchangeTable="",$onchangeField="",$onchangeSetField="") {
         $query = "SELECT $valueField, $optionField FROM $table";
         $result = mysqli_query($this->conn, $query);
-
-        $dropdownHtml = '<select name="' . htmlspecialchars($name) . '" class="form-control">';
+        if($onchangeTable==""){
+          $dropdownHtml = '<select name="' . htmlspecialchars($name) . '" class="form-control">';
+        }
+        else
+        {
+            $dropdownHtml = '<select name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetValueById(this,\''.$onchangeTable.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\')">'; 
+        }
         while ($row = mysqli_fetch_assoc($result)) {
             $isSelected = ($row[$valueField] == $selectedValue) ? ' selected' : '';
             $dropdownHtml .= '<option value="' . htmlspecialchars($row[$valueField]) . '"' . $isSelected . '>' . htmlspecialchars($row[$optionField]) . '</option>';

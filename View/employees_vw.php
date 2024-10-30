@@ -118,7 +118,7 @@ echo $dynamicComponent->createComponent('Image', '', 'image');
 
 
 $columns = [
-  ['header' => 'Project', 'type' => 'dropdown', 'name' => 'project_id', 'table' => 'project','valueField'=>'id','optionField'=>'name'],
+  ['header' => 'Project', 'type' => 'dropdown', 'name' => 'project_id', 'table' => 'project','valueField'=>'id','optionField'=>'name','onchangeTable'=>'project','onchangeField'=>'project_hour','onchangeSetField'=>'project_hours'],
   ['header' => 'Project Hours', 'type' => 'text', 'name' => 'project_hours', 'displayColumn' => 'true' ],
   ['header' => 'Hours', 'type' => 'number', 'name' => 'hours'],
   ['header' => 'Client', 'type' => 'textbox', 'name' => 'client_name'],
