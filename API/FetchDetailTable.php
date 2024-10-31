@@ -5,6 +5,7 @@ include "../Classes/DynamicDetailClass.php";
 
 $columns = [
     ['header' => 'Project', 'type' => 'dropdown', 'name' => 'project_id', 'table' => 'project','valueField'=>'id','optionField'=>'name'],
+    ['header' => 'Project Hours', 'type' => 'text', 'name' => 'project_hours', 'displayColumn' => 'true' ],
     ['header' => 'Hours', 'type' => 'number', 'name' => 'hours'],
     ['header' => 'Client', 'type' => 'textbox', 'name' => 'client_name'],
   ];
@@ -16,7 +17,8 @@ $columns = [
   $rowCount = 1;
   
   // Define columns that need sum functionality
-  $sumColumns = [];
+  //$sumColumns = [];
+  $sumColumns = ['hours'];
   
   // Footer fields like Total, Paid, and Due
   $footerFields = [

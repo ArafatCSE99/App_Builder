@@ -1082,9 +1082,9 @@ function saveMasterDetailData(tableName, detailTableName, foreignKey) {
 
         if(inputName){
 
-            if (inputName.endsWith("Sum")) {
+            /*if (inputName.endsWith("Sum")) {
               return; // Skip this iteration
-            }
+            }*/
 
             // Handle specific field logic for image_name
             if (inputName == "image_name") {

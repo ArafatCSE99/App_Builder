@@ -87,7 +87,8 @@ function getTableData() {
 
      // Loop through each column's input/select in the row
      $(this).find('td').each(function () {
-        let input = $(this).find('input, select').not('[readonly]');
+        //let input = $(this).find('input, select').not('[readonly]');
+        let input = $(this).find('input, select');
 
         // Check if input or select exists and does not have the "display" attribute
         if (input.length) {

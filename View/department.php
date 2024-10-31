@@ -50,7 +50,7 @@ $search=$_POST["search"];
 $dynamicComponent = new DynamicComponent($master_conn);
 
 $columns = [
-    'name' => 'Name',
+    'name' => 'Department Name',
 ];
 
 echo $tableComponent->GetTable($master_conn, 'department', $columns, $page, $limit, $search);
@@ -87,7 +87,7 @@ echo $tableComponent->GetTable($master_conn, 'department', $columns, $page, $lim
                   <i class="fas fa-minus"></i></button>
               </div>
             </div>
-            <div class="card-body">  <?php echo $dynamicComponent->createComponent('Name', '', 'textbox', 'form-group', 'name', 'required');
+            <div class="card-body">  <?php echo $dynamicComponent->createComponent('Department Name', '', 'textbox', 'form-group', 'name', 'required');
  ?> <input type="button"  onclick="saveData('department')"  value="Save" class="btn btn-success float-left saveButton">
               
             </div>

@@ -39,6 +39,7 @@ class DynamicDetailClass {
         // Table Body with Dynamic Rows
         $tableHtml .= '<tbody>';
         
+        $footerSum = [];
         // Render rows based on rowCount or data count
         $numRows = !empty($data) ? count($data) : $rowCount;
         for ($i = 0; $i < $numRows; $i++) {
@@ -46,6 +47,20 @@ class DynamicDetailClass {
             
             foreach ($columns as $column) {
                 $value = isset($data[$i][$column['name']]) ? $data[$i][$column['name']] : '';
+
+                if(is_numeric($value))
+                {
+                    $columnName=$column['name'];
+                    
+                    if (isset($footerSum[$columnName])) {
+                        $footerSum[$columnName]+=$value;
+                    } else {
+                        $footerSum[$columnName]=$value;
+                    }
+
+                }
+
+               
 
                 if ($column['type'] === 'dropdown') {
                     if(isset($column['onchangeTable']))
@@ -76,7 +91,11 @@ class DynamicDetailClass {
             $tableHtml .= '<tfoot><tr>';
             foreach ($columns as $column) {
                 if (in_array($column['name'], $sumColumns)) {
-                    $tableHtml .= '<td><input type="text" class="form-control sum" id="'.$column['name'].'Sum" readonly></td>';
+                    $columnName=$column['name'];
+                    if (!isset($footerSum[$columnName])) {
+                        $footerSum[$columnName]='';
+                    }
+                    $tableHtml .= '<td><input type="text" class="form-control sum" id="'.$column['name'].'Sum" value="'.$footerSum[$columnName].'" readonly></td>';
                 } else {
                     $tableHtml .= '<td></td>';
                 }
