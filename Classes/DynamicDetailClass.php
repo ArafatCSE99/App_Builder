@@ -72,7 +72,17 @@ class DynamicDetailClass {
                     }
                 
                 } elseif (in_array($column['type'], ['textbox', 'number'])) {
-                    $tableHtml .= '<td><input type="' . htmlspecialchars($column['type']) . '" name="' . htmlspecialchars($column['name']) . '" class="form-control" value="' . htmlspecialchars($value) . '" onchange="CalculateTotal(this)"></td>';
+
+                    if(!isset($column['changeRowField']))
+                    {
+                        $column['changeRowField']='';
+                        $column['equation']='';
+                    }
+
+                    $changeRowField = $column['changeRowField'];
+                    $equation = $column['equation'];
+
+                    $tableHtml .= '<td><input type="' . htmlspecialchars($column['type']) . '" name="' . htmlspecialchars($column['name']) . '" class="form-control" value="' . htmlspecialchars($value) . '" onchange="CalculateTotal(this,\''.$changeRowField.'\',\''.$equation.'\')"></td>';
                 
                 } elseif (isset($column['displayColumn'])) {
                     $tableHtml .= '<td><input type="text" name="' . htmlspecialchars($column['name']) . '" class="form-control display-field" value="' . htmlspecialchars($value) . '" readonly></td>';
@@ -109,9 +119,24 @@ class DynamicDetailClass {
         if (!empty($footerFields)) {
             $tableHtml .= '<div class="footer-fields">';
             foreach ($footerFields as $field) {
+
+                if(!isset($field['changeRowField']))
+                {
+                    $field['changeRowField']='';
+                    $field['equation']='';
+                }
+
+                $changeRowField = $field['changeRowField'];
+                $equation = $field['equation'];
+
+                $readonly="";
+                if(isset($field['displayColumn']))
+                {
+                    $readonly="readonly";
+                }
                 $tableHtml .= '<div class="form-group">';
                 $tableHtml .= '<label>' . htmlspecialchars($field['label']) . '</label>';
-                $tableHtml .= '<input type="' . htmlspecialchars($field['type']) . '" name="' . htmlspecialchars($field['name']) . '" class="form-control" value="' . htmlspecialchars($field['value'] ?? '') . '">';
+                $tableHtml .= '<input type="' . htmlspecialchars($field['type']) . '" name="' . htmlspecialchars($field['name']) . '" id="' . htmlspecialchars($field['name']) . '" class="form-control" value="' . htmlspecialchars($field['value'] ?? '') . '" onchange="CalculateTotalFooter(this,\''.$changeRowField.'\',\''.$equation.'\')" style="width:25%" '.$readonly.'>';
                 $tableHtml .= '</div>';
             }
             $tableHtml .= '</div>';

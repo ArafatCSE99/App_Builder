@@ -126,6 +126,93 @@ function checkData()
      console.log(data); // Output the collected table data for debugging
 }
 
+
+
+function CalculateTotal(e, changeRowField, equation) {
+
+  // Get the name attribute of the triggered input field
+  let fieldName = e.name;
+  console.log(fieldName);
+
+  // Get the parent row of the triggered input field
+  let row = $(e).closest('tr');
+
+  // Dynamically calculate the result based on the provided equation
+  let calculatedValue = equation.replace(/\b\w+\b/g, function(match) {
+      // Find the input with the name matching each variable in the equation
+      let input = row.find(`input[name='${match}']`);
+      if (input.length && $.isNumeric(input.val())) {
+          return parseFloat(input.val());
+      } else {
+          console.warn(`Field with name '${match}' not found or is not numeric`);
+          return 0; // Default to 0 if the field is missing or not numeric
+      }
+  });
+
+  try {
+      // Evaluate the equation with the replaced values
+      let result = eval(calculatedValue);
+      row.find(`input[name='${changeRowField}']`).val(result);
+  } catch (error) {
+      console.error("Error evaluating the equation: ", error);
+  }
+
+  // Row equation Calculate Total Sum
+  let total = 0;
+  let isNumber = true;
+
+  // Check if #nameSum element exists
+  if ($("#" + fieldName + "Sum").length === 0) {
+      console.warn("#nameSum element not found");
+      return;
+  }
+
+  // Iterate over all input fields with the given name
+  $(`input[name='${fieldName}']`).each(function() {
+      let value = $(this).val();
+
+      // Check if the input value is a number
+      if ($.isNumeric(value)) {
+          total += parseFloat(value);
+      } else {
+          isNumber = false;
+      }
+  });
+
+  // Only update the total if all fields contain numbers
+  if (isNumber) {
+      $("#" + fieldName + "Sum").val(total);
+  } else {
+      console.warn("One or more fields contain non-numeric values");
+  }
+}
+
+
+
+function CalculateTotalFooter(e, changeRowField, equation) {
+  // Dynamically calculate the result based on the provided equation using IDs
+  let calculatedValue = equation.replace(/\b\w+\b/g, function(match) {
+      // Find the input with the specified ID
+      let input = $(`#${match}`);
+      if (input.length && $.isNumeric(input.val())) {
+          return parseFloat(input.val());
+      } else {
+          console.warn(`Element with ID '${match}' not found or is not numeric`);
+          return 0; // Default to 0 if the field is missing or not numeric
+      }
+  });
+
+  try {
+      // Evaluate the equation with the replaced values
+      let result = eval(calculatedValue);
+      $(`#${changeRowField}`).val(result); // Update the specified field by ID
+  } catch (error) {
+      console.error("Error evaluating the equation: ", error);
+  }
+}
+
+
+
 /*
 function CalculateTotal(e)
 {
@@ -134,7 +221,11 @@ function CalculateTotal(e)
 }
 */
 
-function CalculateTotal(e) {
+/*
+function CalculateTotal(e,changeRowField,equation) {
+
+   // Row equation Calculate 
+
   // Get the name attribute of the triggered input field
   let fieldName =  e.name;//e.getSource().get("v.name"); //e.target.getAttribute('name'); //$(e.target).attr('name');
   console.log(fieldName);
@@ -166,7 +257,7 @@ function CalculateTotal(e) {
       console.warn("One or more fields contain non-numeric values");
   }
 }
-
+*/
 
 function GetValueById(e, onchangeTable, onchangeField, onchangeSetField) {
   let id = $(e).val();

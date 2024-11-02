@@ -4,9 +4,10 @@ include "../connection.php";
 include "../Classes/DynamicDetailClass.php";
 
 $columns = [
-    ['header' => 'Project', 'type' => 'dropdown', 'name' => 'project_id', 'table' => 'project','valueField'=>'id','optionField'=>'name'],
+    ['header' => 'Project', 'type' => 'dropdown', 'name' => 'project_id', 'table' => 'project','valueField'=>'id','optionField'=>'name','onchangeTable'=>'project','onchangeField'=>'project_hour','onchangeSetField'=>'project_hours'],
     ['header' => 'Project Hours', 'type' => 'text', 'name' => 'project_hours', 'displayColumn' => 'true' ],
-    ['header' => 'Hours', 'type' => 'number', 'name' => 'hours'],
+    ['header' => 'Hours', 'type' => 'number', 'name' => 'hours','changeRowField'=>'remaining_hours','equation'=>'project_hours-hours'],
+    ['header' => 'Remaining Hours', 'type' => 'text', 'name' => 'remaining_hours', 'displayColumn' => 'true' ],
     ['header' => 'Client', 'type' => 'textbox', 'name' => 'client_name'],
   ];
   
@@ -22,6 +23,8 @@ $columns = [
   
   // Footer fields like Total, Paid, and Due
   $footerFields = [
+    ['label' => 'Total Hours Done', 'type' => 'text', 'name' => 'total_hours_done','changeRowField'=>'total_remaining_hours','equation'=>'hoursSum-total_hours_done' ],
+    ['label' => 'Total Remaining Hours', 'type' => 'text', 'name' => 'total_remaining_hours', 'displayColumn' => 'true' ]
   ];
   
 $dynamicDetail = new DynamicDetailClass($master_conn);

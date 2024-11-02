@@ -60,6 +60,8 @@ $columns = [
     'designation_name' => 'Designation Name',
     'is_active' => 'Is Active',
     'note' => 'Note',
+    'total_hours_done' => 'Total Hours Done',
+    'total_remaining_hours' => 'Total Remaining Hours',
 ];
 echo $tableComponent->GetTable($master_conn,'employees_vw', $columns,$page,$limit,$search,true,'employees_project_detail','employee_id');
 
@@ -120,7 +122,8 @@ echo $dynamicComponent->createComponent('Image', '', 'image');
 $columns = [
   ['header' => 'Project', 'type' => 'dropdown', 'name' => 'project_id', 'table' => 'project','valueField'=>'id','optionField'=>'name','onchangeTable'=>'project','onchangeField'=>'project_hour','onchangeSetField'=>'project_hours'],
   ['header' => 'Project Hours', 'type' => 'text', 'name' => 'project_hours', 'displayColumn' => 'true' ],
-  ['header' => 'Hours', 'type' => 'number', 'name' => 'hours'],
+  ['header' => 'Hours', 'type' => 'number', 'name' => 'hours','changeRowField'=>'remaining_hours','equation'=>'project_hours-hours'],
+  ['header' => 'Remaining Hours', 'type' => 'text', 'name' => 'remaining_hours', 'displayColumn' => 'true' ],
   ['header' => 'Client', 'type' => 'textbox', 'name' => 'client_name'],
 ];
 
@@ -140,7 +143,10 @@ $footerFields = [
   ['label' => 'Total Hours', 'type' => 'text', 'name' => 'total_hours']
 ];
 */
-$footerFields = [];
+$footerFields = [
+  ['label' => 'Total Hours Done', 'type' => 'text', 'name' => 'total_hours_done','changeRowField'=>'total_remaining_hours','equation'=>'hoursSum-total_hours_done' ],
+  ['label' => 'Total Remaining Hours', 'type' => 'text', 'name' => 'total_remaining_hours', 'displayColumn' => 'true' ]
+];
 
 $dynamicDetail = new DynamicDetailClass($master_conn);
 echo $dynamicDetail->createDetailTable($columns, $previousData, $rowCount, $sumColumns, true, $footerFields);
