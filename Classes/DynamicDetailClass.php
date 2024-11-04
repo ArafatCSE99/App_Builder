@@ -84,8 +84,11 @@ class DynamicDetailClass {
 
                     $tableHtml .= '<td><input type="' . htmlspecialchars($column['type']) . '" name="' . htmlspecialchars($column['name']) . '" class="form-control" value="' . htmlspecialchars($value) . '" onchange="CalculateTotal(this,\''.$changeRowField.'\',\''.$equation.'\')"></td>';
                 
-                } elseif (isset($column['displayColumn'])) {
+                } elseif ($column['displayColumn']=='true') {
                     $tableHtml .= '<td><input type="text" name="' . htmlspecialchars($column['name']) . '" class="form-control display-field" value="' . htmlspecialchars($value) . '" readonly></td>';
+                }
+                elseif ($column['displayColumn']=='false') {
+                    $tableHtml .= '<td><input type="text" name="' . htmlspecialchars($column['name']) . '" class="form-control display-field" value="' . htmlspecialchars($value) . '" ></td>';
                 }
             }
 
@@ -130,7 +133,7 @@ class DynamicDetailClass {
                 $equation = $field['equation'];
 
                 $readonly="";
-                if(isset($field['displayColumn']))
+                if($field['displayColumn']=='true')
                 {
                     $readonly="readonly";
                 }

@@ -2,7 +2,7 @@
 
 class TableComponent {
 
-    public function GetTable($master_conn, $tableName, $columns, $page = 1, $limit = 10, $search = '',$IsMasterDetail=false,$detailTable='',$foreignKey='') {
+    public function GetTable($master_conn, $tableName, $columns, $page = 1, $limit = 10, $search = '',$IsMasterDetail=false,$detailTable='',$foreignKey='',$form_id='') {
 
         $columnNames = array_keys($columns);
         $displayNames = array_values($columns);
@@ -97,7 +97,7 @@ if ($typeResult) {
                   
 
                   if($IsMasterDetail){
-                    $tableHtml .= "<a onclick='updateMasterdetailData($row[id],this)' class='btn btn-info'><i class='fas fa-edit'></i></a>
+                    $tableHtml .= "<a onclick='updateMasterdetailData($row[id],$form_id,this)' class='btn btn-info'><i class='fas fa-edit'></i></a>
                     <a onclick=deleteMasterDetailData($row[id],'$tableName','$detailTable','$foreignKey',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
                   }
                   else{

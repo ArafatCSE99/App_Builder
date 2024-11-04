@@ -1171,14 +1171,14 @@ function deleteMasterDetailData(id, masterTable, detailTable, foreignKey, elemen
 
 
 
-function updateMasterdetailData(update_id, row) {
+function updateMasterdetailData(update_id,form_id, row) {
     var $cells = $(row).closest('tr').find('td');
 
     // Call detail and replace the table
     $.ajax({
         url: 'API/FetchDetailTable.php',  // Assuming this is the endpoint to fetch detail data
         type: 'POST',
-        data: { id: update_id },
+        data: { id: update_id,form_id:form_id },
         dataType: 'html',
         success: function(response) {
             // Replace the current detail table with the fetched data
