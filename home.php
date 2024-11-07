@@ -1239,6 +1239,36 @@ function ScrollToTop()
 }  
 
 
+function ReportRefresh() {
+    var searchValue = "";
+    
+    // Loop through each input element in the form
+    $('.form-inline :input').each(function() {
+        var input = $(this);
+        
+        // Check if the input has a value and it’s not empty
+        if (input.val() !== "" && input.val() !== "0") {
+            var id = input.attr('id');
+            var value = input.val();
+            
+            // Append the condition to searchValue
+            if (searchValue !== "") {
+                searchValue += " and ";
+            }
+            searchValue += id + "='" + value + "'";
+        }
+    });
+    
+    // Check if there’s a condition created
+    if (searchValue) {
+        // Call the getcontent function with searchValue
+        getcontent(viewcontent, "page=1&limit=10&search=" + searchValue);
+    } else {
+        alert("Please enter at least one search criteria.");
+    }
+}
+
+
 /* Test 
 function save(sql)
 {

@@ -3,6 +3,7 @@
 
 include "../connection.php";
 include "../Classes/ReportComponentClass.php";
+include "../Classes/ReportDynamicComponent.php";
 
 session_start(); 
 
@@ -43,15 +44,21 @@ $search=$_POST["search"];
       </div><!-- /.container-fluid -->
     </section>
 
-
+    <form class = "form-inline" role = "form">
 
   <?php
  
+$dynamicComponent = new DynamicComponent($master_conn);
+echo $dynamicComponent->createComponent('Employee Name', '', 'textbox', 'form-group','name','required');
+echo $dynamicComponent->createComponent('Department', '0', 'dropdown', 'form-group','department_id','required', 'department', 'id', 'name','designation','id','name');
+
 
   ?>
 
+&nbsp;&nbsp;
+<button type = "button" onclick='ReportRefresh()' class = "btn btn-primary">Search</button>
 
-
+</form>
 
     <!-- Table -->   
 

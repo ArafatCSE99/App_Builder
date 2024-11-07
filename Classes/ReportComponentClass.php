@@ -10,11 +10,7 @@ class TableComponent {
         // Search condition (applies search across all columns)
         $searchCondition = '';
         if (!empty($search)) {
-            $searchTerms = [];
-            foreach ($columnNames as $column) {
-                $searchTerms[] = "$column LIKE '%$search%'";
-            }
-            $searchCondition = "WHERE " . implode(' OR ', $searchTerms);
+            $searchCondition = "WHERE " .$search;
         }
 
         // Calculate offset for pagination
