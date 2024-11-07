@@ -286,3 +286,23 @@ function GetValueById(e, onchangeTable, onchangeField, onchangeSetField) {
       }
   });
 }
+
+
+
+  $("#print,#pdf").on("click", function() {
+    exportPDF();
+  });
+  
+   function exportPDF()
+   {
+       $("#print,#pdf,#excel,.main-footer").hide();
+        window.print();
+       $("#print,#pdf,#excel,.main-footer").show();   
+   }
+
+
+ $("[id$=excel]").click(function(e) {
+    window.open('data:application/vnd.ms-excel,' + encodeURIComponent( $('div[id$=section-to-print]').html()));
+    e.preventDefault();
+  });
+  
