@@ -110,9 +110,9 @@ echo $dynamicDetail->createDetailTable(array (
     'table' => 'schema_tables',
     'valueField' => 'table_name',
     'optionField' => 'table_name',
-    'onchangeTable' => 'schema_table_columns',
-    'onchangeField' => 'tbl_name',
-    'onchangeSetField' => 'column_name',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
   ),
   2 => 
   array (
@@ -122,7 +122,7 @@ echo $dynamicDetail->createDetailTable(array (
     'displayColumn' => 'false',
     'table' => 'schema_table_columns',
     'valueField' => 'column_name',
-    'optionField' => 'column_name',
+    'optionField' => 'table_column_name',
     'onchangeTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
@@ -162,9 +162,9 @@ echo $dynamicDetail->createDetailTable(array (
     'table' => 'schema_tables',
     'valueField' => 'table_name',
     'optionField' => 'table_name',
-    'onchangeTable' => 'schema_table_columns',
-    'onchangeField' => 'dropdown_table',
-    'onchangeSetField' => 'dropdown_value_column',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
   ),
   6 => 
   array (
@@ -187,7 +187,7 @@ echo $dynamicDetail->createDetailTable(array (
     'displayColumn' => 'false',
     'table' => 'schema_table_columns',
     'valueField' => 'column_name',
-    'optionField' => 'column_name',
+    'optionField' => 'table_column_name',
     'onchangeTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
@@ -201,9 +201,9 @@ echo $dynamicDetail->createDetailTable(array (
     'table' => 'schema_tables',
     'valueField' => 'table_name',
     'optionField' => 'table_name',
-    'onchangeTable' => 'schema_table_columns',
-    'onchangeField' => 'onchange_table',
-    'onchangeSetField' => 'onchange_value_column',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
   ),
   9 => 
   array (
@@ -213,7 +213,7 @@ echo $dynamicDetail->createDetailTable(array (
     'displayColumn' => 'false',
     'table' => 'schema_table_columns',
     'valueField' => 'column_name',
-    'optionField' => 'column_name',
+    'optionField' => 'table_column_name',
     'onchangeTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
@@ -235,7 +235,7 @@ echo $dynamicDetail->createDetailTable(array (
 ), 1, array (
 ), true, array (
 ));
- ?> <input type="button"  onclick="saveMasterDetailData('parameter_form_master','parameter_form_details','master_id')"  value="Save" class="btn btn-success float-left saveButton">
+ ?> <br><br><input type="button"  onclick="saveMasterDetailData('parameter_form_master','parameter_form_details','master_id')"  value="Save" class="btn btn-success float-left saveButton">
               
             </div>
             <!-- /.card-body -->

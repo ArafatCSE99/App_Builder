@@ -186,7 +186,7 @@ $php_content .= 'echo $dynamicDetail->createDetailTable('
              . var_export($footerFields, true) 
              . ");\n";
 
-$php_content.=' ?> <input type="button"  onclick="saveMasterDetailData(\''.$table_name.'\',\''.$details_table_name.'\',\''.$master_field_name.'\')"  value="Save" class="btn btn-success float-left saveButton">
+$php_content.=' ?> <br><br><input type="button"  onclick="saveMasterDetailData(\''.$table_name.'\',\''.$details_table_name.'\',\''.$master_field_name.'\')"  value="Save" class="btn btn-success float-left saveButton">
               
             </div>
             <!-- /.card-body -->

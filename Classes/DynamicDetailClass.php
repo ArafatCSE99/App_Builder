@@ -27,10 +27,10 @@ class DynamicDetailClass {
     }
 
     public function createDetailTable($columns, $data = [], $rowCount = 1, $sumColumns = [], $footer = false, $footerFields = []) {
-        $tableHtml = '<div id="detailSection"><table class="table table-bordered dynamic-table">';
+        $tableHtml = '<div id="detailSection" style="overflow-x: auto;"><table class="table table-bordered dynamic-table">';
 
         // Table Header
-        $tableHtml .= '<thead><tr>';
+        $tableHtml .= '<thead class="table-secondary"><tr>';
         foreach ($columns as $column) {
             $tableHtml .= '<th>' . htmlspecialchars($column['header']) . '</th>';
         }
@@ -82,19 +82,20 @@ class DynamicDetailClass {
                     $changeRowField = $column['changeRowField'];
                     $equation = $column['equation'];
 
-                    $tableHtml .= '<td><input type="' . htmlspecialchars($column['type']) . '" name="' . htmlspecialchars($column['name']) . '" class="form-control" value="' . htmlspecialchars($value) . '" onchange="CalculateTotal(this,\''.$changeRowField.'\',\''.$equation.'\')"></td>';
+                    $tableHtml .= '<td ><input style="width:200px !important;" type="' . htmlspecialchars($column['type']) . '" name="' . htmlspecialchars($column['name']) . '" class="form-control" value="' . htmlspecialchars($value) . '" onchange="CalculateTotal(this,\''.$changeRowField.'\',\''.$equation.'\')"></td>';
                 
                 } elseif ($column['displayColumn']=='true') {
-                    $tableHtml .= '<td><input type="text" name="' . htmlspecialchars($column['name']) . '" class="form-control display-field" value="' . htmlspecialchars($value) . '" readonly></td>';
+                    $tableHtml .= '<td><input style="width:200px !important;" type="text" name="' . htmlspecialchars($column['name']) . '" class="form-control display-field" value="' . htmlspecialchars($value) . '" readonly></td>';
                 }
                 elseif ($column['displayColumn']=='false') {
-                    $tableHtml .= '<td><input type="text" name="' . htmlspecialchars($column['name']) . '" class="form-control display-field" value="' . htmlspecialchars($value) . '" ></td>';
+                    $tableHtml .= '<td><input style="width:200px !important;" type="text" name="' . htmlspecialchars($column['name']) . '" class="form-control display-field" value="' . htmlspecialchars($value) . '" ></td>';
                 }
             }
 
             // Action buttons for adding/removing rows
-            $tableHtml .= '<td><button type="button" class="btn btn-success add-row">+</button>';
-            $tableHtml .= '<button type="button" class="btn btn-danger delete-row">-</button></td>';
+            //$tableHtml .= '<td><button type="button" class="btn btn-success add-row">+</button>';
+            //$tableHtml .= '<button type="button" class="btn btn-danger delete-row">-</button></td>';
+            $tableHtml .= '<td><div style="display: flex; justify-content: space-between;"><button type="button" class="btn btn-success add-row">+</button><button type="button" class="btn btn-danger delete-row">-</button></div></td>';
             $tableHtml .= '</tr>';
         }
         $tableHtml .= '</tbody>';
@@ -108,7 +109,7 @@ class DynamicDetailClass {
                     if (!isset($footerSum[$columnName])) {
                         $footerSum[$columnName]='';
                     }
-                    $tableHtml .= '<td><input type="text" class="form-control sum" id="'.$column['name'].'Sum" value="'.$footerSum[$columnName].'" readonly></td>';
+                    $tableHtml .= '<td><input style="width:200px !important;" type="text" class="form-control sum" id="'.$column['name'].'Sum" value="'.$footerSum[$columnName].'" readonly></td>';
                 } else {
                     $tableHtml .= '<td></td>';
                 }
@@ -139,7 +140,7 @@ class DynamicDetailClass {
                 }
                 $tableHtml .= '<div class="form-group">';
                 $tableHtml .= '<label>' . htmlspecialchars($field['label']) . '</label>';
-                $tableHtml .= '<input type="' . htmlspecialchars($field['type']) . '" name="' . htmlspecialchars($field['name']) . '" id="' . htmlspecialchars($field['name']) . '" class="form-control" value="' . htmlspecialchars($field['value'] ?? '') . '" onchange="CalculateTotalFooter(this,\''.$changeRowField.'\',\''.$equation.'\')" style="width:25%" '.$readonly.'>';
+                $tableHtml .= '<input style="width:200px !important;" type="' . htmlspecialchars($field['type']) . '" name="' . htmlspecialchars($field['name']) . '" id="' . htmlspecialchars($field['name']) . '" class="form-control" value="' . htmlspecialchars($field['value'] ?? '') . '" onchange="CalculateTotalFooter(this,\''.$changeRowField.'\',\''.$equation.'\')" style="width:25%" '.$readonly.'>';
                 $tableHtml .= '</div>';
             }
             $tableHtml .= '</div>';
@@ -153,12 +154,13 @@ class DynamicDetailClass {
         $query = "SELECT $valueField, $optionField FROM $table";
         $result = mysqli_query($this->conn, $query);
         if($onchangeTable==""){
-          $dropdownHtml = '<select name="' . htmlspecialchars($name) . '" class="form-control">';
+          $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control">';
         }
         else
         {
-            $dropdownHtml = '<select name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetValueById(this,\''.$onchangeTable.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\')">'; 
+            $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetValueById(this,\''.$onchangeTable.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\')">'; 
         }
+        $dropdownHtml .= '<option value="">None</option>';
         while ($row = mysqli_fetch_assoc($result)) {
             $isSelected = ($row[$valueField] == $selectedValue) ? ' selected' : '';
             $dropdownHtml .= '<option value="' . htmlspecialchars($row[$valueField]) . '"' . $isSelected . '>' . htmlspecialchars($row[$optionField]) . '</option>';

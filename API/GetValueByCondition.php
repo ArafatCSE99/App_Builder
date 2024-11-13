@@ -19,7 +19,7 @@ if (empty($table_name) || empty($field_name) || empty($condition_field) || empty
 
 // Construct and execute the query safely
 $sql = "SELECT $field_name AS value FROM $table_name WHERE $condition_field = ? LIMIT 1";
-//echo $sql;
+echo $sql;
 $stmt = $master_conn->prepare($sql);
 $stmt->bind_param("s", $condition_value);  // Bind parameter to prevent SQL injection
 
