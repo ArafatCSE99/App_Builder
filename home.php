@@ -1269,6 +1269,44 @@ function ReportRefresh() {
 }
 
 
+function buildProcess(id, builder, element) {
+    let apiUrl = "";
+
+    // Determine the API URL based on the value of builder
+    switch(builder) {
+        case 1:
+            apiUrl = "API/CreateParameterForm.php";
+            break;
+        case 2:
+            apiUrl = "API/CreateMasterDetailForm.php";
+            break;
+        case 3:
+            apiUrl = "API/CreateReport.php";
+            break;
+        default:
+            console.error("Invalid builder value.");
+            return; // Exit the function if the builder value is not recognized
+    }
+
+    // Perform an AJAX GET request to the selected API
+    $.ajax({
+        url: apiUrl,
+        method: "GET",
+        data: { form_id: id },
+        success: function(response) {
+            // Handle the response here
+            console.log("API response:", response);
+            alert("Process Successfuly Executed");
+            // Optional: Update the element or perform other actions based on the response
+        },
+        error: function(xhr, status, error) {
+            // Handle errors here
+            console.error("API request failed:", error);
+        }
+    });
+}
+
+
 /* Test 
 function save(sql)
 {

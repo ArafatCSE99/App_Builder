@@ -2,7 +2,7 @@
 
 class TableComponent {
 
-    public function GetTable($master_conn, $tableName, $columns, $page = 1, $limit = 10, $search = '',$IsMasterDetail=false,$detailTable='',$foreignKey='',$form_id='') {
+    public function GetTable($master_conn, $tableName, $columns, $page = 1, $limit = 10, $search = '',$IsMasterDetail=false,$detailTable='',$foreignKey='',$form_id='',$builder='') {
 
         $columnNames = array_keys($columns);
         $displayNames = array_values($columns);
@@ -95,6 +95,10 @@ if ($typeResult) {
             $tableHtml .= "<td class='text-center py-0 align-middle' style='text-align:center;'>
                 <div class='btn-group btn-group-sm'>";
                   
+                  if($builder!="")
+                  {
+                     $tableHtml .= "<a onclick='buildProcess($row[id],$builder,this)' class='btn btn-info'><i class='fa fa-tasks'></i></a>&nbsp;";
+                  }
 
                   if($IsMasterDetail){
                     $tableHtml .= "<a onclick='updateMasterdetailData($row[id],$form_id,this)' class='btn btn-info'><i class='fas fa-edit'></i></a>

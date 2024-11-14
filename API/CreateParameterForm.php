@@ -4,13 +4,26 @@ include '../connection.php';
 $form_id = $_GET['form_id'];
 
 // Fetching form master data (view_name)
-$form_master_sql = "SELECT `view_name` FROM `parameter_form_master` WHERE `id` = ?";
+$form_master_sql = "SELECT * FROM `parameter_form_master` WHERE `id` = ?";
 $stmt_master = $master_conn->prepare($form_master_sql);
 $stmt_master->bind_param('i', $form_id);
 $stmt_master->execute();
 $form_master_result = $stmt_master->get_result();
 $form_master_data = $form_master_result->fetch_assoc();
 $view_name = $form_master_data['view_name'];
+
+//Menu Create - - 
+$features_category_id = $form_master_data['features_category_id'];
+$menu_name = $form_master_data['menu_name'];
+
+$sql = "INSERT INTO features (`name`, `file_name`, `menu_type`, `category_id`, `is_active`, `sequence`)
+VALUES ( '$menu_name', '$view_name','','$features_category_id','1','1')";
+
+if ($master_conn->query($sql) === TRUE) {
+  //echo "New record created successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
 
 // Fetching form details (columns and fields)
 $form_details_sql = "SELECT `display_name`, `column_name`, `input_type`,is_required, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`, `onchange_option_column` 

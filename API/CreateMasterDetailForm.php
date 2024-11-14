@@ -14,6 +14,7 @@ $view_name = $form_master_data['view_name'];
 $details_table_name = $form_master_data['details_table_name'];
 $master_field_name = $form_master_data['master_field_name'];
 $table_name = $form_master_data['table_name'];
+$builder_id = $form_master_data['builder_id'];
 
 // Fetching form details (columns and fields)
 $form_details_sql = "SELECT `display_name`, `column_name`,`view_column_name`, `input_type`,is_required, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`, `onchange_option_column` 
@@ -114,7 +115,7 @@ foreach ($form_fields3 as $field) {
 $php_content .= "];\n\n";
 
 // Creating the table rendering code
-$php_content .= "echo \$tableComponent->GetTable(\$master_conn, '{$view_name}', \$columns, \$page, \$limit, \$search,true,'{$details_table_name}','{$master_field_name}','{$form_id}');\n\n";
+$php_content .= "echo \$tableComponent->GetTable(\$master_conn, '{$view_name}', \$columns, \$page, \$limit, \$search,true,'{$details_table_name}','{$master_field_name}','{$form_id}','{$builder_id}');\n\n";
 
 
 $php_content.='     
