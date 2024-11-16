@@ -55,8 +55,8 @@ $dynamicDetail = new DynamicDetailClass($master_conn);
 $columns = [
     'table_name' => 'Table Name',
     'view_name' => 'View Name',
-    'module' => 'Module',
-    'feature_category' => 'Feature Category',
+    'module_id' => 'Module',
+    'features_category_id' => 'Feature Category',
     'menu_name' => 'Menu Name',
 ];
 
@@ -180,7 +180,7 @@ echo $dynamicDetail->createDetailTable(array (
     'displayColumn' => 'false',
     'table' => 'schema_table_columns',
     'valueField' => 'column_name',
-    'optionField' => 'column_name',
+    'optionField' => 'table_column_name',
     'onchangeTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
@@ -232,7 +232,7 @@ echo $dynamicDetail->createDetailTable(array (
     'displayColumn' => 'false',
     'table' => 'schema_table_columns',
     'valueField' => 'column_name',
-    'optionField' => 'column_name',
+    'optionField' => 'table_column_name',
     'onchangeTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',

@@ -1201,7 +1201,7 @@ function updateMasterdetailData(update_id,form_id, row) {
                 console.log(className);
 
                 if (className) {
-                    var formFieldId = className.replace('_name', '_id');
+                    var formFieldId = className.replace('_name', '_name');
                     var $formField = $('#' + formFieldId); 
 
                     if ($formField.length) {
@@ -1213,6 +1213,7 @@ function updateMasterdetailData(update_id,form_id, row) {
                             $formField.find('option').each(function() {
                                 if ($(this).text().trim() === $cell.text().trim()) {
                                     $(this).prop('selected', true);
+                                    $(this).closest('select').trigger('change');
                                 }
                             });
                         }

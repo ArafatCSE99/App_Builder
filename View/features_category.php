@@ -50,11 +50,12 @@ $search=$_POST["search"];
 $dynamicComponent = new DynamicComponent($master_conn);
 
 $columns = [
-    'name' => 'Module Name',
-    'short_name' => 'Short Name',
+    'name' => 'Feature Name',
+    'module_id' => 'Modules',
+    'sequence' => 'Sequence',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'modules', $columns, $page, $limit, $search);
+echo $tableComponent->GetTable($master_conn, 'features_category', $columns, $page, $limit, $search);
 
      
                 ?>
@@ -88,9 +89,10 @@ echo $tableComponent->GetTable($master_conn, 'modules', $columns, $page, $limit,
                   <i class="fas fa-minus"></i></button>
               </div>
             </div>
-            <div class="card-body">  <?php echo $dynamicComponent->createComponent('Module Name', '', 'textbox', 'form-group', 'name', 'required');
-echo $dynamicComponent->createComponent('Short Name', '', 'textbox', 'form-group', 'short_name', 'required');
- ?> <input type="button"  onclick="saveData('modules')"  value="Save" class="btn btn-success float-left saveButton">
+            <div class="card-body">  <?php echo $dynamicComponent->createComponent('Feature Name', '', 'textbox', 'form-group', 'name', 'required');
+echo $dynamicComponent->createComponent('Modules', '0', 'dropdown', 'form-group', 'module_id', 'required', 'modules', 'id', 'name', '', '', '');
+echo $dynamicComponent->createComponent('Sequence', '', 'textbox', 'form-group', 'sequence', 'required');
+ ?> <input type="button"  onclick="saveData('features_category')"  value="Save" class="btn btn-success float-left saveButton">
               
             </div>
             <!-- /.card-body -->
