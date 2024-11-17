@@ -1141,7 +1141,7 @@ function saveMasterDetailData(tableName, detailTableName, foreignKey) {
 
 
 function deleteMasterDetailData(id, masterTable, detailTable, foreignKey, element) {
-    masterTable = masterTable.split('_')[0];
+    //masterTable = masterTable.split('_')[0];
     if (confirm('Are You Sure?')) {
         var deleteData = {
             "master_table": masterTable,

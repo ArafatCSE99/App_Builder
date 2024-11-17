@@ -60,7 +60,7 @@ $columns = [
     'menu_name' => 'Menu Name',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'parameter_form_vw', $columns, $page, $limit, $search,true,'parameter_form_details','master_id','2','1');
+echo $tableComponent->GetTable($master_conn, 'parameter_form_vw', $columns, $page, $limit, $search,true,'parameter_form_details','master_id','2','1','parameter_form_master');
 
      
                 ?>

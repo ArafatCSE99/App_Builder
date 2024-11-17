@@ -20,6 +20,10 @@ class DynamicComponent
                 $html .= $this->createTextbox($label, $value, $class,$column_name,$required);
                 break;
 
+            case 'number':
+                    $html .= $this->createTextboxNumber($label, $value, $class,$column_name,$required);
+                    break;
+
             case 'textarea':
                 $html .= $this->createTextarea($label, $value, $class,$column_name,$required);
                 break;
@@ -46,6 +50,16 @@ class DynamicComponent
             <div class='{$class}'>
                 <label>{$label}</label>
                 <input type='text' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label' style='width:25%' class='form-control' $required>
+            </div>
+        ";
+    }
+
+    private function createTextboxNumber($label, $value, $class,$column_name,$required)
+    {
+        return "
+            <div class='{$class}'>
+                <label>{$label}</label>
+                <input type='number' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label' style='width:25%' class='form-control' $required>
             </div>
         ";
     }

@@ -51,9 +51,11 @@ $dynamicComponent = new DynamicComponent($master_conn);
 
 $columns = [
     'name' => 'Name',
+    'module_id' => 'Module Name',
+    'sequence' => 'Sequence',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'department', $columns, $page, $limit, $search);
+echo $tableComponent->GetTable($master_conn, 'features_category_vw', $columns, $page, $limit, $search);
 
      
                 ?>
@@ -88,7 +90,9 @@ echo $tableComponent->GetTable($master_conn, 'department', $columns, $page, $lim
               </div>
             </div>
             <div class="card-body">  <?php echo $dynamicComponent->createComponent('Name', '', 'textbox', 'form-group', 'name', 'required');
- ?> <input type="button"  onclick="saveData('department')"  value="Save" class="btn btn-success float-left saveButton">
+echo $dynamicComponent->createComponent('Module Name', '0', 'dropdown', 'form-group', 'module_id', 'required', 'modules', 'id', 'name', '', '', '');
+echo $dynamicComponent->createComponent('Sequence', '', 'number', 'form-group', 'sequence', 'required');
+ ?> <input type="button"  onclick="saveData('features_category_vw')"  value="Save" class="btn btn-success float-left saveButton">
               
             </div>
             <!-- /.card-body -->

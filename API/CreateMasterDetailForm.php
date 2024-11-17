@@ -115,7 +115,7 @@ foreach ($form_fields3 as $field) {
 $php_content .= "];\n\n";
 
 // Creating the table rendering code
-$php_content .= "echo \$tableComponent->GetTable(\$master_conn, '{$view_name}', \$columns, \$page, \$limit, \$search,true,'{$details_table_name}','{$master_field_name}','{$form_id}','{$builder_id}');\n\n";
+$php_content .= "echo \$tableComponent->GetTable(\$master_conn, '{$view_name}', \$columns, \$page, \$limit, \$search,true,'{$details_table_name}','{$master_field_name}','{$form_id}','{$builder_id}','{$table_name}');\n\n";
 
 
 $php_content.='     
