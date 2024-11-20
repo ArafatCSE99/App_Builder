@@ -41,22 +41,22 @@ function generateDynamicColumns($db,$form_id) {
   $columns = [];
   $sumColumns = [];
 
-  $query1 = "SELECT `id`, `header`, `column_name`, `input_type`, `is_display_column`, `data_table`, `value_field`, `option_field`, `onchange_table`, `onchange_field`, `onchange_set_field`, `change_row_field`, `equation`, `is_sum` FROM `master_detail_form_details2` where master_id=$form_id";
+  $query1 = "SELECT `id`, `display_name`, `column_name`, `input_type`, `is_display_column`, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_field_table`, `onchange_field`, `onchange_set_field`, `change_row_field`, `equation`, `is_sum` FROM `master_detail_form_details` where master_id=$form_id and field_area_id=2";
   $result1 = $db->query($query1);
 
   while ($row = $result1->fetch_assoc()) {
       $column = [
-          'header' => $row['header'],
+          'header' => $row['display_name'],
           'type' => $row['input_type'],
           'name' => $row['column_name'],
           'displayColumn' => $row['is_display_column'] ? 'true' : 'false',
       ];
 
       if ($row['input_type'] === 'dropdown') {
-          $column['table'] = $row['data_table'];
-          $column['valueField'] = $row['value_field'];
-          $column['optionField'] = $row['option_field'];
-          $column['onchangeTable'] = $row['onchange_table'];
+          $column['table'] = $row['dropdown_table'];
+          $column['valueField'] = $row['dropdown_value_column'];
+          $column['optionField'] = $row['dropdown_option_column'];
+          $column['onchangeTable'] = $row['onchange_field_table'];
           $column['onchangeField'] = $row['onchange_field'];
           $column['onchangeSetField'] = $row['onchange_set_field'];
       }
@@ -80,15 +80,15 @@ function generateDynamicFooterFields($db,$form_id) {
   // Fetch data from master_detail_form_details3 for $footerFields
   $footerFields = [];
 
-  $query2 = "SELECT `id`, `label`, `column_name`, `input_type`, `is_display_field`, `change_row_field`, `equation` FROM `master_detail_form_details3` where master_id=$form_id";
+  $query2 = "SELECT `id`, `display_name`, `column_name`, `input_type`, `is_display_column`, `change_row_field`, `equation` FROM `master_detail_form_details` where master_id=$form_id and field_area_id=3";
   $result2 = $db->query($query2);
 
   while ($row = $result2->fetch_assoc()) {
       $footerField = [
-          'label' => $row['label'],
+          'label' => $row['display_name'],
           'type' => $row['input_type'],
           'name' => $row['column_name'],
-          'displayColumn' => $row['is_display_field'] ? 'true' : 'false',
+          'displayColumn' => $row['is_display_column'] ? 'true' : 'false',
       ];
 
       if (!empty($row['change_row_field'])) {

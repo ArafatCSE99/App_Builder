@@ -16,8 +16,14 @@ $view_name = $form_master_data['view_name'];
 $features_category_id = $form_master_data['features_category_id'];
 $menu_name = $form_master_data['menu_name'];
 
-$sql = "INSERT INTO features (`name`, `file_name`, `menu_type`, `category_id`, `is_active`, `sequence`)
-VALUES ( '$menu_name', '$view_name','','$features_category_id','1','1')";
+$sql = "
+    INSERT INTO features (`name`, `file_name`, `menu_type`, `category_id`, `is_active`, `sequence`)
+    SELECT '$menu_name', '$view_name', '', '$features_category_id', '1', '1'
+    WHERE NOT EXISTS (
+        SELECT 1 
+        FROM features 
+        WHERE `name` = '$menu_name' AND `category_id` = '$features_category_id'
+    )";
 
 if ($master_conn->query($sql) === TRUE) {
   //echo "New record created successfully";

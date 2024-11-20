@@ -62,7 +62,7 @@ $columns = [
     'master_field_name' => 'Master Field Name',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'master_detail_form_step1', $columns, $page, $limit, $search,true,'master_detail_form_details1','master_id','3','','master_detail_form_master');
+echo $tableComponent->GetTable($master_conn, 'master_detail_form_step1', $columns, $page, $limit, $search,true,'master_detail_form_details','master_id','3','2','master_detail_form_master');
 
      
                 ?>
@@ -106,12 +106,25 @@ echo $dynamicComponent->createComponent('Master Field Name', '0', 'dropdown', 'f
 echo $dynamicDetail->createDetailTable(array (
   0 => 
   array (
+    'header' => 'Field Area',
+    'type' => 'dropdown',
+    'name' => 'field_area_id',
+    'displayColumn' => 'false',
+    'table' => 'field_area',
+    'valueField' => 'id',
+    'optionField' => 'name',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
+  ),
+  1 => 
+  array (
     'header' => 'Display name',
     'type' => 'text',
     'name' => 'display_name',
     'displayColumn' => 'false',
   ),
-  1 => 
+  2 => 
   array (
     'header' => 'Table Name',
     'type' => 'dropdown',
@@ -124,7 +137,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  2 => 
+  3 => 
   array (
     'header' => 'Column Name',
     'type' => 'dropdown',
@@ -137,7 +150,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  3 => 
+  4 => 
   array (
     'header' => 'Input Type',
     'type' => 'dropdown',
@@ -150,7 +163,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  4 => 
+  5 => 
   array (
     'header' => 'Is Required',
     'type' => 'dropdown',
@@ -163,7 +176,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  5 => 
+  6 => 
   array (
     'header' => 'Dropdown Table',
     'type' => 'dropdown',
@@ -176,7 +189,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  6 => 
+  7 => 
   array (
     'header' => 'Dropdown Value Column',
     'type' => 'dropdown',
@@ -189,7 +202,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  7 => 
+  8 => 
   array (
     'header' => 'Dropdown Option Column',
     'type' => 'dropdown',
@@ -202,7 +215,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  8 => 
+  9 => 
   array (
     'header' => 'OnchangeTable',
     'type' => 'dropdown',
@@ -215,7 +228,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  9 => 
+  10 => 
   array (
     'header' => 'Onchange Value Column',
     'type' => 'dropdown',
@@ -228,7 +241,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
-  10 => 
+  11 => 
   array (
     'header' => 'Onchange Option Column',
     'type' => 'dropdown',
@@ -241,11 +254,83 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
   ),
+  12 => 
+  array (
+    'header' => 'Onchange Table',
+    'type' => 'dropdown',
+    'name' => 'onchange_field_table',
+    'displayColumn' => 'false',
+    'table' => 'schema_tables',
+    'valueField' => 'table_name',
+    'optionField' => 'table_name',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
+  ),
+  13 => 
+  array (
+    'header' => 'Onchange Field',
+    'type' => 'dropdown',
+    'name' => 'onchange_field',
+    'displayColumn' => 'false',
+    'table' => 'schema_table_columns',
+    'valueField' => 'column_name',
+    'optionField' => 'table_column_name',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
+  ),
+  14 => 
+  array (
+    'header' => 'Onchange Set Field',
+    'type' => 'dropdown',
+    'name' => 'onchange_set_field',
+    'displayColumn' => 'false',
+    'table' => 'schema_table_columns',
+    'valueField' => 'column_name',
+    'optionField' => 'table_column_name',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
+  ),
+  15 => 
+  array (
+    'header' => 'Cahnge Row Field',
+    'type' => 'dropdown',
+    'name' => 'change_row_field',
+    'displayColumn' => 'false',
+    'table' => 'schema_table_columns',
+    'valueField' => 'column_name',
+    'optionField' => 'table_column_name',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
+  ),
+  16 => 
+  array (
+    'header' => 'Equation',
+    'type' => 'text',
+    'name' => 'equation',
+    'displayColumn' => 'false',
+  ),
+  17 => 
+  array (
+    'header' => 'Is Sum',
+    'type' => 'dropdown',
+    'name' => 'is_sum',
+    'displayColumn' => 'false',
+    'table' => 'yes_no_option',
+    'valueField' => 'option_value',
+    'optionField' => 'option',
+    'onchangeTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
+  ),
 ), array (
 ), 1, array (
 ), true, array (
 ));
- ?> <br><br><input type="button"  onclick="saveMasterDetailData('master_detail_form_master','master_detail_form_details1','master_id')"  value="Save" class="btn btn-success float-left saveButton">
+ ?> <br><br><input type="button"  onclick="saveMasterDetailData('master_detail_form_master','master_detail_form_details','master_id')"  value="Save" class="btn btn-success float-left saveButton">
               
             </div>
             <!-- /.card-body -->

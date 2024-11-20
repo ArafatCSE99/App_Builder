@@ -16,9 +16,28 @@ $master_field_name = $form_master_data['master_field_name'];
 $table_name = $form_master_data['table_name'];
 $builder_id = $form_master_data['builder_id'];
 
+//Menu Create - - 
+$features_category_id = $form_master_data['features_category_id'];
+$menu_name = $form_master_data['menu_name'];
+
+$sql = "
+    INSERT INTO features (`name`, `file_name`, `menu_type`, `category_id`, `is_active`, `sequence`)
+    SELECT '$menu_name', '$view_name', '', '$features_category_id', '1', '1'
+    WHERE NOT EXISTS (
+        SELECT 1 
+        FROM features 
+        WHERE `name` = '$menu_name' AND `category_id` = '$features_category_id'
+    )";
+
+if ($master_conn->query($sql) === TRUE) {
+  //echo "New record created successfully";
+} else {
+  echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
 // Fetching form details (columns and fields)
 $form_details_sql = "SELECT `display_name`, `column_name`,`view_column_name`, `input_type`,is_required, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`, `onchange_option_column` 
-                     FROM `master_detail_form_details1` WHERE `master_id` = ?";
+                     FROM `master_detail_form_details` WHERE `master_id` = ? and field_area_id=1";
 $stmt_details = $master_conn->prepare($form_details_sql);
 $stmt_details->bind_param('i', $form_id);
 $stmt_details->execute();
@@ -31,7 +50,7 @@ while ($row = $form_details_result->fetch_assoc()) {
 }
 
 $form_details_sql = "SELECT *
-                     FROM `master_detail_form_details3` WHERE `master_id` = ?";
+                     FROM `master_detail_form_details` WHERE `master_id` = ? and field_area_id=3";
 $stmt_details = $master_conn->prepare($form_details_sql);
 $stmt_details->bind_param('i', $form_id);
 $stmt_details->execute();
@@ -110,7 +129,7 @@ foreach ($form_fields as $field) {
     $php_content .= "    '{$field['view_column_name']}' => '{$field['display_name']}',\n";
 }
 foreach ($form_fields3 as $field) {
-  $php_content .= "    '{$field['column_name']}' => '{$field['label']}',\n";
+  $php_content .= "    '{$field['column_name']}' => '{$field['display_name']}',\n";
 }
 $php_content .= "];\n\n";
 
@@ -221,22 +240,22 @@ function generateDynamicColumns($db,$form_id) {
   $columns = [];
   $sumColumns = [];
 
-  $query1 = "SELECT `id`, `header`, `column_name`, `input_type`, `is_display_column`, `data_table`, `value_field`, `option_field`, `onchange_table`, `onchange_field`, `onchange_set_field`, `change_row_field`, `equation`, `is_sum` FROM `master_detail_form_details2` where master_id=$form_id";
+  $query1 = "SELECT `id`, `display_name`, `column_name`, `input_type`, `is_display_column`, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_field_table`, `onchange_field`, `onchange_set_field`, `change_row_field`, `equation`, `is_sum` FROM `master_detail_form_details` where master_id=$form_id and field_area_id=2 ORDER BY CASE WHEN `display_name` = 'Field Area' THEN 0 ELSE 1 END";
   $result1 = $db->query($query1);
 
   while ($row = $result1->fetch_assoc()) {
       $column = [
-          'header' => $row['header'],
+          'header' => $row['display_name'],
           'type' => $row['input_type'],
           'name' => $row['column_name'],
           'displayColumn' => $row['is_display_column'] ? 'true' : 'false',
       ];
 
       if ($row['input_type'] === 'dropdown') {
-          $column['table'] = $row['data_table'];
-          $column['valueField'] = $row['value_field'];
-          $column['optionField'] = $row['option_field'];
-          $column['onchangeTable'] = $row['onchange_table'];
+          $column['table'] = $row['dropdown_table'];
+          $column['valueField'] = $row['dropdown_value_column'];
+          $column['optionField'] = $row['dropdown_option_column'];
+          $column['onchangeTable'] = $row['onchange_field_table'];
           $column['onchangeField'] = $row['onchange_field'];
           $column['onchangeSetField'] = $row['onchange_set_field'];
       }
@@ -260,15 +279,15 @@ function generateDynamicFooterFields($db,$form_id) {
   // Fetch data from master_detail_form_details3 for $footerFields
   $footerFields = [];
 
-  $query2 = "SELECT `id`, `label`, `column_name`, `input_type`, `is_display_field`, `change_row_field`, `equation` FROM `master_detail_form_details3`  where master_id=$form_id";
+  $query2 = "SELECT `id`, `display_name`, `column_name`, `input_type`, `is_display_column`, `change_row_field`, `equation` FROM `master_detail_form_details`  where master_id=$form_id and field_area_id=3";
   $result2 = $db->query($query2);
 
   while ($row = $result2->fetch_assoc()) {
       $footerField = [
-          'label' => $row['label'],
+          'label' => $row['display_name'],
           'type' => $row['input_type'],
           'name' => $row['column_name'],
-          'displayColumn' => $row['is_display_field'] ? 'true' : 'false',
+          'displayColumn' => $row['is_display_column'] ? 'true' : 'false',
       ];
 
       if (!empty($row['change_row_field'])) {
