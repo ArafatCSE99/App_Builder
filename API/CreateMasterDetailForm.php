@@ -126,7 +126,7 @@ $php_content .= "\$dynamicDetail = new DynamicDetailClass(\$master_conn);\n\n";
 // Creating the columns array
 $php_content .= "\$columns = [\n";
 foreach ($form_fields as $field) {
-    $php_content .= "    '{$field['view_column_name']}' => '{$field['display_name']}',\n";
+    $php_content .= "    '{$field['column_name']}' => '{$field['display_name']}',\n";
 }
 foreach ($form_fields3 as $field) {
   $php_content .= "    '{$field['column_name']}' => '{$field['display_name']}',\n";
