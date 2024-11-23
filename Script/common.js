@@ -288,6 +288,30 @@ function GetValueById(e, onchangeTable, onchangeField, onchangeSetField) {
 }
 
 
+function GetDropdownData(e,onchange_table,onchange_value_column,onchange_option_column,onchangeField,onchangeSetField) {
+  
+    let conditionValue = $(e).val();
+
+    $.ajax({
+        url: 'API/GetDropdownData.php',  // Update to the actual path of your API
+        method: 'POST',
+        data: {
+          onchange_table: onchange_table,
+          onchange_value_column: onchange_value_column,
+          onchange_option_column:onchange_option_column,
+          conditionField: onchangeField,  
+          conditionValue: conditionValue
+        },
+        dataType: 'html', // Expecting plain HTML as the response
+        success: function(response) {
+            // Update the target <select> element with the received <option> tags
+            $(e).closest('tr').find(`select[name='${onchangeSetField}']`).html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching field value:", error);
+        }
+    });
+  }
 
   $("#print,#pdf").on("click", function() {
     exportPDF();

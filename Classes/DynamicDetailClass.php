@@ -63,12 +63,13 @@ class DynamicDetailClass {
                
 
                 if ($column['type'] === 'dropdown') {
-                    if(isset($column['onchangeTable']))
+
+                    if(isset($column['onchangeFieldTable']))
                     {
-                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value,$column['onchangeTable'],$column['onchangeField'],$column['onchangeSetField']) . '</td>';
+                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value,$column['onchangeFieldTable'],$column['onchangeField'],$column['onchangeSetField'],$column['onchangeTable'],$column['onchangeValueField'],$column['onchangeOptionColumn']) . '</td>';
                     }
                     else{
-                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value) . '</td>';
+                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value, $value,$column['onchangeFieldTable'],$column['onchangeField'],$column['onchangeSetField'],$column['onchangeTable'],$column['onchangeValueField'],$column['onchangeOptionColumn']) . '</td>';
                     }
                 
                 } elseif (in_array($column['type'], ['textbox', 'number'])) {
@@ -150,15 +151,23 @@ class DynamicDetailClass {
         return $tableHtml;
     }
 
-    private function createDropdown($table, $valueField, $optionField, $name, $selectedValue = null,$onchangeTable="",$onchangeField="",$onchangeSetField="") {
+    private function createDropdown($table, $valueField, $optionField, $name, $selectedValue = null,$onchangeFieldTable="",$onchangeField="",$onchangeSetField="",$onchangeTable="",$onchangeValueField="",$onchangeOptionColumn="") {
         $query = "SELECT $valueField, $optionField FROM $table";
         $result = mysqli_query($this->conn, $query);
-        if($onchangeTable==""){
-          $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control">';
+        if($onchangeFieldTable==""){
+
+            if($onchangeTable=="")
+            {
+                $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control">';
+            }
+            else
+            {
+                $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetDropdownData(this,\''.$onchangeTable.'\',\''.$onchangeValueField.'\',\''.$onchangeOptionColumn.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\')">'; 
+            }
         }
         else
         {
-            $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetValueById(this,\''.$onchangeTable.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\')">'; 
+            $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetValueById(this,\''.$onchangeFieldTable.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\')">'; 
         }
         $dropdownHtml .= '<option value="">None</option>';
         while ($row = mysqli_fetch_assoc($result)) {
