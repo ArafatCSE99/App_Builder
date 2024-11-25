@@ -38,6 +38,7 @@ if ($master_conn->query($sql) === TRUE) {
 // Fetching form details (columns and fields)
 $form_details_sql = "SELECT `display_name`, `column_name`,`view_column_name`, `input_type`,is_required, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`, `onchange_option_column` 
                      FROM `master_detail_form_details` WHERE `master_id` = ? and field_area_id=1";
+                     //echo $form_details_sql;
 $stmt_details = $master_conn->prepare($form_details_sql);
 $stmt_details->bind_param('i', $form_id);
 $stmt_details->execute();
