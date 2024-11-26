@@ -820,69 +820,67 @@ function changeBranchModule(type, NewId) {
 
 }
 
-var id=0;
-var viewcontent="";
-function getcontent(viewname,viewdata="page=1&limit=10&search=")
-{
-debugger;
-viewcontent = viewname;
-document.getElementById("content").innerHTML="<center><img style='opacity:0.9;'   src='dist/img/loader.gif' /><center>";
+var id = 0;
+var viewcontent = "";
 
-$.ajax({
-type: "POST",
-url: "View/"+viewname+".php",
-data: viewdata,
-cache: false,
-success: function(html) {
-
- document.getElementById("content").innerHTML = html;
- $('#content').show(300);
-
- var scripturl="Script/common.js";
- $.getScript( scripturl, function( data, textStatus, jqxhr ) {
-        // do some stuff after script is loaded
-    } );
-    id=0;
-}
-
-});
-
-}
-
-function searchContent()
-{
-    var searchValue=$('.search-input').val();
-    getcontent(viewcontent,"page=1&limit=10&search="+searchValue);
-}
-
-
-function deletedata(id,tablename,e)
-{
-    
-   if(confirm('Are You Sure?'))
-   {
+function getcontent(viewname, viewdata = "page=1&limit=10&search=") {
     debugger;
-    tablename = tablename.split('_')[0];
-    var deleteData = {
-                    "table": tablename,  // Example table
-                    "id": id
-                };
+    viewcontent = viewname;
+    document.getElementById("content").innerHTML =
+        "<center><img style='opacity:0.9;'   src='dist/img/loader.gif' /><center>";
 
-                // Make AJAX request
-                $.ajax({
-                    url: "API/DeleteData.php", 
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(deleteData),
-                    success: function(response) {
-                        $(e).closest('tr').remove();
-                    },
-                    error: function(xhr, status, error) {
-                        var errorMessage = xhr.status + ': ' + xhr.statusText;
-                        alert("<p>Error - " + errorMessage + "</p>");
-                    }
-                });
-   }
+    $.ajax({
+        type: "POST",
+        url: "View/" + viewname + ".php",
+        data: viewdata,
+        cache: false,
+        success: function(html) {
+
+            document.getElementById("content").innerHTML = html;
+            $('#content').show(300);
+
+            var scripturl = "Script/common.js";
+            $.getScript(scripturl, function(data, textStatus, jqxhr) {
+                // do some stuff after script is loaded
+            });
+            id = 0;
+        }
+
+    });
+
+}
+
+function searchContent() {
+    var searchValue = $('.search-input').val();
+    getcontent(viewcontent, "page=1&limit=10&search=" + searchValue);
+}
+
+
+function deletedata(id, tablename, e) {
+
+    if (confirm('Are You Sure?')) {
+        debugger;
+        tablename = tablename.split('_')[0];
+        var deleteData = {
+            "table": tablename, // Example table
+            "id": id
+        };
+
+        // Make AJAX request
+        $.ajax({
+            url: "API/DeleteData.php",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(deleteData),
+            success: function(response) {
+                $(e).closest('tr').remove();
+            },
+            error: function(xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText;
+                alert("<p>Error - " + errorMessage + "</p>");
+            }
+        });
+    }
 
 }
 
@@ -891,14 +889,16 @@ function saveData(tableName) {
     var requestData = {
         "table": tableName,
         "columns": {},
-        "condition": { id: id }
+        "condition": {
+            id: id
+        }
     };
 
-    var isValid = true;  // Flag to track if the form is valid
-    var missingFields = [];  // Array to store labels of missing required fields
+    var isValid = true; // Flag to track if the form is valid
+    var missingFields = []; // Array to store labels of missing required fields
 
     // Get all input, select, and textarea elements within the .card-body class
-    $('.card-body').find('input, select, textarea').each(function () {
+    $('.card-body').find('input, select, textarea').each(function() {
         var inputType = $(this).attr('type');
         var inputName = $(this).attr('id');
         var inputValue = $(this).val();
@@ -911,31 +911,31 @@ function saveData(tableName) {
             // If a dropdown (select) has value 0, or input/textarea is empty
             if ($(this).is('select') && inputValue == 0) {
                 isValid = false;
-                missingFields.push(labelText);  // Add the label text to the missing fields list
+                missingFields.push(labelText); // Add the label text to the missing fields list
             } else if (inputValue.trim() === "") {
                 isValid = false;
-                missingFields.push(labelText);  // Add the label text to the missing fields list
+                missingFields.push(labelText); // Add the label text to the missing fields list
             }
         }
 
-        if(inputName){
-        // Handle specific field logic for image_name
-        if (inputName == "image_name") {
-            $("#image-form").submit();
-            if (image_name != "") {
-                requestData.columns[inputName] = image_name;
+        if (inputName) {
+            // Handle specific field logic for image_name
+            if (inputName == "image_name") {
+                $("#image-form").submit();
+                if (image_name != "") {
+                    requestData.columns[inputName] = image_name;
+                }
+            } else {
+                requestData.columns[inputName] = inputValue;
             }
-        } else {
-            requestData.columns[inputName] = inputValue;
         }
-    }
     });
 
     // If the form is invalid, show an error message and stop the function
     if (!isValid) {
         var errorMessage = "The following fields are required: " + missingFields.join(', ');
         alert(errorMessage);
-        return;  // Stop the function if validation fails
+        return; // Stop the function if validation fails
     }
 
     // Log the requestData for debugging
@@ -943,14 +943,14 @@ function saveData(tableName) {
 
     // Make AJAX request if validation is successful
     $.ajax({
-        url: id == 0 ? "API/AddData.php" : "API/UpdateData.php",  // Replace with your API endpoint
+        url: id == 0 ? "API/AddData.php" : "API/UpdateData.php", // Replace with your API endpoint
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(requestData),
-        success: function (response) {
+        success: function(response) {
             getcontent(viewcontent);
         },
-        error: function (xhr, status, error) {
+        error: function(xhr, status, error) {
             var errorMessage = xhr.status + ': ' + xhr.statusText;
             alert("<p>Error - " + errorMessage + "</p>");
         }
@@ -965,11 +965,11 @@ function updatedata(update_id, row) {
 
     $cells.each(function() {
         var $cell = $(this);
-        var className = $cell.attr('class').trim(); 
+        var className = $cell.attr('class').trim();
         console.log(className);
         if (className) {
             var formFieldId = className.replace('_name', '_id');
-            var $formField = $('#' + formFieldId); 
+            var $formField = $('#' + formFieldId);
 
             if ($formField.length) {
                 if ($formField.is('input[type="text"]')) {
@@ -987,29 +987,30 @@ function updatedata(update_id, row) {
         }
     });
 
-    $('.saveButton').val('Update');  // Change button value to 'Update'
-    id=update_id;
+    $('.saveButton').val('Update'); // Change button value to 'Update'
+    id = update_id;
     ScrollToBottom();
 }
 
-function updateValue(checkbox, column, tableName,updateId) {
+function updateValue(checkbox, column, tableName, updateId) {
     var isChecked = $(checkbox).is(':checked') ? 1 : 0;
 
     var requestData = {
         "table": tableName,
         "columns": {},
-        "condition": { id: updateId}
+        "condition": {
+            id: updateId
+        }
     };
 
     requestData.columns[column] = isChecked;
 
     $.ajax({
-        url: "API/UpdateData.php",  // Replace with your API endpoint
+        url: "API/UpdateData.php", // Replace with your API endpoint
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(requestData),
-        success: function(response) {
-        },
+        success: function(response) {},
         error: function(xhr, status, error) {
             var errorMessage = xhr.status + ': ' + xhr.statusText;
             alert("<p>Error - " + errorMessage + "</p>");
@@ -1017,26 +1018,25 @@ function updateValue(checkbox, column, tableName,updateId) {
     });
 }
 
-function getDepndentData(e,onchange_table,onchange_value_column,onchange_option_column)
-{
+function getDepndentData(e, onchange_table, onchange_value_column, onchange_option_column) {
     var thisId = $(e).attr('id');
-    var thisValue =  $(e).val();  // Get the id of the element using jQuery
+    var thisValue = $(e).val(); // Get the id of the element using jQuery
     //alert("value: " + thisValue);   // Display the id
     //alert("Table: " + onchange_table); 
 
     $.ajax({
-        url: 'API/GetDependentData.php',  // Replace with the correct path to your PHP file
+        url: 'API/GetDependentData.php', // Replace with the correct path to your PHP file
         type: 'POST',
         data: {
             thisId: thisId,
             thisValue: thisValue,
             onchange_table: onchange_table,
-            onchange_value_column:onchange_value_column,
-            onchange_option_column:onchange_option_column
+            onchange_value_column: onchange_value_column,
+            onchange_option_column: onchange_option_column
         },
         success: function(response) {
             // Update your dropdown (or any other element) with the response options
-            $('#'+onchange_table+'_id').html(response);
+            $('#' + onchange_table + '_id').html(response);
         },
         error: function(xhr, status, error) {
             console.error("Error: " + error);
@@ -1053,14 +1053,16 @@ function saveMasterDetailData(tableName, detailTableName, foreignKey) {
     var masterData = {
         "table": tableName,
         "columns": {},
-        "condition": { id: id }
+        "condition": {
+            id: id
+        }
     };
 
-    var isValid = true;  // Flag to track if the form is valid
-    var missingFields = [];  // Array to store labels of missing required fields
+    var isValid = true; // Flag to track if the form is valid
+    var missingFields = []; // Array to store labels of missing required fields
 
     // Get all input, select, and textarea elements within the .card-body class for master data
-    $('.card-body').find('input, select, textarea').each(function () {
+    $('.card-body').find('input, select, textarea').each(function() {
         var inputType = $(this).attr('type');
         var inputName = $(this).attr('id');
         var inputValue = $(this).val();
@@ -1073,14 +1075,14 @@ function saveMasterDetailData(tableName, detailTableName, foreignKey) {
             // If a dropdown (select) has value 0, or input/textarea is empty
             if ($(this).is('select') && inputValue == 0) {
                 isValid = false;
-                missingFields.push(labelText);  // Add the label text to the missing fields list
+                missingFields.push(labelText); // Add the label text to the missing fields list
             } else if (inputValue.trim() === "") {
                 isValid = false;
-                missingFields.push(labelText);  // Add the label text to the missing fields list
+                missingFields.push(labelText); // Add the label text to the missing fields list
             }
         }
 
-        if(inputName){
+        if (inputName) {
 
             /*if (inputName.endsWith("Sum")) {
               return; // Skip this iteration
@@ -1102,20 +1104,20 @@ function saveMasterDetailData(tableName, detailTableName, foreignKey) {
     if (!isValid) {
         var errorMessage = "The following fields are required: " + missingFields.join(', ');
         alert(errorMessage);
-        return;  // Stop the function if validation fails
+        return; // Stop the function if validation fails
     }
 
     // Get detail data from table
-    var detailData = getTableData();  // Uses getTableData function to retrieve table data
+    var detailData = getTableData(); // Uses getTableData function to retrieve table data
 
     // Create a combined request payload
     var requestData = {
-        "master": masterData.columns,  // Master data
-        "detail": detailData,  // Detail data from table
-        "master_table": tableName,  // Master table name
-        "detail_table": detailTableName,  // Detail table name
-        "foreign_key": foreignKey,  // Foreign key linking detail to master
-        "id":id
+        "master": masterData.columns, // Master data
+        "detail": detailData, // Detail data from table
+        "master_table": tableName, // Master table name
+        "detail_table": detailTableName, // Detail table name
+        "foreign_key": foreignKey, // Foreign key linking detail to master
+        "id": id
     };
 
     // Log the requestData for debugging
@@ -1123,15 +1125,16 @@ function saveMasterDetailData(tableName, detailTableName, foreignKey) {
 
     // Make AJAX request if validation is successful
     $.ajax({
-        url: id == 0 ? "API/AddMasterDetailData.php" : "API/UpdateMasterDetailData.php",  // Replace with your API endpoint
+        url: id == 0 ? "API/AddMasterDetailData.php" :
+        "API/UpdateMasterDetailData.php", // Replace with your API endpoint
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(requestData),
-        success: function (response) {
+        success: function(response) {
             getcontent(viewcontent);
             alert("Data saved successfully!");
         },
-        error: function (xhr, status, error) {
+        error: function(xhr, status, error) {
             var errorMessage = xhr.status + ': ' + xhr.statusText;
             alert("Error - " + errorMessage);
         }
@@ -1171,21 +1174,24 @@ function deleteMasterDetailData(id, masterTable, detailTable, foreignKey, elemen
 
 
 
-function updateMasterdetailData(update_id,form_id, row) {
+function updateMasterdetailData(update_id, form_id, row) {
     var $cells = $(row).closest('tr').find('td');
 
     // Call detail and replace the table
     $.ajax({
-        url: 'API/FetchDetailTable.php',  // Assuming this is the endpoint to fetch detail data
+        url: 'API/FetchDetailTable.php', // Assuming this is the endpoint to fetch detail data
         type: 'POST',
-        data: { id: update_id,form_id:form_id },
+        data: {
+            id: update_id,
+            form_id: form_id
+        },
         dataType: 'html',
         success: function(response) {
             // Replace the current detail table with the fetched data
             $('#detailSection').html(response);
 
             // Update the save button text
-            $('.saveButton').val('Update');  // Change button value to 'Update'
+            $('.saveButton').val('Update'); // Change button value to 'Update'
             id = update_id;
 
             // Scroll to the bottom if needed
@@ -1197,12 +1203,12 @@ function updateMasterdetailData(update_id,form_id, row) {
             // Run the $cells.each loop only after the AJAX call is complete
             $cells.each(function() {
                 var $cell = $(this);
-                var className = $cell.attr('class').trim(); 
+                var className = $cell.attr('class').trim();
                 console.log(className);
 
                 if (className) {
                     var formFieldId = className.replace('_name', '_name');
-                    var $formField = $('#' + formFieldId); 
+                    var $formField = $('#' + formFieldId);
 
                     if ($formField.length) {
                         if ($formField.is('input[type="text"]')) {
@@ -1229,29 +1235,27 @@ function updateMasterdetailData(update_id,form_id, row) {
 
 
 
-function ScrollToBottom()
-{
-  window.scrollTo(0, document.body.scrollHeight);
-}  
+function ScrollToBottom() {
+    window.scrollTo(0, document.body.scrollHeight);
+}
 
-function ScrollToTop()
-{
-  document.documentElement.scrollTop = 0;
-}  
+function ScrollToTop() {
+    document.documentElement.scrollTop = 0;
+}
 
 
 function ReportRefresh() {
     var searchValue = "";
-    
+
     // Loop through each input element in the form
     $('.form-inline :input').each(function() {
         var input = $(this);
-        
+
         // Check if the input has a value and it’s not empty
         if (input.val() !== "" && input.val() !== "0") {
             var id = input.attr('id');
             var value = input.val();
-            
+
             // Append the condition to searchValue
             if (searchValue !== "") {
                 searchValue += " and ";
@@ -1259,7 +1263,7 @@ function ReportRefresh() {
             searchValue += id + "='" + value + "'";
         }
     });
-    
+
     // Check if there’s a condition created
     if (searchValue) {
         // Call the getcontent function with searchValue
@@ -1274,7 +1278,7 @@ function buildProcess(id, builder, element) {
     let apiUrl = "";
 
     // Determine the API URL based on the value of builder
-    switch(builder) {
+    switch (builder) {
         case 1:
             apiUrl = "API/CreateParameterForm.php";
             break;
@@ -1293,7 +1297,9 @@ function buildProcess(id, builder, element) {
     $.ajax({
         url: apiUrl,
         method: "GET",
-        data: { form_id: id },
+        data: {
+            form_id: id
+        },
         success: function(response) {
             // Handle the response here
             console.log("API response:", response);
@@ -1391,6 +1397,4 @@ function APITest(){
 APITest();
 
 */
-
-
 </script>

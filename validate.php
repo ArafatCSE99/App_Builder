@@ -1,9 +1,11 @@
 <html>
+
 <head>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
+
 <body>
-<?php
+    <?php
 include "connection.php";
 $email=$_POST["email"];
 $pass=$_POST["pass"];
@@ -82,4 +84,5 @@ window.location.href='login.html';
 
 ?>
 </body>
+
 </html>

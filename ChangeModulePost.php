@@ -1,9 +1,11 @@
 <html>
+
 <head>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
+
 <body>
-<?php
+    <?php
 include "connection.php";
 session_start(); 
 $_SESSION["companyid"]=$_POST["companyid"];
@@ -35,4 +37,5 @@ else{
 
 ?>
 </body>
+
 </html>

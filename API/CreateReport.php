@@ -71,23 +71,23 @@ $search=$_POST["search"];
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Report</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Report</li>
-            </ol>
-          </div>
-        </div>
-      </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Report</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Report</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
     </section>';
 
 
-    $php_content.='<form class = "form-inline" role = "form"> <?php ';
+    $php_content.='<form class="form-inline" role="form"> <?php ';
 
 $php_content .= "\$tableComponent = new TableComponent();\n";
 $php_content .= "\$dynamicComponent = new DynamicComponent(\$master_conn);\n\n";
@@ -116,26 +116,28 @@ foreach ($form_fields as $field) {
 
 }
 
-    $php_content.=' ?> &nbsp;&nbsp; <button type = "button" onclick="ReportRefresh()" class = "btn btn-primary">Search</button>
-</form>';
+    $php_content.=' ?> &nbsp;&nbsp; <button type="button" onclick="ReportRefresh()"
+            class="btn btn-primary">Search</button>
+    </form>';
 
-    $php_content .='<!-- Table -->  
-    
+    $php_content .='
+    <!-- Table -->
+
     <section class="content">
-      <div class="row">
-        <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
 
-    <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title" >
-                <img src="dist/img/print.png" height="50px;" style="cursor:pointer;" id="print">
-                <img src="dist/img/pdf.png" height="50px;" style="cursor:pointer;" id="pdf">
-                <img src="dist/img/exel.jpg" height="50px;" style="cursor:pointer;" id="excel">
-                </h3>
-                <a href="#add"><span style="float:right; cursor:pointer;">Add New</span></a>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body" style="overflow:auto;">  <?php ';
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <img src="dist/img/print.png" height="50px;" style="cursor:pointer;" id="print">
+                            <img src="dist/img/pdf.png" height="50px;" style="cursor:pointer;" id="pdf">
+                            <img src="dist/img/exel.jpg" height="50px;" style="cursor:pointer;" id="excel">
+                        </h3>
+                        <a href="#add"><span style="float:right; cursor:pointer;">Add New</span></a>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body" style="overflow:auto;"> <?php ';
                 
 
 $php_content .= "\$headerComponent = new HeaderComponent();\n";
@@ -156,28 +158,28 @@ $php_content .= "echo \$tableComponent->GetTable(\$master_conn, '{$view_name}', 
 
 $php_content.='     
                 ?>
-              </div>
-              <!-- /.card-body -->
-            </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
 
             </div>
-        
+
         </div>
-       
-      </section>
+
+    </section>
 
     <!-- End Table -->
-';
+    ';
 
-// Close PHP tag
-$php_content .= "\n?>";
+    // Close PHP tag
+    $php_content .= "\n?>";
 
-// Define the file path to save the generated file
-$file_path = "../View/{$view_name}.php";
+    // Define the file path to save the generated file
+    $file_path = "../View/{$view_name}.php";
 
-// Save the content to the file
-file_put_contents($file_path, $php_content);
+    // Save the content to the file
+    file_put_contents($file_path, $php_content);
 
-echo "PHP file '{$view_name}.php' created successfully.";
+    echo "PHP file '{$view_name}.php' created successfully.";
 
-?>
+    ?>
