@@ -64,13 +64,8 @@ class DynamicDetailClass {
 
                 if ($column['type'] === 'dropdown') {
 
-                    if(isset($column['onchangeFieldTable']))
-                    {
-                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value,$column['onchangeFieldTable'],$column['onchangeField'],$column['onchangeSetField'],$column['onchangeTable'],$column['onchangeValueField'],$column['onchangeOptionColumn']) . '</td>';
-                    }
-                    else{
-                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value, $value,$column['onchangeFieldTable'],$column['onchangeField'],$column['onchangeSetField'],$column['onchangeTable'],$column['onchangeValueField'],$column['onchangeOptionColumn']) . '</td>';
-                    }
+                        $tableHtml .= '<td>' . $this->createDropdown($column['table'], $column['valueField'], $column['optionField'], $column['name'], $value,$column['onchangeFieldTable'],$column['onchangeField'],$column['onchangeSetField'],$column['onchangeTable'],$column['onchangeValueField'],$column['onchangeOptionColumn'],$column['onchangeType'],$column['conditionField']) . '</td>';
+                   
                 
                 } elseif (in_array($column['type'], ['textbox', 'number'])) {
 
@@ -151,24 +146,24 @@ class DynamicDetailClass {
         return $tableHtml;
     }
 
-    private function createDropdown($table, $valueField, $optionField, $name, $selectedValue = null,$onchangeFieldTable="",$onchangeField="",$onchangeSetField="",$onchangeTable="",$onchangeValueField="",$onchangeOptionColumn="") {
+    private function createDropdown($table, $valueField, $optionField, $name, $selectedValue = null,$onchangeFieldTable="",$onchangeField="",$onchangeSetField="",$onchangeTable="",$onchangeValueField="",$onchangeOptionColumn="",$onchangeType="",$conditionField) {
         $query = "SELECT $valueField, $optionField FROM $table";
         $result = mysqli_query($this->conn, $query);
-        if($onchangeFieldTable==""){
-
-            if($onchangeTable=="")
+        
+            if($onchangeType=="Field")
             {
-                $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control">';
+                $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetValueById(this,\''.$onchangeFieldTable.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\',\''.$conditionField.'\')">'; 
+
+            }
+            else if($onchangeType=="Dropdown")
+            {
+                $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetDropdownData(this,\''.$onchangeTable.'\',\''.$onchangeValueField.'\',\''.$onchangeOptionColumn.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\',\''.$conditionField.'\')">'; 
             }
             else
             {
-                $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetDropdownData(this,\''.$onchangeTable.'\',\''.$onchangeValueField.'\',\''.$onchangeOptionColumn.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\')">'; 
+              $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control">';
             }
-        }
-        else
-        {
-            $dropdownHtml = '<select style="width:200px !important;" name="' . htmlspecialchars($name) . '" class="form-control" onchange="GetValueById(this,\''.$onchangeFieldTable.'\',\''.$onchangeField.'\',\''.$onchangeSetField.'\')">'; 
-        }
+
         $dropdownHtml .= '<option value="">None</option>';
         while ($row = mysqli_fetch_assoc($result)) {
             $isSelected = ($row[$valueField] == $selectedValue) ? ' selected' : '';

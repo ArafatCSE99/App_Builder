@@ -258,7 +258,7 @@ function CalculateTotal(e,changeRowField,equation) {
 }
 */
 
-function GetValueById(e, onchangeTable, onchangeField, onchangeSetField) {
+function GetValueById(e, onchangeTable, onchangeField, onchangeSetField,conditionField) {
     let id = $(e).val();
     if (!id) {
         alert("No ID provided");
@@ -271,7 +271,7 @@ function GetValueById(e, onchangeTable, onchangeField, onchangeSetField) {
         data: {
             table: onchangeTable,
             field: onchangeField,
-            conditionField: 'id',  // Assuming 'id' as the condition field
+            conditionField: conditionField,  // Assuming 'id' as the condition field
             conditionValue: id
         },
         dataType: 'json',
@@ -287,9 +287,9 @@ function GetValueById(e, onchangeTable, onchangeField, onchangeSetField) {
 }
 
 
-function GetDropdownData(e, onchange_table, onchange_value_column, onchange_option_column, onchangeField, onchangeSetField) {
+function GetDropdownData(e, onchange_table, onchange_value_column, onchange_option_column, onchangeField, onchangeSetField,conditionField) {
 
-    let conditionValue = $(e).val();
+    let conditionValue =  $(e).closest('tr').find(`select[name='${onchangeField}']`).val(); //$(e).val();
 
     $.ajax({
         url: 'API/GetDropdownData.php',  // Update to the actual path of your API
@@ -298,7 +298,7 @@ function GetDropdownData(e, onchange_table, onchange_value_column, onchange_opti
             onchange_table: onchange_table,
             onchange_value_column: onchange_value_column,
             onchange_option_column: onchange_option_column,
-            conditionField: onchangeField,
+            conditionField: conditionField,
             conditionValue: conditionValue
         },
         dataType: 'html', // Expecting plain HTML as the response

@@ -41,7 +41,7 @@ function generateDynamicColumns($db,$form_id) {
   $columns = [];
   $sumColumns = [];
 
-  $query1 = "SELECT `id`, `display_name`, `column_name`, `input_type`, `is_display_column`, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`, `onchange_option_column`,`onchange_field_table`, `onchange_field`, `onchange_set_field`, `change_row_field`, `equation`, `is_sum` FROM `master_detail_form_details` where master_id=$form_id and field_area_id=2 ORDER BY CASE WHEN `display_name` = 'Field Area' THEN 0 ELSE 1 END";
+  $query1 = "SELECT `id`, `display_name`, `column_name`, `input_type`, `is_display_column`, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`, `onchange_option_column`,onchange_type,`onchange_field_table`, `onchange_field`, `onchange_set_field`, condition_field,`change_row_field`, `equation`, `is_sum` FROM `master_detail_form_details` where master_id=$form_id and field_area_id=2 ORDER BY CASE WHEN `display_name` = 'Field Area' THEN 0 ELSE 1 END";
   $result1 = $db->query($query1);
 
   while ($row = $result1->fetch_assoc()) {
@@ -61,9 +61,11 @@ function generateDynamicColumns($db,$form_id) {
           $column['onchangeValueField'] = $row['onchange_value_column'];
           $column['onchangeOptionColumn'] = $row['onchange_option_column'];
 
+          $column['onchangeType'] = $row['onchange_type'];
           $column['onchangeFieldTable'] = $row['onchange_field_table'];
           $column['onchangeField'] = $row['onchange_field'];
           $column['onchangeSetField'] = $row['onchange_set_field'];
+          $column['conditionField'] = $row['condition_field'];
       }
 
       if (!empty($row['change_row_field'])) {
