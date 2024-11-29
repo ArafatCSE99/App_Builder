@@ -11,7 +11,7 @@ class DynamicComponent
     }
 
     // Method to create form elements based on the input type
-    public function createComponent($label='', $value='', $input_type='', $class='',$column_name='',$required='', $tablename = '', $value_column = '', $option_column = '',$onchnge_table='',$onchange_value_column = '', $onchange_option_column = '')
+    public function createComponent($label='', $value='', $input_type='', $class='',$column_name='',$required='', $tablename = '', $value_column = '', $option_column = '',$onchnge_table='',$onchange_value_column = '', $onchange_option_column = '',$onchange_field='',$onchange_set_field='',$condition_field='')
     {
         $html = '';
         
@@ -29,7 +29,7 @@ class DynamicComponent
                 break;
 
             case 'dropdown':
-                $html .= $this->createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name,$required,$onchnge_table,$onchange_value_column,$onchange_option_column);
+                $html .= $this->createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name,$required,$onchnge_table,$onchange_value_column,$onchange_option_column,$onchange_field,$onchange_set_field,$condition_field);
                 break;
             case 'image':
                 $html .= $this->createImage();
@@ -76,7 +76,7 @@ class DynamicComponent
     }
 
     // Method to create a dropdown
-    private function createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name,$required,$onchnge_table,$onchange_value_column,$onchange_option_column)
+    private function createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name,$required,$onchnge_table,$onchange_value_column,$onchange_option_column,$onchange_field,$onchange_set_field,$condition_field)
     {
         if($onchnge_table==""){
         $dropdown = "
@@ -89,7 +89,7 @@ class DynamicComponent
             $dropdown = "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <select name='{$label}' id='{$column_name}' onchange='getDepndentData(this,\"$onchnge_table\",\"$onchange_value_column\",\"$onchange_option_column\")' class='form-control' style='width:25%' $required>
+                <select name='{$label}' id='{$column_name}' onchange='getDepndentData(this,\"$onchnge_table\",\"$onchange_value_column\",\"$onchange_option_column\",\"$onchange_field\",\"$onchange_set_field\",\"$condition_field\")' class='form-control' style='width:25%' $required>
         "; 
         }
 

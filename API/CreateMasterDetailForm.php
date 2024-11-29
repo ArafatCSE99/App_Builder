@@ -36,7 +36,7 @@ if ($master_conn->query($sql) === TRUE) {
 }
 
 // Fetching form details (columns and fields)
-$form_details_sql = "SELECT `display_name`, `column_name`,`view_column_name`, `input_type`,is_required, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`, `onchange_option_column` 
+$form_details_sql = "SELECT *
                      FROM `master_detail_form_details` WHERE `master_id` = ? and field_area_id=1";
                      //echo $form_details_sql;
 $stmt_details = $master_conn->prepare($form_details_sql);
@@ -92,12 +92,12 @@ $search=$_POST["search"];
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Employees</h1>
+                    <h1>'.$menu_name.'</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Employees</li>
+                        <li class="breadcrumb-item active">'.$menu_name.'</li>
                     </ol>
                 </div>
             </div>
@@ -113,7 +113,7 @@ $search=$_POST["search"];
 
                 <div class="card card-info">
                     <div class="card-header">
-                        <h3 class="card-title">List of Employees</h3>
+                        <h3 class="card-title">List of Data</h3>
                         <a href="#add"><span style="float:right; cursor:pointer;">Add New</span></a>
                     </div>
                     <!-- /.card-header -->
@@ -186,7 +186,7 @@ foreach ($form_fields as $field) {
 
 
     if ($field['input_type'] == 'dropdown') {
-        $php_content .= "echo \$dynamicComponent->createComponent('{$field['display_name']}', '0', '{$field['input_type']}', 'form-group', '{$field['column_name']}', '{$required}', '{$field['dropdown_table']}', '{$field['dropdown_value_column']}', '{$field['dropdown_option_column']}', '{$field['onchange_table']}', '{$field['onchange_value_column']}', '{$field['onchange_option_column']}');\n";
+        $php_content .= "echo \$dynamicComponent->createComponent('{$field['display_name']}', '0', '{$field['input_type']}', 'form-group', '{$field['column_name']}', '{$required}', '{$field['dropdown_table']}', '{$field['dropdown_value_column']}', '{$field['dropdown_option_column']}', '{$field['onchange_table']}', '{$field['onchange_value_column']}','{$field['onchange_option_column']}', '{$field['onchange_field']}','{$field['onchange_set_field']}','{$field['condition_field']}');\n";
     } else {
         $php_content .= "echo \$dynamicComponent->createComponent('{$field['display_name']}', '', '{$field['input_type']}', 'form-group', '{$field['column_name']}', '{$required}');\n";
     }

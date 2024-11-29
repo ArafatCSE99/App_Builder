@@ -1018,9 +1018,9 @@ function updateValue(checkbox, column, tableName, updateId) {
     });
 }
 
-function getDepndentData(e, onchange_table, onchange_value_column, onchange_option_column) {
+function getDepndentData(e, onchange_table, onchange_value_column, onchange_option_column,onchange_field,onchange_set_field,condition_field) {
     var thisId = $(e).attr('id');
-    var thisValue = $(e).val(); // Get the id of the element using jQuery
+    var thisValue = $('#'+onchange_field).val();  // $(e).val(); // Get the id of the element using jQuery
     //alert("value: " + thisValue);   // Display the id
     //alert("Table: " + onchange_table); 
 
@@ -1028,7 +1028,7 @@ function getDepndentData(e, onchange_table, onchange_value_column, onchange_opti
         url: 'API/GetDependentData.php', // Replace with the correct path to your PHP file
         type: 'POST',
         data: {
-            thisId: thisId,
+            thisId: condition_field,
             thisValue: thisValue,
             onchange_table: onchange_table,
             onchange_value_column: onchange_value_column,
@@ -1036,7 +1036,7 @@ function getDepndentData(e, onchange_table, onchange_value_column, onchange_opti
         },
         success: function(response) {
             // Update your dropdown (or any other element) with the response options
-            $('#' + onchange_table + '_id').html(response);
+            $('#' + onchange_set_field).html(response);
         },
         error: function(xhr, status, error) {
             console.error("Error: " + error);

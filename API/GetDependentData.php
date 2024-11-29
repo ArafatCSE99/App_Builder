@@ -9,7 +9,7 @@ $onchange_value_column=$_POST["onchange_value_column"];
 $onchange_option_column=$_POST["onchange_option_column"];
 
 $dropdown="";
-$query = "SELECT {$onchange_value_column},{$onchange_option_column} FROM {$onchange_table} where {$thisId} = {$thisValue}";
+$query = "SELECT {$onchange_value_column},{$onchange_option_column} FROM {$onchange_table} where {$thisId} = '{$thisValue}' ";
         $result = $master_conn->query($query);
         $label=ucfirst($onchange_table);
         $dropdown .= "<option hidden='0' value='0'>-- Select {$label} --</option>";
