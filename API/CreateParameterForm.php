@@ -11,6 +11,7 @@ $stmt_master->execute();
 $form_master_result = $stmt_master->get_result();
 $form_master_data = $form_master_result->fetch_assoc();
 $view_name = $form_master_data['view_name'];
+$table_name = $form_master_data['table_name'];
 
 //Menu Create - - 
 $features_category_id = $form_master_data['features_category_id'];
@@ -33,7 +34,7 @@ if ($master_conn->query($sql) === TRUE) {
 
 // Fetching form details (columns and fields)
 $form_details_sql = "SELECT `display_name`, `column_name`, `input_type`,is_required, `dropdown_table`, `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`, `onchange_option_column` 
-                     FROM `parameter_form_details` WHERE `master_id` = ?";
+                     FROM `parameter_form_details` WHERE `master_id` = ? order by serial_no";
 $stmt_details = $master_conn->prepare($form_details_sql);
 $stmt_details->bind_param('i', $form_id);
 $stmt_details->execute();
@@ -170,7 +171,7 @@ foreach ($form_fields as $field) {
 }
 
 
-$php_content.=' ?> <input type="button" onclick="saveData(\''.$view_name.'\')" value="Save"
+$php_content.=' ?> <input type="button" onclick="saveData(\''.$table_name.'\')" value="Save"
                             class="btn btn-success float-left saveButton">
 
                     </div>

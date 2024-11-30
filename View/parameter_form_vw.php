@@ -97,7 +97,7 @@ echo $tableComponent->GetTable($master_conn, 'parameter_form_vw', $columns, $pag
                     </div>
                     <div class="card-body"> <?php echo $dynamicComponent->createComponent('Table Name', '0', 'dropdown', 'form-group', 'table_name', 'required', 'schema_tables', 'table_name', 'table_name', '', '','', '','','');
 echo $dynamicComponent->createComponent('View Name', '0', 'dropdown', 'form-group', 'view_name', 'required', 'schema_views', 'view_name', 'view_name', '', '','', '','','');
-echo $dynamicComponent->createComponent('Module', '0', 'dropdown', 'form-group', 'module_id', 'required', 'modules', 'id', 'name', 'features_category', 'id','name', '','','');
+echo $dynamicComponent->createComponent('Module', '0', 'dropdown', 'form-group', 'module_id', 'required', 'modules', 'id', 'name', 'features_category', 'id','name', 'module_id','features_category_id','module_id');
 echo $dynamicComponent->createComponent('Feature Category', '0', 'dropdown', 'form-group', 'features_category_id', 'required', 'features_category', 'id', 'name', '', '','', '','','');
 echo $dynamicComponent->createComponent('Menu Name', '', 'textbox', 'form-group', 'menu_name', 'required');
 echo $dynamicDetail->createDetailTable(array (
@@ -287,6 +287,13 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
     'conditionField' => NULL,
+  ),
+  11 => 
+  array (
+    'header' => 'Serial No',
+    'type' => 'number',
+    'name' => 'serial_no',
+    'displayColumn' => 'false',
   ),
 ), array (
 ), 1, array (

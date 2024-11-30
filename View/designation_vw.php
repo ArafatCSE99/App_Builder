@@ -21,12 +21,12 @@ $search=$_POST["search"];
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Modules</h1>
+                    <h1>Designation Form</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Modules</li>
+                        <li class="breadcrumb-item active">Designation Form</li>
                     </ol>
                 </div>
             </div>
@@ -50,11 +50,11 @@ $search=$_POST["search"];
 $dynamicComponent = new DynamicComponent($master_conn);
 
 $columns = [
-    'short_name' => 'Short Name',
-    'name' => 'Module Name',
+    'name' => 'Name',
+    'department_id' => 'Department Name',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'modules', $columns, $page, $limit, $search);
+echo $tableComponent->GetTable($master_conn, 'designation_vw', $columns, $page, $limit, $search);
 
      
                 ?>
@@ -89,9 +89,9 @@ echo $tableComponent->GetTable($master_conn, 'modules', $columns, $page, $limit,
                                 <i class="fas fa-minus"></i></button>
                         </div>
                     </div>
-                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Short Name', '', 'textbox', 'form-group', 'short_name', 'required');
-echo $dynamicComponent->createComponent('Module Name', '', 'textbox', 'form-group', 'name', 'required');
- ?> <input type="button" onclick="saveData('modules')" value="Save"
+                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Name', '', 'textbox', 'form-group', 'name', 'required');
+echo $dynamicComponent->createComponent('Department Name', '0', 'dropdown', 'form-group', 'department_id', 'required', 'department', 'id', 'name', '', '', '');
+ ?> <input type="button" onclick="saveData('designation')" value="Save"
                             class="btn btn-success float-left saveButton">
 
                     </div>

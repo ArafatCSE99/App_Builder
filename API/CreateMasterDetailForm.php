@@ -37,7 +37,7 @@ if ($master_conn->query($sql) === TRUE) {
 
 // Fetching form details (columns and fields)
 $form_details_sql = "SELECT *
-                     FROM `master_detail_form_details` WHERE `master_id` = ? and field_area_id=1";
+                     FROM `master_detail_form_details` WHERE `master_id` = ? and field_area_id=1 order by serial_no";
                      //echo $form_details_sql;
 $stmt_details = $master_conn->prepare($form_details_sql);
 $stmt_details->bind_param('i', $form_id);
@@ -247,8 +247,7 @@ $sumColumns = [];
 $query1 = "SELECT `id`, `display_name`, `column_name`, `input_type`, `is_display_column`, `dropdown_table`,
 `dropdown_value_column`, `dropdown_option_column`, `onchange_table`, `onchange_value_column`,
 `onchange_option_column`,onchange_type,`onchange_field_table`, `onchange_field`, `onchange_set_field`,condition_field, `change_row_field`, `equation`,
-`is_sum` FROM `master_detail_form_details` where master_id=$form_id and field_area_id=2 ORDER BY CASE WHEN
-`display_name` = 'Field Area' THEN 0 ELSE 1 END";
+`is_sum` FROM `master_detail_form_details` where master_id=$form_id and field_area_id=2 ORDER BY serial_no";
 $result1 = $db->query($query1);
 
 while ($row = $result1->fetch_assoc()) {
