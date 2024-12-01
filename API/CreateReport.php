@@ -4,7 +4,7 @@ include '../connection.php';
 $form_id = $_GET['form_id'];
 
 // Fetching form master data (view_name)
-$form_master_sql = "SELECT `view_name` FROM `report_master` WHERE `id` = ?";
+$form_master_sql = "SELECT * FROM `report_master` WHERE `id` = ?";
 $stmt_master = $master_conn->prepare($form_master_sql);
 $stmt_master->bind_param('i', $form_id);
 $stmt_master->execute();
