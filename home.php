@@ -923,7 +923,8 @@ function saveData(tableName) {
             if (inputName == "image_name") {
                 $("#image-form").submit();
                 if (image_name != "") {
-                    requestData.columns[inputName] = image_name;
+                    var columnName = $('#image_name').attr('column_name');
+                    requestData.columns[columnName] = image_name;
                 }
             } else {
                 requestData.columns[inputName] = inputValue;
@@ -1092,7 +1093,8 @@ function saveMasterDetailData(tableName, detailTableName, foreignKey) {
             if (inputName == "image_name") {
                 $("#image-form").submit();
                 if (image_name != "") {
-                    masterData.columns[inputName] = image_name;
+                    var columnName = $('#image_name').attr('column_name');
+                    masterData.columns[columnName] = image_name;
                 }
             } else {
                 masterData.columns[inputName] = inputValue;

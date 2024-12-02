@@ -32,7 +32,7 @@ class DropdownDataFetcher {
         $result = $stmt->get_result();
 
         // Build the HTML <option> tags
-        $dropdown = '';
+        $dropdown = "<option value='' hidden=''>-- Select --</option>";
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $dropdown .= "<option value='{$row['value']}'>{$row['label']}</option>";

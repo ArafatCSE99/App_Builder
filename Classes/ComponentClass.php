@@ -81,7 +81,7 @@ if ($typeResult) {
                                     <input type="checkbox" '.$checked.' onchange="updateValue(this,\''.$column.'\',\''.$tableName.'\',\''.$row["id"].'\')">
                                    </td>';
                 }
-                else if ($column=="image_name")
+                else if(preg_match('/\.(jpg|jpeg|png|gif)$/i', $row[$column]))
                 {
                      $imageurl = "imageUpload/uploads/".$row[$column];
                      $tableHtml .= "<td class='image'><img src=$imageurl height='50px' width='50px'></td>"; 

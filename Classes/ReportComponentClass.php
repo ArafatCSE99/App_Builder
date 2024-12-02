@@ -73,7 +73,7 @@ if ($typeResult) {
             $tableHtml .= '<td class="slno">' . $slno . '</td>';
             foreach ($columnNames as $column) {
                 $columnType = $columnTypes[$column];
-                if ($column=="image_name")
+                if (preg_match('/\.(jpg|jpeg|png|gif)$/i', $row[$column]))
                 {
                      $imageurl = "imageUpload/uploads/".$row[$column];
                      $tableHtml .= "<td class='image'><img src=$imageurl height='50px' width='50px'></td>"; 

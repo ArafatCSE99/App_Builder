@@ -32,7 +32,7 @@ class DynamicComponent
                 $html .= $this->createDropdown($label, $value, $class, $tablename, $value_column, $option_column,$column_name,$required,$onchnge_table,$onchange_value_column,$onchange_option_column,$onchange_field,$onchange_set_field,$condition_field);
                 break;
             case 'image':
-                $html .= $this->createImage();
+                $html .= $this->createImage($column_name);
                 break;
 
             default:
@@ -111,13 +111,13 @@ class DynamicComponent
         return $dropdown;
     }
 
-    private function createImage(){
+    private function createImage($column_name){
        
        $ImageHtml = '<form method="post" id="image-form" enctype="multipart/form-data" onSubmit="return false;">
         <div class="form-group">
-            <input type="file" name="file" class="file">
+            <input type="file" name="file" accept="image/jpeg, image/png, image/gif, image/jpg" class="file">
             <div class="input-group my-3" style="width:350px;">
-                <input type="text" style="width:20px; display:none;" class="form-control" disabled placeholder="Upload Product Image" id="image_name">
+                <input type="text" style="width:20px; display:none;" class="form-control" disabled placeholder="Upload Product Image" id="image_name" column_name="' . $column_name . '">
                 <div class="input-group-append">
                     <button type="button" style="display:none;" class="browse btn btn-primary">Browse...</button>
                 </div>
