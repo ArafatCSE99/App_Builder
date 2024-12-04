@@ -60,7 +60,7 @@ $columns = [
     'menu_name' => 'Menu name',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'report_master_vw', $columns, $page, $limit, $search,true,'report_details','master_id','11','3','report_master');
+echo $tableComponent->GetTable($master_conn, 'report_master_vw', $columns, $page, $limit, $search,true,'report_details','master_id','21','3','report_master');
 
      
                 ?>
@@ -97,7 +97,7 @@ echo $tableComponent->GetTable($master_conn, 'report_master_vw', $columns, $page
                     </div>
                     <div class="card-body"> <?php echo $dynamicComponent->createComponent('Table Name', '0', 'dropdown', 'form-group', 'table_name', 'required', 'schema_tables', 'table_name', 'table_name', '', '','', '','','');
 echo $dynamicComponent->createComponent('View Name', '0', 'dropdown', 'form-group', 'view_name', 'required', 'schema_views', 'view_name', 'view_name', '', '','', '','','');
-echo $dynamicComponent->createComponent('Module', '0', 'dropdown', 'form-group', 'module_id', 'required', 'modules', 'id', 'name', '', '','', '','','');
+echo $dynamicComponent->createComponent('Module', '0', 'dropdown', 'form-group', 'module_id', 'required', 'modules', 'id', 'name', 'features_category', 'id','name', 'module_id','features_category_id','module_id');
 echo $dynamicComponent->createComponent('Feature Category', '0', 'dropdown', 'form-group', 'features_category_id', 'required', 'features_category', 'id', 'name', '', '','', '','','');
 echo $dynamicComponent->createComponent('Menu name', '', 'textbox', 'form-group', 'menu_name', 'required');
 echo $dynamicDetail->createDetailTable(array (
@@ -109,6 +109,24 @@ echo $dynamicDetail->createDetailTable(array (
     'displayColumn' => 'false',
   ),
   1 => 
+  array (
+    'header' => 'Table Name',
+    'type' => 'dropdown',
+    'name' => 'tbl_name',
+    'displayColumn' => 'false',
+    'table' => 'schema_views',
+    'valueField' => 'view_name',
+    'optionField' => 'view_name',
+    'onchangeTable' => 'schema_view_columns',
+    'onchangeValueField' => 'column_name',
+    'onchangeOptionColumn' => 'column_name',
+    'onchangeType' => 'Dropdown',
+    'onchangeFieldTable' => 'report_details',
+    'onchangeField' => 'tbl_name',
+    'onchangeSetField' => 'column_name',
+    'conditionField' => 'tbl_name',
+  ),
+  2 => 
   array (
     'header' => 'Column Name',
     'type' => 'dropdown',
@@ -126,7 +144,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeSetField' => '',
     'conditionField' => '',
   ),
-  2 => 
+  3 => 
   array (
     'header' => 'Is Search',
     'type' => 'dropdown',
@@ -144,7 +162,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeSetField' => '',
     'conditionField' => '',
   ),
-  3 => 
+  4 => 
   array (
     'header' => 'Input Type',
     'type' => 'dropdown',
@@ -162,7 +180,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeSetField' => '',
     'conditionField' => '',
   ),
-  4 => 
+  5 => 
   array (
     'header' => 'Is Required',
     'type' => 'dropdown',
@@ -180,7 +198,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeSetField' => '',
     'conditionField' => '',
   ),
-  5 => 
+  6 => 
   array (
     'header' => 'Dropdown Table',
     'type' => 'dropdown',
@@ -189,34 +207,34 @@ echo $dynamicDetail->createDetailTable(array (
     'table' => 'schema_views',
     'valueField' => 'view_name',
     'optionField' => 'view_name',
-    'onchangeTable' => '',
-    'onchangeValueField' => '',
-    'onchangeOptionColumn' => '',
-    'onchangeType' => '',
-    'onchangeFieldTable' => '',
-    'onchangeField' => '',
-    'onchangeSetField' => '',
-    'conditionField' => '',
+    'onchangeTable' => 'schema_view_columns',
+    'onchangeValueField' => 'column_name',
+    'onchangeOptionColumn' => 'column_name',
+    'onchangeType' => 'Dropdown',
+    'onchangeFieldTable' => 'report_details',
+    'onchangeField' => 'dropdown_table',
+    'onchangeSetField' => 'dropdown_value_column',
+    'conditionField' => 'tbl_name',
   ),
-  6 => 
+  7 => 
   array (
     'header' => 'Dropdown Value',
     'type' => 'dropdown',
-    'name' => 'onchange_value_column',
+    'name' => 'dropdown_value_column',
     'displayColumn' => 'false',
     'table' => 'schema_view_columns',
     'valueField' => 'column_name',
     'optionField' => 'column_name',
-    'onchangeTable' => '',
-    'onchangeValueField' => '',
-    'onchangeOptionColumn' => '',
-    'onchangeType' => '',
-    'onchangeFieldTable' => '',
-    'onchangeField' => '',
-    'onchangeSetField' => '',
-    'conditionField' => '',
+    'onchangeTable' => 'schema_view_columns',
+    'onchangeValueField' => 'column_name',
+    'onchangeOptionColumn' => 'column_name',
+    'onchangeType' => 'Dropdown',
+    'onchangeFieldTable' => 'report_details',
+    'onchangeField' => 'dropdown_table',
+    'onchangeSetField' => 'dropdown_option_column',
+    'conditionField' => 'tbl_name',
   ),
-  7 => 
+  8 => 
   array (
     'header' => 'Dropdown Option',
     'type' => 'dropdown',
@@ -234,7 +252,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeSetField' => '',
     'conditionField' => '',
   ),
-  8 => 
+  9 => 
   array (
     'header' => 'Onchange Table ',
     'type' => 'dropdown',
@@ -243,16 +261,16 @@ echo $dynamicDetail->createDetailTable(array (
     'table' => 'schema_views',
     'valueField' => 'view_name',
     'optionField' => 'view_name',
-    'onchangeTable' => '',
-    'onchangeValueField' => '',
-    'onchangeOptionColumn' => '',
-    'onchangeType' => '',
-    'onchangeFieldTable' => '',
-    'onchangeField' => '',
-    'onchangeSetField' => '',
-    'conditionField' => '',
+    'onchangeTable' => 'schema_view_columns',
+    'onchangeValueField' => 'column_name',
+    'onchangeOptionColumn' => 'column_name',
+    'onchangeType' => 'Dropdown',
+    'onchangeFieldTable' => 'report_details',
+    'onchangeField' => 'onchange_table',
+    'onchangeSetField' => 'onchange_value_column',
+    'conditionField' => 'tbl_name',
   ),
-  9 => 
+  10 => 
   array (
     'header' => 'Oncahange Value',
     'type' => 'dropdown',
@@ -261,16 +279,16 @@ echo $dynamicDetail->createDetailTable(array (
     'table' => 'schema_view_columns',
     'valueField' => 'column_name',
     'optionField' => 'column_name',
-    'onchangeTable' => '',
-    'onchangeValueField' => '',
-    'onchangeOptionColumn' => '',
-    'onchangeType' => '',
-    'onchangeFieldTable' => '',
-    'onchangeField' => '',
-    'onchangeSetField' => '',
-    'conditionField' => '',
+    'onchangeTable' => 'schema_view_columns',
+    'onchangeValueField' => 'column_name',
+    'onchangeOptionColumn' => 'column_name',
+    'onchangeType' => 'Dropdown',
+    'onchangeFieldTable' => 'report_details',
+    'onchangeField' => 'onchange_table',
+    'onchangeSetField' => 'onchange_option_column',
+    'conditionField' => 'tbl_name',
   ),
-  10 => 
+  11 => 
   array (
     'header' => 'Onchange Option',
     'type' => 'dropdown',
@@ -287,6 +305,13 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeField' => '',
     'onchangeSetField' => '',
     'conditionField' => '',
+  ),
+  12 => 
+  array (
+    'header' => 'Serial No',
+    'type' => 'number',
+    'name' => 'serial_no',
+    'displayColumn' => 'false',
   ),
 ), array (
 ), 1, array (
