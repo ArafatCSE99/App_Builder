@@ -21,12 +21,12 @@ $search=$_POST["search"];
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Medicene</h1>
+                    <h1>Medicine</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Medicene</li>
+                        <li class="breadcrumb-item active">Medicine</li>
                     </ol>
                 </div>
             </div>
@@ -50,10 +50,14 @@ $search=$_POST["search"];
 $dynamicComponent = new DynamicComponent($master_conn);
 
 $columns = [
-    'name' => 'Madecine',
+    'name' => 'Name ',
+    'generics_id' => 'Generics Name',
+    'stock' => 'Stock',
+    'purchase_price' => 'Purchase Price',
+    'sales_price' => 'Sales Price',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'madecine', $columns, $page, $limit, $search);
+echo $tableComponent->GetTable($master_conn, 'pha_medicine_vw', $columns, $page, $limit, $search);
 
      
                 ?>
@@ -88,8 +92,12 @@ echo $tableComponent->GetTable($master_conn, 'madecine', $columns, $page, $limit
                                 <i class="fas fa-minus"></i></button>
                         </div>
                     </div>
-                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Madecine', '', 'textbox', 'form-group', 'name', 'required');
- ?> <input type="button" onclick="saveData('madecine')" value="Save"
+                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Name ', '', 'textbox', 'form-group', 'name', 'required');
+echo $dynamicComponent->createComponent('Generics Name', '0', 'dropdown', 'form-group', 'generics_id', 'required', 'pha_generics', 'id', 'name', '', '', '');
+echo $dynamicComponent->createComponent('Stock', '', 'number', 'form-group', 'stock', 'required');
+echo $dynamicComponent->createComponent('Purchase Price', '', 'number', 'form-group', 'purchase_price', 'required');
+echo $dynamicComponent->createComponent('Sales Price', '', 'number', 'form-group', 'sales_price', 'required');
+ ?> <input type="button" onclick="saveData('pha_madicine')" value="Save"
                             class="btn btn-success float-left saveButton">
 
                     </div>

@@ -106,7 +106,7 @@ if ($typeResult) {
                   }
                   else{
                   $tableHtml .= "<a onclick='updatedata($row[id],this)' class='btn btn-info'><i class='fas fa-edit'></i></a>
-                  <a onclick=deletedata($row[id],'$master_tableName',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
+                  <a onclick=deletedata($row[id],'$tableName',this) class='btn btn-danger'><i class='fas fa-trash'></i></a>";
                   }
 
                   $tableHtml .=   "</div>

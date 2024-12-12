@@ -92,7 +92,7 @@ echo $tableComponent->GetTable($master_conn, 'user_wise_module_vw', $columns, $p
                     </div>
                     <div class="card-body"> <?php echo $dynamicComponent->createComponent('User ', '0', 'dropdown', 'form-group', 'user_id', 'required', 'users', 'id', 'name', '', '', '');
 echo $dynamicComponent->createComponent('Module', '0', 'dropdown', 'form-group', 'module_id', 'required', 'modules', 'id', 'name', '', '', '');
-echo $dynamicComponent->createComponent('Is Active', '', '', 'form-group', 'is_active', '');
+echo $dynamicComponent->createComponent('Is Active', '', 'checkbox', 'form-group', 'is_active', '');
  ?> <input type="button" onclick="saveData('user_wise_modules')" value="Save"
                             class="btn btn-success float-left saveButton">
 

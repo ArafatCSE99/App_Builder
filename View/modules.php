@@ -50,8 +50,8 @@ $search=$_POST["search"];
 $dynamicComponent = new DynamicComponent($master_conn);
 
 $columns = [
-    'short_name' => 'Short Name',
     'name' => 'Module Name',
+    'short_name' => 'Short Name',
 ];
 
 echo $tableComponent->GetTable($master_conn, 'modules', $columns, $page, $limit, $search);
@@ -89,8 +89,8 @@ echo $tableComponent->GetTable($master_conn, 'modules', $columns, $page, $limit,
                                 <i class="fas fa-minus"></i></button>
                         </div>
                     </div>
-                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Short Name', '', 'textbox', 'form-group', 'short_name', 'required');
-echo $dynamicComponent->createComponent('Module Name', '', 'textbox', 'form-group', 'name', 'required');
+                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Module Name', '', 'textbox', 'form-group', 'name', 'required');
+echo $dynamicComponent->createComponent('Short Name', '', 'textbox', 'form-group', 'short_name', 'required');
  ?> <input type="button" onclick="saveData('modules')" value="Save"
                             class="btn btn-success float-left saveButton">
 

@@ -21,12 +21,12 @@ $search=$_POST["search"];
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Project</h1>
+                    <h1>Basic  Info</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Project</li>
+                        <li class="breadcrumb-item active">Basic  Info</li>
                     </ol>
                 </div>
             </div>
@@ -50,10 +50,15 @@ $search=$_POST["search"];
 $dynamicComponent = new DynamicComponent($master_conn);
 
 $columns = [
-    'name' => 'Name',
+    'company_name' => 'Company Name',
+    'mobile_no' => 'Mobile Number',
+    'email' => 'Email',
+    'facebook' => 'Facebook',
+    'address' => 'Address',
+    'logo' => 'Logo',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'project_vw', $columns, $page, $limit, $search);
+echo $tableComponent->GetTable($master_conn, 'pha_basic_info', $columns, $page, $limit, $search);
 
      
                 ?>
@@ -88,8 +93,13 @@ echo $tableComponent->GetTable($master_conn, 'project_vw', $columns, $page, $lim
                                 <i class="fas fa-minus"></i></button>
                         </div>
                     </div>
-                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Name', '', 'textbox', 'form-group', 'name', 'required');
- ?> <input type="button" onclick="saveData('project_vw')" value="Save"
+                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Company Name', '', 'textbox', 'form-group', 'company_name', 'required');
+echo $dynamicComponent->createComponent('Mobile Number', '', 'textbox', 'form-group', 'mobile_no', 'required');
+echo $dynamicComponent->createComponent('Email', '', 'textbox', 'form-group', 'email', 'required');
+echo $dynamicComponent->createComponent('Facebook', '', 'textbox', 'form-group', 'facebook', 'required');
+echo $dynamicComponent->createComponent('Address', '', 'textbox', 'form-group', 'address', 'required');
+echo $dynamicComponent->createComponent('Logo', '', 'image', 'form-group', 'logo', 'required');
+ ?> <input type="button" onclick="saveData('pha_basic_info')" value="Save"
                             class="btn btn-success float-left saveButton">
 
                     </div>

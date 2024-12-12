@@ -21,12 +21,12 @@ $search=$_POST["search"];
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Basic  Info</h1>
+                    <h1>Gemerics</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Basic  Info</li>
+                        <li class="breadcrumb-item active">Gemerics</li>
                     </ol>
                 </div>
             </div>
@@ -50,14 +50,10 @@ $search=$_POST["search"];
 $dynamicComponent = new DynamicComponent($master_conn);
 
 $columns = [
-    'shop_name' => 'Company Name',
-    'mobileno' => 'Mobile No',
-    'facebook' => 'Facebook ',
-    'email_address' => 'Email ',
-    'logo' => 'Logo ',
+    'name' => 'Name ',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'basic_info', $columns, $page, $limit, $search);
+echo $tableComponent->GetTable($master_conn, 'pha_generics', $columns, $page, $limit, $search);
 
      
                 ?>
@@ -92,12 +88,8 @@ echo $tableComponent->GetTable($master_conn, 'basic_info', $columns, $page, $lim
                                 <i class="fas fa-minus"></i></button>
                         </div>
                     </div>
-                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Company Name', '', 'textbox', 'form-group', 'shop_name', 'required');
-echo $dynamicComponent->createComponent('Mobile No', '', 'number', 'form-group', 'mobileno', 'required');
-echo $dynamicComponent->createComponent('Facebook ', '', 'textbox', 'form-group', 'facebook', 'required');
-echo $dynamicComponent->createComponent('Email ', '', 'textbox', 'form-group', 'email_address', 'required');
-echo $dynamicComponent->createComponent('Logo ', '', 'image', 'form-group', 'logo', '');
- ?> <input type="button" onclick="saveData('basic_info')" value="Save"
+                    <div class="card-body"> <?php echo $dynamicComponent->createComponent('Name ', '', 'textbox', 'form-group', 'name', 'required');
+ ?> <input type="button" onclick="saveData('pha_generics')" value="Save"
                             class="btn btn-success float-left saveButton">
 
                     </div>

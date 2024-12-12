@@ -34,7 +34,9 @@ class DynamicComponent
             case 'image':
                 $html .= $this->createImage($column_name);
                 break;
-
+            case 'checkbox':
+                $html .='';
+                break;
             default:
                 $html .= 'Invalid input type.';
                 break;
