@@ -95,7 +95,7 @@ if ($typeResult) {
             $tableHtml .= "<td class='text-center py-0 align-middle' style='text-align:center;'>
                 <div class='btn-group btn-group-sm'>";
                   
-                  if($builder!="")
+                  if($builder!="" && $builder!=0)
                   {
                      $tableHtml .= "<a onclick='buildProcess($row[id],$builder,this)' class='btn btn-info'><i class='fa fa-tasks'></i></a>&nbsp;";
                   }

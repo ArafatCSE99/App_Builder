@@ -37,6 +37,9 @@ class DynamicComponent
             case 'checkbox':
                 $html .='';
                 break;
+            case 'date':
+                $html .=$this->createDate($label, $value, $class,$column_name,$required);
+                break;
             default:
                 $html .= 'Invalid input type.';
                 break;
@@ -62,6 +65,16 @@ class DynamicComponent
             <div class='{$class}'>
                 <label>{$label}</label>
                 <input type='number' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label' style='width:25%' class='form-control' $required>
+            </div>
+        ";
+    }
+
+    private function createDate($label, $value, $class,$column_name,$required)
+    {
+        return "
+            <div class='{$class}'>
+                <label>{$label}</label>
+                <input type='date' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label' style='width:25%' class='form-control' $required>
             </div>
         ";
     }

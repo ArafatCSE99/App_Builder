@@ -58,13 +58,11 @@ $columns = [
     'address' => 'Address',
     'memo_no' => 'Memo Number',
     'date' => 'Date',
-    'total_quantity' => 'Total Quantity',
-    'total_prize' => 'Total Prize',
     'paid' => 'Paid',
     'due' => 'Due',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'pha_sales_master', $columns, $page, $limit, $search,true,'pha_sales_details','master_id','23','2','pha_sales_master');
+echo $tableComponent->GetTable($master_conn, 'pha_sales_master', $columns, $page, $limit, $search,true,'pha_sales_details','master_id','30','0','pha_sales_master');
 
      
                 ?>
@@ -103,7 +101,7 @@ echo $tableComponent->GetTable($master_conn, 'pha_sales_master', $columns, $page
 echo $dynamicComponent->createComponent('Mobile Number', '', 'textbox', 'form-group', 'mobile_number', '');
 echo $dynamicComponent->createComponent('Address', '', 'textbox', 'form-group', 'address', 'required');
 echo $dynamicComponent->createComponent('Memo Number', '', 'textbox', 'form-group', 'memo_no', 'required');
-echo $dynamicComponent->createComponent('Date', '', 'textbox', 'form-group', 'date', 'required');
+echo $dynamicComponent->createComponent('Date', '', 'date', 'form-group', 'date', 'required');
 echo $dynamicDetail->createDetailTable(array (
   0 => 
   array (
@@ -144,31 +142,19 @@ echo $dynamicDetail->createDetailTable(array (
 ), true, array (
   0 => 
   array (
-    'label' => 'Total Quantity',
-    'type' => 'number',
-    'name' => 'total_quantity',
-    'displayColumn' => 'false',
-  ),
-  1 => 
-  array (
-    'label' => 'Total Prize',
-    'type' => 'number',
-    'name' => 'total_prize',
-    'displayColumn' => 'false',
-  ),
-  2 => 
-  array (
     'label' => 'Paid',
     'type' => 'number',
     'name' => 'paid',
     'displayColumn' => 'false',
+    'changeRowField' => 'due',
+    'equation' => 'prizeSum-paid',
   ),
-  3 => 
+  1 => 
   array (
     'label' => 'Due',
     'type' => 'number',
     'name' => 'due',
-    'displayColumn' => 'false',
+    'displayColumn' => 'true',
   ),
 ));
  ?> <br><br><input type="button"

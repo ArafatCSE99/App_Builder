@@ -1215,7 +1215,18 @@ function updateMasterdetailData(update_id, form_id, row) {
                     if ($formField.length) {
                         if ($formField.is('input[type="text"]')) {
                             $formField.val($cell.text().trim());
-                        } else if ($formField.is('textarea')) {
+                        } 
+                        else if ($formField.is('input[type="number"]')) {
+    // If the field is a number, parse the cell text to a number before setting the value
+    $formField.val(parseFloat($cell.text().trim()));
+} else if ($formField.is('input[type="date"]')) {
+    // If the field is a date, ensure the format matches the input type (YYYY-MM-DD)
+    const date = new Date($cell.text().trim());
+    if (!isNaN(date)) {  // Check if the date is valid
+        $formField.val(date.toISOString().split('T')[0]);  // Format to YYYY-MM-DD
+    }
+}
+                        else if ($formField.is('textarea')) {
                             $formField.val($cell.text().trim());
                         } else if ($formField.is('select')) {
                             $formField.find('option').each(function() {

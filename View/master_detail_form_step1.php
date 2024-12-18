@@ -62,7 +62,7 @@ $columns = [
     'master_field_name' => 'Master Field Name',
 ];
 
-echo $tableComponent->GetTable($master_conn, 'master_detail_form_step1', $columns, $page, $limit, $search,true,'master_detail_form_details','master_id','3','2','master_detail_form_master');
+echo $tableComponent->GetTable($master_conn, 'master_detail_form_step1', $columns, $page, $limit, $search,true,'master_detail_form_details','master_id','26','2','master_detail_form_master');
 
      
                 ?>
@@ -117,16 +117,16 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeTable' => '',
     'onchangeValueField' => '',
     'onchangeOptionColumn' => '',
-    'onchangeType' => NULL,
+    'onchangeType' => '',
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   1 => 
   array (
     'header' => 'Display name',
-    'type' => 'text',
+    'type' => '',
     'name' => 'display_name',
     'displayColumn' => 'false',
   ),
@@ -160,11 +160,11 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeTable' => '',
     'onchangeValueField' => '',
     'onchangeOptionColumn' => '',
-    'onchangeType' => NULL,
+    'onchangeType' => '',
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   4 => 
   array (
@@ -178,11 +178,11 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeTable' => '',
     'onchangeValueField' => '',
     'onchangeOptionColumn' => '',
-    'onchangeType' => NULL,
+    'onchangeType' => '',
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   5 => 
   array (
@@ -196,11 +196,11 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeTable' => '',
     'onchangeValueField' => '',
     'onchangeOptionColumn' => '',
-    'onchangeType' => NULL,
+    'onchangeType' => '',
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   6 => 
   array (
@@ -250,11 +250,11 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeTable' => '',
     'onchangeValueField' => '',
     'onchangeOptionColumn' => '',
-    'onchangeType' => NULL,
+    'onchangeType' => '',
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   9 => 
   array (
@@ -304,11 +304,11 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeTable' => '',
     'onchangeValueField' => '',
     'onchangeOptionColumn' => '',
-    'onchangeType' => NULL,
+    'onchangeType' => '',
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   12 => 
   array (
@@ -322,11 +322,11 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeTable' => '',
     'onchangeValueField' => '',
     'onchangeOptionColumn' => '',
-    'onchangeType' => NULL,
+    'onchangeType' => '',
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   13 => 
   array (
@@ -380,7 +380,7 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   16 => 
   array (
@@ -439,7 +439,7 @@ echo $dynamicDetail->createDetailTable(array (
   19 => 
   array (
     'header' => 'Equation',
-    'type' => 'text',
+    'type' => '',
     'name' => 'equation',
     'displayColumn' => 'false',
   ),
@@ -455,11 +455,11 @@ echo $dynamicDetail->createDetailTable(array (
     'onchangeTable' => '',
     'onchangeValueField' => '',
     'onchangeOptionColumn' => '',
-    'onchangeType' => NULL,
+    'onchangeType' => '',
     'onchangeFieldTable' => '',
     'onchangeField' => '',
     'onchangeSetField' => '',
-    'conditionField' => NULL,
+    'conditionField' => '',
   ),
   21 => 
   array (
@@ -467,6 +467,24 @@ echo $dynamicDetail->createDetailTable(array (
     'type' => 'number',
     'name' => 'serial_no',
     'displayColumn' => 'false',
+  ),
+  22 => 
+  array (
+    'header' => 'Display Column',
+    'type' => 'dropdown',
+    'name' => 'is_display_column',
+    'displayColumn' => 'false',
+    'table' => 'yes_no_option',
+    'valueField' => 'option_value',
+    'optionField' => 'option',
+    'onchangeTable' => '',
+    'onchangeValueField' => '',
+    'onchangeOptionColumn' => '',
+    'onchangeType' => '',
+    'onchangeFieldTable' => '',
+    'onchangeField' => '',
+    'onchangeSetField' => '',
+    'conditionField' => '',
   ),
 ), array (
 ), 1, array (
