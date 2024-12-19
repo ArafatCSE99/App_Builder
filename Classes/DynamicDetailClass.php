@@ -118,6 +118,7 @@ class DynamicDetailClass {
         // Adding footer fields like Total, Paid, and Due
         if (!empty($footerFields)) {
             $tableHtml .= '<div class="footer-fields">';
+            $tableHtml .= '<div class="form-group-inline">';
             foreach ($footerFields as $field) {
 
                 if(!isset($field['changeRowField']))
@@ -134,11 +135,12 @@ class DynamicDetailClass {
                 {
                     $readonly="readonly";
                 }
-                $tableHtml .= '<div class="form-group">';
+               
                 $tableHtml .= '<label>' . htmlspecialchars($field['label']) . '</label>';
-                $tableHtml .= '<input style="width:200px !important;" type="' . htmlspecialchars($field['type']) . '" name="' . htmlspecialchars($field['name']) . '" id="' . htmlspecialchars($field['name']) . '" class="form-control" value="' . htmlspecialchars($field['value'] ?? '') . '" onchange="CalculateTotalFooter(this,\''.$changeRowField.'\',\''.$equation.'\')" style="width:25%" '.$readonly.'>';
-                $tableHtml .= '</div>';
+                $tableHtml .= '<input type="' . htmlspecialchars($field['type']) . '" name="' . htmlspecialchars($field['name']) . '" id="' . htmlspecialchars($field['name']) . '" class="form-control" value="' . htmlspecialchars($field['value'] ?? '') . '" onchange="CalculateTotalFooter(this,\''.$changeRowField.'\',\''.$equation.'\')"  '.$readonly.'>';
+               
             }
+            $tableHtml .= '</div>';
             $tableHtml .= '</div>';
         }
         $tableHtml .= '</div>';

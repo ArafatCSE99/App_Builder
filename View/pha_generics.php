@@ -89,10 +89,11 @@ echo $tableComponent->GetTable($master_conn, 'pha_generics', $columns, $page, $l
                         </div>
                     </div>
                     <div class="card-body"> <?php echo $dynamicComponent->createComponent('Name ', '', 'textbox', 'form-group', 'name', 'required');
- ?> <input type="button" onclick="saveData('pha_generics')" value="Save"
+ ?> 
+                    </div>
+                    <input type="button" style="width:100px; margin:0px 20px 20px 20px;" onclick="saveData('pha_generics')" value="Save"
                             class="btn btn-success float-left saveButton">
 
-                    </div>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->

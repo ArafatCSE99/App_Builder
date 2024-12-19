@@ -54,7 +54,7 @@ class DynamicComponent
         return "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <input type='text' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label' style='width:25%' class='form-control' $required>
+                <input type='text' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label'  class='form-control' $required>
             </div>
         ";
     }
@@ -64,7 +64,7 @@ class DynamicComponent
         return "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <input type='number' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label' style='width:25%' class='form-control' $required>
+                <input type='number' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label'  class='form-control' $required>
             </div>
         ";
     }
@@ -74,7 +74,7 @@ class DynamicComponent
         return "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <input type='date' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label' style='width:25%' class='form-control' $required>
+                <input type='date' name='{$label}' id='{$column_name}' value='{$value}' placeholder='$label'  class='form-control' $required>
             </div>
         ";
     }
@@ -85,7 +85,7 @@ class DynamicComponent
         return "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <textarea name='{$label}' id='{$column_name}'  placeholder='$label' class='form-control' style='width:25%' $required>{$value}</textarea>
+                <textarea name='{$label}' id='{$column_name}'  placeholder='$label' class='form-control'  $required>{$value}</textarea>
             </div>
         ";
     }
@@ -97,7 +97,7 @@ class DynamicComponent
         $dropdown = "
             <div class='{$class}'>
                 <label>{$label}</label>
-                <select name='{$label}' id='{$column_name}' class='form-control' style='width:25%' $required>
+                <select name='{$label}' id='{$column_name}' class='form-control'  $required>
         ";
         }
         else{

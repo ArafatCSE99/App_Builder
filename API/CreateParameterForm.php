@@ -171,10 +171,11 @@ foreach ($form_fields as $field) {
 }
 
 
-$php_content.=' ?> <input type="button" onclick="saveData(\''.$table_name.'\')" value="Save"
+$php_content.=' ?> 
+                    </div>
+                    <input type="button" style="width:100px; margin:0px 20px 20px 20px;" onclick="saveData(\''.$table_name.'\')" value="Save"
                             class="btn btn-success float-left saveButton">
 
-                    </div>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->

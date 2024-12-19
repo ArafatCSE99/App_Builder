@@ -16,6 +16,7 @@ $search=$_POST["search"];
 
 ?>
 
+
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -157,7 +158,7 @@ echo $dynamicDetail->createDetailTable(array (
     'displayColumn' => 'true',
   ),
 ));
- ?> <br><br><input type="button"
+ ?> <br><input type="button"
                             onclick="saveMasterDetailData('pha_sales_master','pha_sales_details','master_id')"
                             value="Save" class="btn btn-success float-left saveButton">
 

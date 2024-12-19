@@ -97,10 +97,11 @@ echo $dynamicComponent->createComponent('Generics Name', '0', 'dropdown', 'form-
 echo $dynamicComponent->createComponent('Stock', '', 'number', 'form-group', 'stock', 'required');
 echo $dynamicComponent->createComponent('Purchase Price', '', 'number', 'form-group', 'purchase_price', 'required');
 echo $dynamicComponent->createComponent('Sales Price', '', 'number', 'form-group', 'sales_price', 'required');
- ?> <input type="button" onclick="saveData('pha_madicine')" value="Save"
+ ?> 
+                    </div>
+                    <input type="button" style="width:100px; margin:0px 20px 20px 20px;" onclick="saveData('pha_madicine')" value="Save"
                             class="btn btn-success float-left saveButton">
 
-                    </div>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->

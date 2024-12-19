@@ -88,6 +88,42 @@ thead tr {
 }
 </style>
 
+
+<style>
+        .form-group {
+            display: inline-block;
+            width: 20%;
+            margin-right: 10px;
+        }
+
+        .footer-fields .form-group-inline {
+    display: flex;                /* Use flexbox for inline layout */
+    gap: 10px;                    /* Adds space between the form fields */
+    align-items: center;          /* Vertically align the labels and inputs */
+}
+
+.footer-fields .form-group-inline .form-control {
+    width: 200px;                 /* Adjust the width of input fields */
+}
+
+.footer-fields .form-group-inline label {
+    margin: 0 5px 0 0;            /* Optional: space between label and input */
+    display: inline-block;        /* Ensure label is inline with the input */
+    width: auto;                  /* Allow label to fit the content */
+    white-space: nowrap;          /* Prevent label from wrapping */
+}
+
+
+        .card-body {
+            width: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px; /* Optional: Adjust label spacing */
+        }
+    </style>
+
 <?php
 
 include "connection.php";
